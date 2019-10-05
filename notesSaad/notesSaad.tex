@@ -13,7 +13,14 @@
 \title{Iterative Methods}
 
 \begin{document}
+
 \maketitle 
+
+\maketitle
+ 
+\tableofcontents
+
+\newpage
 
 %\part{}
   
@@ -473,5 +480,35 @@ From the construction of $\mathcal{L}_m,\;v_{m+1}$ is orthogonal to $\mathcal{L}
 \end{proof}
 
 \section{Symmetric Lanczos Algorithm}
+
+The symmetric lanczos algorithm can be viewed as a simplification of Arnoldi's method for the particular case of symmetric matrix. When A is symmetric, then the Hessenberg matrix $H_m$ will become symmetric tridiagonal. The standard notation used to descsribe the Lanczos algorithm is obtained by setting 
+$$\alpha_j=h_{jj},\;\beta_j=h_{j-1,j},$$
+and if $T_m$ denotes the resulting $H_m$ matrix, it is of the form,
+$$
+T_m = \left( \begin{array}{ccccc}
+\alpha_1 & \beta_2 &  &  &  \\
+\beta_2 & \alpha_2 & \beta_3 &  &  \\
+ & . & . & . &  \\
+ &  & \beta_{m-1} & \alpha_{m-1} & \beta_{m} \\
+ &  &  & \beta_m & \alpha_m \\
+\end{array} \right). 
+$$
+
+This leads to the following form of Modified Gram-Schmidt variant of Arnoldi's method:
+
+\begin{algorithm}
+\caption{Lanczos Algorithm}
+\begin{algorithmic}[1]
+\State Choose an initial vector $v_1$ with 2-norm unity. Set $\beta_1\equiv0,\;v_0\equiv0$
+\For{$j= 1,2,\cdots,m$}
+	\State $w_j = Av_j-\beta_jv_{j-1}$
+	\State $\alpha_j=(w_j,v_j)$
+	\State $w_j = w_j-\alpha_jv_j$
+	\State $\beta_{j+1} = \|w_j\|_2.$ If $\beta_{j+1}=0$ then Stop
+	\State $v_{j+1} = w_j/\beta_{j+1}$
+\EndFor
+\State EndDo
+\end{algorithmic}
+\end{algorithm}
 
 \end{document}

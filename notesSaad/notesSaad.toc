@@ -1,0 +1,9 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}General Projection Methods}{2}
+\contentsline {section}{\numberline {2}One-Dimensional Projection Methods}{5}
+\contentsline {subsection}{\numberline {2.1}Steepest Descent}{5}
+\contentsline {section}{\numberline {3}Krylov Subspace Methods}{7}
+\contentsline {section}{\numberline {4}Arnoldi's Method for Linear Systems (FOM)}{8}
+\contentsline {subsection}{\numberline {4.1}Variation 1: Restarted FOM}{10}
+\contentsline {subsection}{\numberline {4.2}Variation 1: IOM and DIOM}{10}
+\contentsline {section}{\numberline {5}Symmetric Lanczos Algorithm}{12}
