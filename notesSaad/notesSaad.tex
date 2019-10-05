@@ -494,18 +494,74 @@ T_m = \left( \begin{array}{ccccc}
 \end{array} \right). 
 $$
 
-This leads to the following form of Modified Gram-Schmidt variant of Arnoldi's method:
+This leads to the following form of Modified Gram-Schmidt variant of \\ Arnoldi's method:
 
 \begin{algorithm}
-\caption{Lanczos Algorithm}
+\caption{Lanczos Method for Linear Systems}
 \begin{algorithmic}[1]
-\State Choose an initial vector $v_1$ with 2-norm unity. Set $\beta_1\equiv0,\;v_0\equiv0$
-\For{$j= 1,2,\cdots,m$}
+\State Compute $r_0=b-Ax_0,\;\beta=\|r_0\|_2,\;and\;v_1=r_0/\beta$
+\For{$j= 1,2,\cdots,m$} \Comment Orthogonalization Procedure
 	\State $w_j = Av_j-\beta_jv_{j-1}$
 	\State $\alpha_j=(w_j,v_j)$
 	\State $w_j = w_j-\alpha_jv_j$
 	\State $\beta_{j+1} = \|w_j\|_2.$ If $\beta_{j+1}=0$ then Stop
 	\State $v_{j+1} = w_j/\beta_{j+1}$
+\EndFor
+\State EndDo
+\State Set $T_m=tridiag(\beta_i,\alpha_i,\beta_{i+1})$, and $V_m=[v_1,\cdots,v_m].$
+\State Compute $y_m=H^{-1}_m\beta e_1$ and $x_m=x_0+V_my_m$
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\section{Conjugate Gradient}
+
+The conjugate gradient algorithm can be derived from the Lanczos algorithm in the same way DIOM was derived from IOM. Infact, the conjugate gradient algorithmm can be viewed as a variation of DIOM for the case when A is symmetric.
+
+First write the LU factorization of $T_m$ as $T_m=L_mU_m.$ The matrix $L_m$ is unit lower bidiagonal and $U_m$ is unit upper bidiagonal matrix. Thus the factorization of $T_m$ is of the form
+$$
+T_m = 
+\left( \begin{array}{ccccc}
+1 &  &  &  &  \\
+\lambda_2 & 1 &  &  &  \\
+ & . & . &  &  \\
+ &  & \lambda_{m-1} & 1 &  \\
+ &  &  & \lambda_m & 1 \\
+\end{array} \right)\times 
+\left( \begin{array}{ccccc}
+\eta_1 & \beta_2 &  &  &  \\
+ & \eta_2 & \beta_3 &  &  \\
+ &  & . & . &  \\
+ &  &  & \eta_{m-1} & \beta_m \\
+ &  &  &  & \eta_m \\
+\end{array} \right).
+$$
+
+The approximate solution is then given by,
+$$x_m=x_0+V_mU^{-1}_mL^{-1}_m(\beta e_1) = x_0+P_mz_m.$$
+As for DIOM, $p_m$, the last column of $P_m$, can be computed from the previous $p_i's\;and\;v_m$ by the simple update
+$$p_m=\eta^{-1}_m[v_m-\beta_mp_{m-1}].$$
+Note that $\beta_m$ is a scalar computed from the Lanczos algorithm, while $\eta_m$ results from the m-th Gaussian elimination step on the tridiagonal matrix, i.e, $\lambda_m=\frac{\beta_m}{\eta_{m-1}},\;\eta_m=\alpha_m-\lambda_m\beta_m.$ In addition, following again what has been shown for DIOM, $z_m=\left[ \begin{array}{c} z_{m-1} \\ \zeta_m \end{array} \right],\;where\;\zeta_m=-\lambda_m\zeta_{m-1}.$
+As a result, $x_m$ can be updated at each step as follows:
+$$x_m=x_{m-1}+\zeta_mp_m.$$
+This gives the following algorithm, which we call as direct version of Lanczos algorithm for linear systems.
+
+\begin{algorithm}
+\caption{D-Lanczos}
+\begin{algorithmic}[1]
+\State Choose $x_0$ and compute $r_0=b-Ax_0,\;\zeta_1=\beta=\|r_0\|_2,\;and\;v_1=r_0/\beta$
+\State $\lambda_1=\beta_1=0,\;p_0=0$
+\For{$m= 1,2,\cdots$, until convergence}
+	\State Compute $w_m = Av_m-\beta_mv_{m-1}\;and\;\alpha_m=(w,v_m)$
+	\State If $m > 1$ then compute $\lambda_m=\frac{\beta_m}{\eta_{m-1}}$ and $\zeta_m=-\lambda_m\zeta_{m-1}$
+	
+	\State $\eta_m=\alpha_m-\lambda_m\beta_m$
+	\State $p_m = \eta^{-1}_m[v_m-\beta_mp_{m-1}]$
+	\State $x_m=x_{m-1}+\zeta_mp_m$
+	\State If $x_m$ has converged then Stop
+	\State $w=w-\alpha_mv_m$
+	\State $\beta_{m+1}=\|w\|_2,\;v_{m+1}=w/\beta_{m+1}$
 \EndFor
 \State EndDo
 \end{algorithmic}
