@@ -1,0 +1,477 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amssymb}
+\usepackage{enumerate}
+
+\author{Jayadev Naram}
+\title{Iterative Methods}
+
+\begin{document}
+\maketitle 
+
+%\part{}
+  
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{mydef}{Definition}
+\newtheorem*{remark}{Remark}
+\newtheorem*{prop}{Proposition}
+
+\section{General Projection Methods}
+
+Let A $\in\mathbb{R}^{n\times n}$ and $\mathcal{K}\;and\;\mathcal{L}$ be two m-dimensional subspaces of $\mathbb{R}^n$. A projection technique onto the subspace $\mathcal{K}$ and orthogonal to $\mathcal{L}$ with an initial guess $x_0$ is a process which finds an approximate solution $\tilde{x}$ by imposing the conditions that $\tilde{x}$ belong to $x_0+\mathcal{K}$ and that the new residual vector be orthogonal to $\mathcal{L}$, i.e, $$find\;\;\;\tilde{x}\in x_0+\mathcal{K},\;such\;that\;\;b-A\tilde{x}\perp \mathcal{L}.$$
+$$\tilde{x}=x_0+\delta,\;\delta\in\mathcal{K}$$
+$$(r_0-A\delta,w)=0,\;\forall\,w\in\mathcal{L},\;where\;r_0=b-Ax_0.$$
+
+Let $V=[v_1,\cdots,v_m]_{n\times m}\;and\;W=[w_1,\cdots,w_m]_{n\times m}$ whose column-vectors form a basis of $\mathcal{K}$ and $\mathcal{L}$, respectively.
+Then approximate solution can be written as:
+$$\tilde{x}=x_0+Vy,$$
+where y can found from the orthogonality constraint:
+$$W^TAVy=W^Tr_0.$$
+If $W^TAV$ is non-singular, then $\tilde{x}=x_0+V(W^TAV)^{-1}W^Tr_0.$
+
+\begin{algorithm}
+\caption{Prototype Projection Method}
+\begin{algorithmic}[1]
+\Repeat
+	\State Select a pair of subspaces $\mathcal{K}\;and\;\mathcal{L}$
+	\State Choose basis $V$=$[v_1,\cdots,v_m],\;W$=$[w_1,\cdots,w_m]\;for\;\mathcal{K}\;and\;\mathcal{L}$
+	\State $r\gets b-Ax$
+	\State $y\gets (W^TAV)^{-1}W^Tr$
+	\State $x\gets x+Vy$
+\Until{Convergence}
+\end{algorithmic}
+\end{algorithm}
+
+Non-singularity of A is not sufficient condition for non-singularity of $W^TAV$.
+
+\begin{prop}
+Let $A,\;\mathcal{L}\;and\;\mathcal{K}$ satisfy either one of the two following conditions:
+\begin{enumerate}[i.]
+\item A is SPD and $\mathcal{L}=\mathcal{K}$, or
+\item A is non-singular and $\mathcal{L}=A\mathcal{K}$.
+\end{enumerate}
+Then $B=W^TAV$ is non-singular for any bases V and W of $\mathcal{K}\;and\;\mathcal{L}$.
+\end{prop}
+
+\begin{proof}
+Consider case(i). Since $\mathcal{L}=\mathcal{K}$, then $W=VG$, where G is a non-singular $m\times m$ matrix. Then $B=W^TAV={G^T}V^TAV$. Since A is SPD, so is $V^TAV$ and since G is non-singular, B is non-singular. \\
+Now, consider case(ii). Since $\mathcal{L}=A\mathcal{K}$, then $W=AVG$, where G is a non-singular $m\times m$ matrix. Then $B=W^TAV={G^T}(AV)^TAV$. Since A is non-singular, then $(AV)_{n\times m }$ full rank matrix and so is $(AV)^TAV$ and therefore, B is non-singular.
+\end{proof}
+
+\begin{theorem}
+Assume that A is SPD and $\mathcal{L}=\mathcal{K}.$ Then a vector $\tilde{x}$ is the result of an (orthogonal) projection method onto $\mathcal{K}$ with the  starting vector $x_0$ iff it minimizes the A-norm if the error over $x_0+\mathcal{K},$ i.e, iff
+$$\tilde{x} = \underset{x\in x_0+\mathcal{K}}{\arg\min}\|x_*-x\|_A=\underset{x\in x_0+\mathcal{K}}{\arg\min}(A(x_*-x),x_*-x)^{\frac{1}{2}}$$
+\end{theorem}
+
+\begin{proof}
+First we prove that if $\tilde{x}$ minimizes A-norm of the error, then it is the result of orthogonal projection method with $x_0$ onto $\mathcal{K}$. Assume columns of V to be basis vectors of $\mathcal{K}$, then the objective function can be written as:
+\begin{align*}
+E(x) &= (A(x_*-x),x_*-x)^{\frac{1}{2}},\qquad(x\in x_0+\mathcal{K}) \\
+\implies E(y) &= (A(x_*-x_0-Vy),x_*-x_0-Vy)^{\frac{1}{2}},\;\;(y\in\mathbb{R}^m) \\
+\implies E^2(y) &= (A(x_*-x_0-Vy),x_*-x_0-Vy), \\
+&= (x_*-x_0-Vy)^TA(x_*-x_0-Vy),\\
+&= c + 2y^TV^T(Ax_0-Ax_*) + y^TV^TAVy, \\
+&= c - 2y^TV^T(b-Ax_0) + y^TV^TAVy = f(y), \\
+\frac{\partial f(y)}{\partial y} = 0 &\implies V^T(b-A(x_0+Vy)) = 0 \\
+&\implies V^T(b-A\tilde{x}) = 0 \\
+&\implies b-A\tilde{x}\perp \mathcal{K}.
+\end{align*}
+Therefore the residue of vector which minimizes A-norm of error over $x_0+\mathcal{K}$ is orthogonal to $\mathcal{K}$, therefore it is the result of orthogonal projection method onto $\mathcal{K}$ starting with $x_0$. Now we prove the converse, i.e, the result of orthogonal projection method onto $\mathcal{K}$ starting with $x_0$ minimizes A-norm of error over $x_0+\mathcal{K}$. We know $V^T(b-A\tilde{x}) = 0$, i.e, $(x_*-\tilde{x},v)_A=0\;\forall\;v\in\mathcal{K}$. 
+\begin{align*}
+\implies \|x_*-x\|_A &= \|x_*-\tilde{x}+\tilde{x}-x\|_A,\qquad(\tilde{x},x\in x_0+\mathcal{K}) \\
+&= \|x_*-\tilde{x}\|_A+\|\tilde{x}-x\|_A,\,\text{(since }x_*-\tilde{x}\text{ is A-orthogonal to }\mathcal{K}) \\
+\implies \|x_*-\tilde{x}\|_A &\le \|x_*-x\|_A,\;\forall\;x\in x_0+\mathcal{K}.
+\end{align*}
+Therefore $\tilde{x}$ minimizes the A-norm of the error.
+\end{proof}
+
+\begin{corollary}
+Let A be an arbitrary square matrix and assume that $\mathcal{L}=A\mathcal{K}.$ Then a vector $\tilde{x}$ is the result of an (oblique) projection method onto $\mathcal{K}$ orthogonally to $\mathcal{L}$ with the starting vector $x_0$ iff it minimizes the 2-norm of the residual vector $b-Ax$ over $x\in x_0+\mathcal{K}$, i.e, iff
+$$\tilde{x}=\underset{x\in x_0+\mathcal{K}}{\arg\min}\|b-Ax\|_2$$
+\end{corollary}
+
+\begin{prop}
+Let $\tilde{x}$ be the approximate solution obtained from a projection process onto $\mathcal{K}$ orthogonally to $\mathcal{L}=A\mathcal{K}$, and let $\tilde{r} = b-A\tilde{x}$. Then,
+$$\tilde{r}=(I-P)r_0,$$
+where P denotes the orthogonal projector onto $\mathcal{K}$.
+\end{prop}
+
+\begin{proof}
+Let $r_0=b-Ax_0$, then
+\begin{align*}
+\tilde{r} &= b-A\tilde{x}\\
+&= b-A(x_0+\delta),\qquad(\delta\in\mathcal{K})\\
+&= r_0-A\delta.
+\end{align*}
+By orthogonality condition we have $\tilde{r}\perp A\mathcal{K}$, i.e, $A\delta$ is the projection of $r_0$ onto $A\mathcal{K}$. Therefore, if P is the orthogonal projector onto $A\mathcal{K}$, then
+$$Pr_0=A\delta \implies \tilde{r}=(I-P)r_0$$
+It follows from the above that $\Vert \tilde{r}\Vert_2 \le \Vert r_0\Vert_2.$ Therefore, this class of methods can be termed as \textbf{Residual Projection Methods}.
+\end{proof}
+
+\begin{prop}
+Let $\tilde{x}$ be the approximate solution obtained from an orthogonal projection process onto $\mathcal{K}$, and let $\tilde{d} = x_*-\tilde{x}$. Then,
+$$\tilde{d}=(I-P_A)d_0,$$
+where $P_A$ denotes the projector onto $\mathcal{K}$, which is orthogonal with respect to A-inner product.
+\end{prop}
+
+\begin{proof}
+Let $d_0=x_*-x_0$ be the initial error, and let $\tilde{d}=x_*-\tilde{x}$, where $\tilde{x}=x_0+\delta$ is the approximate solution resulting from the projection step. We know that residual of the approximate solution is orthogonal to $\mathcal{K}$, i.e, $\tilde{r}=A\tilde{d}=A(d_0-\delta)$, $\tilde{r}\perp \mathcal{K}$.
+\begin{align*}
+&\implies (A(d_0-\delta),w)=0\;\forall\;w\in\mathcal{K} \\
+&\implies (d_0-\delta,w)_A=0\;\forall\;w\in\mathcal{K}
+\end{align*}
+Therefore, if $P_A$ is the projector onto $A\mathcal{K}$, which is orthogonal with respect to A-inner product, then $\delta$ is the A-orthogonal projection of $d_0$, i.e,
+$$P_Ad_0=\delta \implies \tilde{d}=(I-P_A)d_0.$$
+It follows from the above that $\Vert \tilde{d}\Vert_A \le \Vert d_0\Vert_A.$ Therefore, this class of methods can be termed as \textbf{Error Projection Methods}.
+\end{proof}
+
+
+Define $\mathcal{P}_{\mathcal{K}}$ to be the orthogonal projector onto $\mathcal{K}$ and let $\mathcal{Q}^\mathcal{L}_\mathcal{K}$ be the (oblique) projector onto $\mathcal{K}$ and orthogonally to $\mathcal{L}$. Then 
+$$\mathcal{P}_{\mathcal{K}}x\in\mathcal{K}\;and\;x-\mathcal{P}_{\mathcal{K}}x\perp\mathcal{K},$$
+$$\mathcal{Q}^\mathcal{L}_\mathcal{K}x\in\mathcal{K}\;and\;x-\mathcal{Q}^\mathcal{L}_\mathcal{K}x\perp\mathcal{L}$$
+
+\begin{theorem}
+Assume that $\mathcal{K}$ is invariant under A and the initial residue, i.e, $r_0=b-Ax_0$ belongs to $\mathcal{K}.$ Then the approximate solution obtained from any (oblique or orthogonal) projectioon method onto $\mathcal{K}$ is exact.
+\end{theorem}
+
+\begin{proof}
+An approximate solution $\tilde{x}$ is defined by 
+\begin{align*}
+&\mathcal{Q}^\mathcal{L}_\mathcal{K}(b-A\tilde{x})=0,\;where\;\tilde{x}=x_0+\delta,\;\delta\in\mathcal{K}. \\
+&\implies \mathcal{Q}^\mathcal{L}_\mathcal{K}(b-Ax_0-A\delta)=0 \\
+&\implies \mathcal{Q}^\mathcal{L}_\mathcal{K}r_0=\mathcal{Q}^\mathcal{L}_\mathcal{K}A\delta \\
+&\text{But }\mathcal{K}\text{ is invariant under A, then }A\delta\in\mathcal{K}. \\
+&\implies r_0=A\delta,\;(\text{since }r_0\in\mathcal{K}\text{ and }\mathcal{Q}^\mathcal{L}_\mathcal{K}A\delta=A\delta) \\
+&\implies A\tilde{x}=b
+\end{align*}
+\end{proof}
+
+\begin{theorem}[\textbf{General Error Bound}]
+Let $\gamma=\|\mathcal{Q}^\mathcal{L}_\mathcal{K}A(I-\mathcal{P}_\mathcal{K})\|_2$ and assume that b is a member of $\mathcal{K}$ and $x_0=0$. Then the exact solution $x_*$ of the problem is such that
+$$\|b-\mathcal{Q}^\mathcal{L}_\mathcal{K}A\mathcal{P}_\mathcal{K}x_*\|_2\le\gamma\|(I-\mathcal{P}_\mathcal{K})x_*\|_2.$$
+\end{theorem}
+
+\begin{proof}
+Since $b\in\mathcal{K},$
+\begin{align*}
+b-\mathcal{Q}^\mathcal{L}_\mathcal{K}A\mathcal{P}_\mathcal{K}x_*&=\mathcal{Q}^\mathcal{L}_\mathcal{K}b-\mathcal{Q}^\mathcal{L}_\mathcal{K}A\mathcal{P}_\mathcal{K}x_* \\
+&=\mathcal{Q}^\mathcal{L}_\mathcal{K}(b-A\mathcal{P}_\mathcal{K}x_*) \\
+&=\mathcal{Q}^\mathcal{L}_\mathcal{K}A(I-\mathcal{P}_\mathcal{K})x_* \\
+&=\mathcal{Q}^\mathcal{L}_\mathcal{K}A(I-\mathcal{P}_\mathcal{K})(I-\mathcal{P}_\mathcal{K})x_* \\
+\implies \|b-\mathcal{Q}^\mathcal{L}_\mathcal{K}A\mathcal{P}_\mathcal{K}x_*\|_2 &= \|\mathcal{Q}^\mathcal{L}_\mathcal{K}A(I-\mathcal{P}_\mathcal{K})(I-\mathcal{P}_\mathcal{K})x_*\|_2 \\
+&\le \|\mathcal{Q}^\mathcal{L}_\mathcal{K}A(I-\mathcal{P}_\mathcal{K})\|_2\|(I-\mathcal{P}_\mathcal{K})x_*\|_2 \\
+\implies \|b-\mathcal{Q}^\mathcal{L}_\mathcal{K}A\mathcal{P}_\mathcal{K}x_*\|_2 &\le \gamma\|(I-\mathcal{P}_\mathcal{K})x_*\|_2 \\
+\end{align*}
+\end{proof}
+
+\section{One-Dimensional Projection Methods}
+
+One-dimensional projection processes are defined when $\mathcal{K}=span\{v\}\;and\\\;\mathcal{L}=span\{w\}.$ In this case, the new approximation  takes the form $x\leftarrow x+\alpha v$, where the orthogonality condition $r-A\delta\perp w$ yields,
+$$\alpha = \frac{(r,w)}{(Av,w)},\;where\;r=b-Ax_0.$$
+
+\subsection{Steepest Descent}
+
+The steepest descent algorithm is defined when A is SPD and $v=w=r.$ 
+
+\begin{lemma}[\textbf{Kantorovich inequality}]
+Let B be any real SPD matrix and $\lambda_1,\;\lambda_n$ its largest and smallest eigenvalues. Then,
+$$\frac{(Bx,x)(B^{-1}x,x)}{(x,x)}\le\frac{(\lambda_1+\lambda_n)^2}{4\lambda_1\lambda_n},\;\forall\;x\neq 0$$
+\end{lemma}
+
+\begin{proof}
+It is equvivalent to prove the statement for any unit vector x. Since B is SPD, it can be diagonalized by similarity transformation with an orthogonal matrix Q, $B=Q^TDQ.$
+$$(Bx,x)(B^{-1}x,x)=(Q^TDQx,x)(Q^TD^{-1}Qx,x)=(DQx,Qx)(D^{-1}Qx,Qx).$$
+Define $y=Qx=(y_1,y_2,\cdots,y_n)^T,\;and\;\beta_i={y_i}^2$. Then,
+$$\lambda\equiv (Dy,y) = \sum^n_{i=1}\beta_i\lambda_i,\;\sum^n_{i=1}\beta_i=1$$
+$$\psi(y)=(D^{-1}y,y)=\sum^n_{i=1}\beta_i\frac{1}{\lambda_i}.$$
+Note that $\lambda$ is a convex combinations of eigenvalues of B. Then,
+$$(Bx,x)(B^{-1}x,x)=\lambda\psi(y).$$
+Noting that $f(\lambda)=1/{\lambda}$ is a convex function for $x\in\mathbb{R}_{++}$, $\psi(y)$ containis all the convex combinations of $1/\lambda_i$s which is bounded above by line passing through $(\lambda_1,1/{\lambda_1})\;and\;(\lambda_n,1/{\lambda_n})$, i.e,
+$$\psi(y)\le \frac{1}{\lambda_1}+\frac{1}{\lambda_n}-\frac{\lambda}{\lambda_1\lambda_n}.$$
+$$\implies (Bx,x)(B^{-1}x,x)=\lambda\psi(y)\le \lambda\Big(\frac{1}{\lambda_1}+\frac{1}{\lambda_n}-\frac{\lambda}{\lambda_1\lambda_n}\Big).$$
+The right-hand side is maximum when $\lambda=\frac{\lambda_1+\lambda_n}{2}$  yielding,
+$$(Bx,x)(B^{-1}x,x)\le\frac{(\lambda_1+\lambda_n)^2}{4\lambda_1\lambda_n}$$
+\end{proof}
+
+\begin{algorithm}
+\caption{Steepest Descent Algorithm}
+\begin{algorithmic}[1]
+\State Compute $r=b-Ax$ and $p=Ar$
+\Repeat
+	\State $\alpha\gets (r,r)/(p,r)$
+	\State $x\gets x+\alpha r$
+	\State $r\gets r-\alpha p$
+	\State Compute $p=Ar$
+\Until{Convergence}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{theorem}
+Let A be a SPD. Then, A-norms of the error vectors $d_k=x_*-x_k$ generated by the above algorithm satsify the following relation:
+$$\|d_{k+1}\|_A\le\Big(\frac{\lambda_1-\lambda_n}{\lambda_1+\lambda_n}\Big)\|d_k\|_A,$$
+and the algorithm converges for any initial guess $x_0.$
+\end{theorem}
+
+\begin{proof}
+We know that $d_{k+1}=x_*-x_{k+1}$, but $x_{k+1}=x_k+\alpha_k r_k.$
+$$\implies d_{k+1}=x_*-(x_k+\alpha_k r_k)=d_k-\alpha_k r_k.$$
+Now consider,
+\begin{align*}
+\|d_{k+1}\|^2_A &= (d_{k+1},d_k-\alpha_k r_k)_A \\
+&= (d_{k+1},d_k)_A-(d_{k+1},\alpha_k r_k)_A \\
+(d_{k+1},\alpha_k r_k)_A &= (Ad_{k+1},\alpha_k r_k) = (r_{k+1},\alpha_k r_k), \\
+&= (r_k-\alpha_kAr_k,r_k),\text{ where }\alpha_k=\frac{(r_k,r_k)}{(Ar_k,r_k)}, \\
+&= (r_k,r_k)-\frac{(r_k,r_k)}{(Ar_k,r_k)}(Ar_k,r_k) = 0 = (r_{k+1},r_k). \\
+\implies (d_{k+1},\alpha_k r_k)_A &= 0, \\
+\implies \|d_{k+1}\|^2_A &= (d_{k+1},d_k)_A \\
+&= (d_{k+1},Ad_k) \qquad(\text{since A is SPD}),\\
+&= (d_k-\alpha_k r_k,r_k) \\
+&= (A^{-1}r_k,r_k)-\alpha_k(r_k,r_k) \\
+\text{But, }\|d_k\|^2_A = (Ad_k,d_k) &= (r_k,d_k) = (A^{-1}r_k,r_k), \\
+\implies \|d_{k+1}\|^2_A &= (A^{-1}r_k,r_k)\Big(1-\frac{(r_k,r_k)^2}{(Ar_k,r_k)(A^{-1}r_k,r_k)}\Big), \\
+\text{From Kantorovich inequality,} \\
+&\le \|d_{k}\|^2_A\Big(1-\frac{4\lambda_1\lambda_n}{(\lambda_1+\lambda_n)^2}\Big), \\
+\implies \|d_{k+1}\|_A&\le\Big(\frac{\lambda_1-\lambda_n}{\lambda_1+\lambda_n}\Big)\|d_k\|_A.
+\end{align*}
+\end{proof}
+
+\section{Krylov Subspace Methods}
+
+We define Krylov Subspace to be 
+$$\mathcal{K}_m(A,v)=span\{v,Av,A^2v,\cdots,A^{m-1}v\}.$$
+Then, $x=p(A)v,\;\forall\;x\in\mathcal{K}_m\text{, where }deg(p)<m.$
+
+\begin{mydef}[Minimal Polynomial of a vector]
+Monic polynomial of least degree such that $p(A)v=0$ is called minimal polynomial of v and degree of such polynomial is called grade$(\mu)$.
+\end{mydef}
+
+\begin{theorem}
+Let $\mu$ be the grade of v. Then $\mathcal{K}_\mu$ is invariant under A and $\mathcal{K}_\mu = \mathcal{K}_m\;\forall\;m\ge\mu.$
+\end{theorem}
+
+\begin{proof}
+Since, grade of v is $\mu$ there exists a polynomial p of degree $\mu$, such that $p(A)v=0,\;where\;p(A) = p_0I+p_1A+\cdots+p_{\mu-1}A^{\mu-1}+A^\mu.$
+$$\implies A^\mu v = -(p_0I+p_1A+\cdots+p_{\mu-1}A^{\mu-1})v\qquad(1)$$
+But, $\forall\;x\in\mathcal{K}_\mu,\;x=q(A)v,\;deg(q)<\mu,$ i.e,
+\begin{align*}
+x &= q_0v+q_1Av+\cdots+q_{\mu-1}A^{\mu-1}v,\;\forall\;x\in\mathcal{K}_\mu, \\
+\implies Ax &= q_0Av+q_1A^2v+\cdots+q_{\mu-1}A^\mu v, \\
+\text{Case 1: }& q_{\mu-1} = 0,\;then\;Ax\in\mathcal{K}_\mu. \\
+\text{Case 2: }& q_{\mu-1} \neq 0,\text{ then replace }A^\mu v\;by\;(1),\;Ax\in\mathcal{K}_\mu.
+\end{align*}
+Therefore, $\mathcal{K}_\mu$ is invariant under A. Similarily it can be seen that $\mathcal{K}_\mu = \mathcal{K}_m \\
+\;\forall\;m\ge\mu.$
+\end{proof}
+
+\begin{corollary}
+$dim(\mathcal{K}_m) = min\{m,grade(v)\}.$
+\end{corollary}
+
+\section{Arnoldi's Method for Linear Systems (FOM)}
+
+Arnoldi's procedure is an algorithm for building an orthogonal basis of the Krylov subspace $\mathcal{K}_m$.
+
+\begin{algorithm}
+\caption{Arnoldi-Modified Gram-Schmidt}
+\begin{algorithmic}[1]
+\State Choose a vector $v_1$ of norm 1
+\For{$j= 1,2,\cdots,m$}
+	\State Compute $w_j = Av_j$
+	\For{$i= 1,2,\cdots,j$}
+		\State $h_{ij} = (w_j,v_i)$
+		\State $w_j = w_j - h_{ij}v_i$
+	\EndFor
+	\State EndDo
+	\State $h_{j+1,j} = \|w_j\|_2$. If $h_{j+1,j}=0$ Stop
+	\State $v_{j+1}=w_j/h_{j+1,j}$
+\EndFor
+\State EndDo
+\end{algorithmic}
+\end{algorithm}
+
+\begin{prop}
+Denote by $V_m=[v_1,v_2,\cdots,v_m]_{n\times m}\;and\;\bar{H}_m,\;the\;(m+1)\times m$ Hessenberg matrix whose non-zero entries $h_{ij}$ are defined by the above algorithm and by $H_m$ the matrix obtained from $\bar{H}_m$ by removing the last row. Then,
+$$AV_m=V_mH_m+w_me^T_m=V_{m+1}\bar{H}_m,$$
+$$V^T_mAV_m=H_m.$$
+\end{prop}
+
+\begin{proof}
+From lines 6,8 we have, $w_j = Av_j - h_{ij}v_i$ and $w_j=v_{j+1}h_{j+1,j}.$
+$$\implies Av_j = \sum^{j+1}_{i=1}h_{ij}v_i \implies AV_m = V_mH_m+w_me^T_m=V_{m+1}\bar{H}_m.$$
+$$\text{Since }V^T_m\text{ is orthogonal, we get }V^T_mAV_m=H_m.$$
+\end{proof}
+
+Given an initial guess $x_0$ to the original linear system $Ax=b$, we now consider an orthogonal projection method which takes $\mathcal{L}=\mathcal{K}=\mathcal{K}_m(A,r_0),$ with
+$$\mathcal{K}_m(A,r_0)=span\{r_0,Ar_0,A^2r_0,\cdots,A^{m-1}r_0\},$$
+in which $r_0=b-Ax_0.$ This method seeks an approximate solution $x_m$ from the affine subspace $x_0+\mathcal{K}_m$ of dimension m by imposing the following orthogonality constraint:
+$$b-Ax_m\perp \mathcal{K}_m.$$
+If $v_1=r_0/\|r_0\|_2$ in Arnoldi's method, and we set $\beta=\|r_0\|_2,$ then
+$$V^T_mAV_m=H_m,$$
+$$V^T_mr_0=V^T_m(\beta v_1)=\beta e_1.$$
+As a result, the approximate solution using the above m-dimensional subspaces is given by:
+$$x_m=x_0+V_my_m,$$
+where $y_m$ can be found by imposing orthogonality constraint that $$V^T_m(b-Ax_m)=0\implies y_m=H^{-1}_m(\beta e_1).$$
+
+\begin{algorithm}
+\caption{Full Orthogonalization Method (FOM)}
+\begin{algorithmic}[1]
+\State Compute $r_0=b-Ax_0,\;\beta=\|r_0\|_2,\;and\;v_1=r_0/\beta$
+\State Define the $m\times m$ matrix $H_m = \{h_{ij}\}_{i,j=1,2,\cdots,m};Set\;H_m=0$
+\For{$j= 1,2,\cdots,m$}
+	\State Compute $w_j = Av_j$
+	\For{$i= 1,2,\cdots,j$}
+		\State $h_{ij} = (w_j,v_i)$
+		\State $w_j = w_j - h_{ij}v_i$
+	\EndFor
+	\State EndDo
+	\State $h_{j+1,j} = \|w_j\|_2$. If $h_{j+1,j}=0$ Stop
+	\State $v_{j+1}=w_j/h_{j+1,j}$
+\EndFor
+\State EndDo
+\State Compute $y_m=H^{-1}_m\beta e_1$ and $x_m=x_0+V_my_m$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{prop}
+The residual vector of the approximate solution $x_m$ computed by the FOM Algorithm is such that 
+$$b-Ax_m=-h_{m+1,m}e^T_my_mv_{m+1}$$
+and, therefore,
+$$\|b-Ax_m\|_2=h_{m+1,m}|e^T_my_m|.$$
+
+\begin{proof}
+\begin{align*}
+b-Ax_m &= b-Ax_0-AV_my_m \\
+&= r_0 - (V_mH_m+w_me^T_m)y_m \\
+&= r_0 - V_mH_m(H^{-1}_m\beta e_1) - w_me^T_my_m \\
+&= r_0 - V_mV^T_mr_0 - h_{m+1,m}e^T_my_mv_{m+1} \\
+\implies b-Ax_m&=-h_{m+1,m}e^T_my_mv_{m+1}. \\
+\end{align*}
+\end{proof}
+\end{prop}
+
+\subsection{Variation 1: Restarted FOM}
+
+\begin{algorithm}
+\caption{Restarted FOM (FOM(m))}
+\begin{algorithmic}[1]
+\State Compute $r_0=b-Ax_0,\;\beta=\|r_0\|_2,\;and\;v_1=r_0/\beta$
+\State Generate $V_m\;and\;H_m$ using Arnoldi algorithm starting with $v_1$.
+\State Compute $y_m=H^{-1}_m\beta e_1$ and $x_m=x_0+V_my_m$. If satisfied then Stop.
+\State Set $x_0=x_m$ and go to 1.
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Variation 1: IOM and DIOM}
+
+\begin{algorithm}
+\caption{Incomplete Orthogonalization Method (IOM)}
+\begin{algorithmic}[1]
+\State Compute $r_0=b-Ax_0,\;\beta=\|r_0\|_2,\;and\;v_1=r_0/\beta$
+\State Define the $m\times m$ matrix $H_m = \{h_{ij}\}_{i,j=1,2,\cdots,m};Set\;H_m=0$
+\For{$j= 1,2,\cdots,m$}
+	\State Compute $w_j = Av_j$
+	\For{$i= max\{1,j-(k-1)\},2,\cdots,j$}
+		\State $h_{ij} = (w_j,v_i)$
+		\State $w_j = w_j - h_{ij}v_i$
+	\EndFor
+	\State EndDo
+	\State $h_{j+1,j} = \|w_j\|_2$. If $h_{j+1,j}=0$ Stop
+	\State $v_{j+1}=w_j/h_{j+1,j}$
+\EndFor
+\State EndDo
+\State Compute $y_m=H^{-1}_m\beta e_1$ and $x_m=x_0+V_my_m$
+\end{algorithmic}
+\end{algorithm}
+
+A formula can be developed whereby the current approximate solution $x_m$ can be computed from the previous approximation $x_{m-1}$ and a small number vectors are updated at each step. This progressive formulation of the solution leads to an algorithm termed as Direct IOM (DIOM).\\
+The Hessenberg matrix obtained from IOM has a band structure with bandwidth $k+1$, i.e,
+\begin{align*}
+H_m &= \left( \begin{array}{ccccc}
+h_{11} & h_{12} & h_{13} &  &  \\
+h_{21} & h_{22} & h_{23} & h_{24} &  \\
+ & h_{32} & h_{33} & h_{34} & h_{35} \\
+ &  & h_{43} & h_{44} & h_{45} \\
+ &  &  & h_{54} & h_{55} \\
+\end{array} \right) = L_mU_m \\
+&= \left( \begin{array}{ccccc}
+1 &  &  &  &  \\
+l_{21} & 1 &  &  &  \\
+ & l_{32} & 1 &  &  \\
+ &  & l_{43} & 1 &  \\
+ &  &  & l_{54} & 1 \\
+\end{array} \right)\times 
+\left( \begin{array}{ccccc}
+u_{11} & u_{12} & u_{13} &  &  \\
+ & u_{22} & u_{23} & u_{24} &  \\
+ &  & u_{33} & u_{34} & u_{35} \\
+ &  &  & u_{44} & u_{45} \\
+ &  &  &  & u_{55} \\
+\end{array} \right) 
+\end{align*}
+The approximate solution then is given by 
+$$x_m=x_0+V_mU^{-1}_mL^{-1}_m(\beta e_1).$$
+Define $P_m\equiv V_mU^{-1}_m\;and\;z_m=L^{-1}_m(\beta e_1),$ we have $x_m=x_0+P_mz_m.$ Because of the structure of $U_m,\;P_m$ can be updated easily. Indeed, equating the last columns of the matrix relation $P_mU_m=V_m$ yields,
+$$\sum^m_{i=m-k+1} u_{im}p_i=v_m\implies p_m = \frac{1}{u_{mm}}\Bigg( v_m-\sum^{m-1}_{i=m-k+1}u_{im}p_i \Bigg).$$
+Therefore, $p_m$ can be computed using previous $p_i's$ and $v_m$. In addition, due to the structure of $L_m$, we have compute $z_m$ by,
+$$z_m=\left[ \begin{array}{c} z_{m-1} \\ \zeta_m \end{array} \right]\text{, where }\zeta_m=-l_{m,m-1}\zeta_{m-1}.$$
+Now, the approximate solution is,
+$$x_m=x_0+\left[ \begin{array}{cc} P_{m-1} & p_m \end{array} \right]\left[ \begin{array}{c} z_{m-1} \\ \zeta_m \end{array} \right]=x_0+P_{m-1}z_{m-1}+p_m\zeta_m.$$
+Noting that $x_{m-1}=P_{m-1}z_{m-1}$, $x_m$ can be updated as follows:
+$$x_m=x_{m-1}+\zeta_mp_m.$$
+This gives the following algorithm, called \textbf{Incomplete Orthogonalization Method}(DIOM).
+
+\begin{algorithm}
+\caption{Direct Incomplete Orthogonalization Method (DIOM)}
+\begin{algorithmic}[1]
+\State Choose $x_0$ and compute $r_0=b-Ax_0,\;\beta=\|r_0\|_2,\;and\;v_1=r_0/\beta$
+\For{$m= 1,2,\cdots$, until convergence}
+	\State Compute $w_m = Av_m$
+	\For{$i= max\{1,m-k+1\},2,\cdots,m$}
+		\State $h_{im} = (w_m,v_i)$
+		\State $w_m = w_m - h_{im}v_i$
+	\EndFor
+	\State $h_{m+1,m} = \|w_m\|_2$. If $h_{m+1,m}=0$ Stop
+	\State $v_{m+1}=w_m/h_{m+1,m}$
+	\State Update the LU factorization of $H_m$, i.e, obtain the last column 	
+	\State $\qquad U_m$ using the previous k pivots. If $u_{mm}=0$ Stop.
+	\State $\zeta_m = \beta$ if $m=1$ else $-l_{m,m-1}\zeta_{m-1}$
+	\State $p_m = u^{-1}_{mm}\Big( v_m-\sum^{m-1}_{i=m-k+1}u_{im}p_i \Big)(\text{for }i\le0\text{ set }u_{im}p_i\equiv0)$
+	\State $x_m=x_{m-1}+\zeta_mp_m$
+\EndFor
+\State EndDo
+\end{algorithmic}
+\end{algorithm}
+
+\begin{remark}
+Observe that $V^T_mAV_m=H_m$ is still valid because the orthogonality properties were not used to derive this relation. As a consequence the following result  is also valid,
+\begin{align*}
+b-Ax_m &= -h_{m+1,m}e^T_my_mv_{m+1} \\
+\implies \|b-Ax_m\|_2 &= h_{m+1,m}|e^T_my_m| \\
+\text{But, }y_m = H^{-1}_m(\beta	e_1) &= U^{-1}_mz_m \implies e^T_my_m = \zeta_m/u_{mm} \\
+\implies \|b-Ax_m\|_2 &= h_{m+1,m}\Bigl|\frac{\zeta_m}{u_{mm}}\Bigr|
+\end{align*}
+\end{remark}
+
+Since the residual vectors is a scalar multiple of $v_{m+1}$ and since the $v_i$'s are no longer orthogonal, IOM and DIOM are not orthogonal projection techniques. They can however be viewed as oblique projection techniques onto $\mathcal{K}_m$ orthogonally to an artificially constructed subspace.
+
+\begin{prop}
+IOM and DIOM are mathematically equivalent to projection process onto $\mathcal{K}_m$ and orthogonally to
+$$\mathcal{L}_m=span\{z_1,z_2,\cdots,z_m\},$$
+$$where\;z_i=v_i-(v_i,v_{m+1})v_{m+1},\;i=1,2,\cdots,m.$$
+\end{prop}
+
+\begin{proof}
+From the construction of $\mathcal{L}_m,\;v_{m+1}$ is orthogonal to $\mathcal{L}_m$ and we know the final residue $r_m$ is a scalar multiple of $v_{m+1}$, hence the approximate solution $x_m\in\mathcal{K}_m$ and residue vector $r_m\perp\mathcal{L}_m$.  
+\end{proof}
+
+\section{Symmetric Lanczos Algorithm}
+
+\end{document}

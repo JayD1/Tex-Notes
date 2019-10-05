@@ -1,0 +1,374 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumerate}
+
+\author{Jayadev Naram}
+\title{Number Theory and Cryptology}
+
+
+\begin{document}
+\maketitle 
+
+\part{Number Theory}
+  
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{mydef}{Definition}
+\newtheorem*{remark}{Remark}
+\newtheorem*{prop}{Proposition}
+	
+\begin{mydef}[Binary Operation]
+A binary operation on a set S is a function from $S\times{S}$ to $S$.
+\\* Eg: $A:\mathbb{Z}\times{\mathbb{Z}} \to \mathbb{Z}$, i.e, $(a,b) \mapsto a+b$
+\end{mydef}
+
+\begin{mydef}[Domain]
+A domain is triple $(D,+,\cdot), where\, \vert{D}\vert > 1 \;and\; + \;and\; \cdot \;are\; two\; operations\; on\; D\; such\; that\;{:}$
+\begin{enumerate}[i)]
+	\item $a+b = b+a \;and\; a\cdot{b} = b\cdot{a}, \forall\, a,b \in D$
+	\item $(a+b)+c = a+(b+c) \;and\; (a\cdot{b})\cdot{c} = a\cdot(b\cdot{c}), \forall\, a,b,c \in D$
+	\item $\exists\, 0,1 \in D, a+0 = a\;and\;a\cdot{1} = a, \forall a \in D$
+	\item $a\cdot(b+c) = a\cdot{b} + a\cdot{c}, \forall\, a,b,c \in D$
+	\item $\forall\,a\in D, \exists\,\;a^{\prime},\;a+a^{\prime} = 0$
+	\item $a\cdot{b} = 0 \implies either\;a\, = 0\;or\;b= 0$
+\end{enumerate}
+Eg: $(\mathbb{Z},+,\cdot) \;and\; (\mathbb{R}[X],+,\cdot), where\; \mathbb{R}[X]$ is the Set of real polynomials
+\end{mydef}
+
+\begin{mydef}[Field]
+If every non-zero elements of a domain D has an inverse, i.e, units are $D-\{0\}$, then D is called a field.
+\end{mydef}
+
+\section*{Division Algorithm}
+
+\begin{theorem}
+Let $a \in \mathbb{Z}$ and $b \in \mathbb{N}$. Then $\exists$ unique q,r $\in \mathbb{Z}$ such that $$a=bq+r,\, 0\,{\le}r<b$$
+\end{theorem}
+
+\begin{proof}
+If $a=0$ (trivial). Let's prove for $a \in \mathbb{N}$ by induction. 
+If $a = 1$, take $r = 1$ and $q = 0$ (Base Case).
+Assume the statement is true $\forall n \in \mathbb{N}, n < a$, then we prove the statement for a. 
+If $a \ge b\, then\; a-b<a$. 
+Then by induction, we have $$a-b = qb+r, \; 0\, \le r <b \implies a = (q+1)b+r$$
+If $a<b$, then take $q = 0 \;and\;r=a$. Hence the theorem is proved for $a\in \mathbb{N}$ \\
+Now let $a\in \mathbb{Z}_{-}$. Then $-a\in\mathbb{N}$. 
+\begin{align*}
+&\exists\; \text{q and r,} -a = bq+r,\,  0\, \le r <b \\
+&\implies a = (-q)b + (-r) \\
+&\implies a = (-q-1)b + (b-r),\; where\;  0\, \le b- r <b
+\end{align*}
+This ends the existence proof.\\
+Now we prove the uniqueness. Let $(q,r) and (q^{\prime},r^{\prime})$ be two pairs that satisfy the theorem. Then,
+$$a=bq+r,\, 0\,{\le}r<b$$
+$$a=bq^{\prime}+r^{\prime},\, 0\,{\le}r^{\prime}<b$$
+WLOG, assume $r^{\prime}\ge r$, then
+\begin{align*}
+&\implies 0\;\le r^{\prime}-r<b \\
+&\implies bq+r = bq^{\prime}+r^{\prime} \\
+&\implies b(q-q^{\prime}) = r^{\prime}-r \\
+&\implies b\,|\,(r^{\prime}-r) \\
+&\implies r^{\prime}=r \;and\; q^{\prime}=q \qquad(\text{since }r^{\prime}-r<b)
+\end{align*}
+This completes the uniqueness proof.
+\end{proof}
+
+\begin{lemma}[Modified Division Algorithm]
+Let $a \in \mathbb{Z}$ and $b \in \mathbb{N}$. Then $\exists$ unique q,r $\in \mathbb{Z}$ such that $$a=bq+r,\, \vert r\vert\le \frac{b}{2}$$
+\end{lemma}
+
+\begin{theorem}
+Let $a(X),\,b(X) \in \mathbb{R}[X]$. Then $\exists$ q(X),r(X) $\in \mathbb{R}[X]$ such that $$a(X)=b(X)q(X)+r(X),\, either\; r(X) = 0 \;or\; deg(r(X))<deg(b(X))$$
+\end{theorem}
+
+\begin{proof}
+Proof by induction on deg(a(X)). If $deg(a(X))<deg(b(X))$, then take $q(X) = 0 \;and\; r(X) = a(X)$. If $deg(b(X)) = 0,$ i.e, $b(X) = b_{0}$, then take $q(X) = {b_{0}}^{-1}a(X)$ and $r(X) = 0$.\\
+Now assume $deg(b(X)) > 0$ and $deg(a(X))\ge deg(b(X))$ and also assume the theorem is true $\forall\; h(X) \in \mathbb{R}[X],\; deg(h(X))<deg(a(X))$. \\
+Then if $deg(a(X)) = m \;and\; deg(b(X)) = n$,
+\begin{align*}
+&\implies a(X) = a_{0} + a_{1}X + \cdots + a_{m}X^{m}\\
+& and\;\;\;\; b(X) = b_{0} + b_{1}X + \cdots + b_{n}X^{n},\qquad(m\ge n)
+\end{align*}
+Now consider the polynomial $g(X) = a(X)-{b_{n}}^{-1}a_{m}X^{m-n}b(X)$. It can be easily verified that $deg(g(X)) < m$. Then,
+$$\exists\; q(X),r(X)\in \mathbb{R}[X], g(X) = b(X)q(X)+r(X),$$
+\begin{flushright}
+$where\; r(X) = 0\,\; or\; deg(r(X)) \le deg(b(X))$
+\end{flushright}
+\begin{align*}
+&\implies a(X)-{b_{n}}^{-1}a_{m}X^{m-n}b(X) = b(X)q(X)+r(X) \\
+&\implies a(X) = b(X)(q(X)+{b_{n}}^{-1}a_{m}X^{m-n})+r(X),
+\end{align*}
+\begin{flushright}
+$where\;r(X) = 0\,\; or\; deg(r(X)) \le deg(b(X))) $
+\end{flushright}
+\end{proof}
+
+\begin{mydef}[Unit]
+The multiplicatively invertible elements in a domain are caleed units of a domain.
+\\* Eg: Units in $\mathbb{Z} = \{\pm 1\}$ and Units in $\mathbb{R}[X] = \{c\mid c \in \mathbb{R}-\{0\}\}$
+\end{mydef}
+
+\begin{mydef}[Prime]
+a is prime if $a = uv \implies$ either u or v is a unit, but not both.
+\end{mydef}
+
+\begin{mydef}[Associate]
+b is an associate of a if $a\mid b \; and \; b\mid a$ or equivalently $a = ub$, where u is a unit.
+\end{mydef}
+
+\begin{theorem}
+If x is a prime and u is a unit, then ux is also a prime.
+\end{theorem}
+
+\begin{proof}
+Suppose $ux=st$. Since u is a unit, $x=(u^{-1}s)t$. But we know, x is a prime, then either of $u^{-1}s \; or \; t$ is a unit. If t is unit, proof is completed. Else $u^{-1}s$ must be a unit. We know that the product of two units is again a unit. So is $uu^{-1}s$, i.e, s is a unit.
+\end{proof}
+
+\begin{mydef}[Greatest Common Divisor]
+d is said to be gcd of a and b if $d\mid a\;and\;d\mid b$ and every common divisor c of a and b must divide d, i.e, if $c\mid a\;and\;c\mid b$, then $c\mid d$. It is written as d = (a,b).
+\end{mydef}
+
+\begin{remark}
+If d is a gcd a and b and then an associate of d is also a gcd of a and b, i.e, if u is a unit, then $d = (a,b) = ud$.
+\end{remark}
+
+\begin{mydef}
+If a and b $\in\; \mathbb{Z}$, then we define $$a\mathbb{Z}+b\mathbb{Z} = \{ax+by\mid x, y\in\mathbb{Z}\}$$
+\end{mydef}
+
+\begin{remark}
+It can be seen that $a,b \in a\mathbb{Z}+b\mathbb{Z}$ and if $s_{1} \;and\; s_{2} \in a\mathbb{Z}+b\mathbb{Z}$ then $s_{1}x+s_{2}y \in a\mathbb{Z}+b\mathbb{Z},\; \forall x,y \in\mathbb{Z}$. Therefore $a\mathbb{Z}+b\mathbb{Z} \cap \mathbb{N} \neq \emptyset$.
+\end{remark}
+
+\begin{theorem}
+If a, b $\in \mathbb{Z}$, then $\exists d \in \mathbb{Z}, a\mathbb{Z}+b\mathbb{Z} = d\mathbb{Z}\text{, where }d = (a,b).$
+\end{theorem}
+
+\begin{proof}
+We first prove the existence of such a d. Since $a\mathbb{Z}+b\mathbb{Z} \cap \mathbb{N} \neq \emptyset$, let d be is least natural number in $a\mathbb{Z}+b\mathbb{Z}$. Then $d\mathbb{Z} \subseteq a\mathbb{Z}+b\mathbb{Z}$. Now let $s \in a\mathbb{Z}+b\mathbb{Z}$, then by division algorithm on $\mathbb{Z},$ 
+\begin{align*}
+&\exists \,q,r \in \mathbb{Z}, s = qd+r, 0\,\le r < d. \\
+&\implies r = s-qd \in \mathbb{Z} \\
+&\implies r = 0,\, i.e,\; s = qd \\
+&\implies a\mathbb{Z}+b\mathbb{Z} \subseteq d\mathbb{Z} \\
+& \;\;Therefore,\; a\mathbb{Z}+b\mathbb{Z} = d\mathbb{Z}.
+\end{align*}
+Now we prove that $d  = (a,b)$. Since $a,b \in a\mathbb{Z}+b\mathbb{Z},\, d\mid a \;and\; d\mid b$. But $d \in a\mathbb{Z}+b\mathbb{Z}, \;so\; d=ax+by$ for some $x,y\in\mathbb{Z}$. Suppose $c\mid a\;and\;c\mid b$, then $a = a_{1}c \;and\; b=b_{1}c$. Then $d = c(xa_{1}+yb_{1})$, implies $c\mid d$.
+\end{proof}
+
+\begin{corollary}
+If $a\mid bc\;and\;(a,b) = 1,\;then\;a\mid c$.
+\end{corollary}
+
+\begin{theorem}
+$\mathbb{Z}$ is a UFD (Unique factorization Domain), i.e, every non-zero, non-unit can be written as product of primes and this factorzation is unique upto order and association, i.e, if n is a non-zero, non-unit in $\mathbb{Z}$, and $n = p_{1}p_{2}{\cdots}p_{r} = q_{1}q_{2}{\cdots}q_{s}$, where ${p_{i}}^{\prime}s$ and ${q_{i}}^{\prime}s$ are primes, then $r=s$ and every $p_{i}$ is an associate of some $q_{j}$ and vice versa.
+\end{theorem}
+
+\begin{proof}
+The exitence of such factorization can be proved by using stroing induction for non-negative integers and using this result, we can multiply by a -1 (unit) and show it's true for negative integers as well. \\
+Now, we prove the uniqueness by induction. Suppose n is a non-zero, non-unit.$$Suppose\;n = p_{1}p_{2}{\cdots}p_{r} = q_{1}q_{2}{\cdots}q_{s}.$$
+If $r = 1\;(Base\;Case),\;then\; n = p_{1} = q_{1}q_{2}{\cdots}q_{s}$. But $p_{1}$ is a prime, therefore, $s=1\;and\;n=p_{1}=uq_{1},$ where u is a unit. Assume the statement is true $\forall\;a\in\mathbb{N},\;a<n$. Now we prove the statement for n. $$p_{r}\mid n,\;i.e,\; p_{r}\mid q_{1}(q_{2}{\cdots}q_{s}).$$
+$$\text{If }(p_{r},q_{1})=1\implies p_{r}\mid q_{2}(q_{3}{\cdots}q_{s})$$
+This way, we get some $q_{j}$ which is an associate of $p_{r}$. WLOG, we can assume $p_{r}$ is an associate of $q_{s}$, i.e, $up_{r} = q_{s}.$
+\begin{align*}
+&\implies p_{1}p_{2}{\cdots}p_{r} - uq_{1}q_{2}{\cdots}q_{s-1}p_{r}=0 \\
+&\implies p_r(p_{2}{\cdots}p_{r-1} - uq_{1}q_{2}{\cdots}q_{s-1}) = 0 \\
+&\implies p_{2}{\cdots}p_{r-1} = uq_{1}q_{2}{\cdots}q_{s-1} < n
+\end{align*}
+\end{proof}
+
+\begin{mydef}[$\mathbb{Z}\lbrack\omega\rbrack$]
+$\mathbb{Z}\lbrack\omega\rbrack = \{a+b\omega\mid a,b\in \mathbb{Z}\} \subset \mathbb{C}$, where $\omega  = \frac{-1\pm i\sqrt{3}}{2}$.
+\begin{center}
+and $N(\alpha) = {\alpha}\bar{\alpha}.$ \\
+\end{center}
+\end{mydef}
+
+\begin{remark}
+If $\alpha = a+b\omega,$ then 
+\begin{align*}
+N(a+b\omega) &= (a+b\omega)(\overline{a+b\omega}) \\
+&= (a+b\omega)(a+b{\omega}^{2}) \\
+&= a^2 - ab + b^2 \\
+&= \frac{(2a-b)^2+3{b^2}}{4}
+\end{align*}
+\end{remark}
+
+\begin{remark}
+The only element whose norm is 0 is 0.
+\end{remark}
+
+\begin{prop}
+$\alpha \in \mathbb{Z}[\omega]$ is a unit iff $N(\alpha) = 1$.
+\end{prop}
+
+\begin{proof}
+Suppose $N(\alpha) = 1$, then ${\alpha}\overline{\alpha} = 1$. Therefore $\alpha$ is a unit in $\mathbb{Z}[\omega]$. \\
+Conversely, suppose $\alpha$ is a unit $\mathbb{Z}[\omega]$.
+\begin{align*}
+&\exists {\alpha}^{\prime} \in \mathbb{Z}[\omega], \alpha{\alpha}^{\prime} = 1 \\
+&\implies N(\alpha{\alpha}^{\prime}) = 1 \\
+&\implies N(\alpha)N({\alpha}^{\prime}) = 1 \\
+&\implies N(\alpha)= 1 \qquad(since,\; N(\alpha) \in \mathbb{N}, \forall\; \alpha \in \mathbb{Z}[\omega]).
+\end{align*}
+\end{proof}
+
+\begin{theorem}
+The units in $\mathbb{Z}[\omega]$ are $\pm 1,\;\pm \omega,\;\pm {\omega}^{2}$.
+\end{theorem}
+
+\begin{theorem}
+There is no element in $\mathbb{Z}[\omega]$ with norm 2.
+\end{theorem}
+
+\begin{theorem}
+The only elements in $\mathbb{Z}[\omega]$ with norm 3 are $\pm \pi,\;\pm \pi\omega,\;\pm \pi{\omega}^{2}$, where $\pi = 1-\omega$.
+\end{theorem}
+
+\begin{theorem}
+$\mathbb{Z}[\omega]$ is a Euclidean Domain, i.e, $$\forall \alpha, \beta \in \mathbb{Z}[\omega],\;\beta\neq 0,\;\exists \gamma,\delta \in \mathbb{Z}[\omega],\alpha=\beta\gamma+\delta, N(\delta)<N(\beta).$$
+\end{theorem}
+
+\begin{proof}
+Let $\alpha = a+b\omega,\;\beta = c+d\omega,a,b,c,d\in\mathbb{Z}[\omega],\;\beta\neq 0$, then $c,d\neq 0$.
+\begin{enumerate}[$\text{Case }$i)]
+	\item Let $d=0$. Then by Modified Division Algorithm, we have 
+	\begin{align*}
+	a &= cq_{1}+r_{1}, \qquad(q_{1},r_{1}\in\mathbb{Z}\;and\;\vert r_{1}\vert\le\frac{c}{2})\\
+	b &= cq_{2}+r_{2}, \qquad(q_{2},r_{2}\in\mathbb{Z}\;and\;\vert r_{2}\vert\le\frac{c}{2})\\
+	\implies \;\;\;\;\;\;\alpha &= a+b\omega = c(q_{1}+q_{2}\omega)+(r_{1}+r_{2}\omega) \\
+	\implies N(\delta) &= N(r_{1}+r_{2}\omega) \\
+	&= {r_{1}}^2-r_{1}r_{2}+{r_{2}}^2 \\
+	&\le {\vert r_{1}\vert}^2+\vert r_{1}\vert\vert r_{2}\vert+{\vert r_{2}\vert}^2 \\
+	&= \frac{c^2}{4} + \frac{c^2}{4} + \frac{c^2}{4} \\
+	&= \frac{3c^2}{4} < c^2 = N(b) = N(\beta)
+	\end{align*}
+	\item If $d\neq 0,$ consider $\alpha^{\prime} = \alpha\overline{\beta},\;\beta^\prime = \beta\overline{\beta}$,\;then\;$\beta^\prime \in \mathbb{Z}$, then by Case i), $$\exists \gamma^\prime,\delta^\prime\in\mathbb{Z}[\omega],\alpha^\prime = \beta^\prime\gamma^\prime+\delta^\prime, N(\delta^\prime)<N(\beta^\prime)={(N(\beta))}^2.$$
+Let $\delta = \alpha-\beta\gamma$, then $\delta\overline{\beta} = \alpha\overline{\beta}-\beta\overline{\beta}\gamma = \delta^\prime. N(\delta\beta^\prime) = N(\delta^\prime) < (N(\beta))^2$
+\begin{align*}
+&\implies N(\delta)N(\beta)<(N(\beta))^2 \\
+&\implies N(\delta)<N(\beta).
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+\begin{theorem}
+If $\alpha, \beta \in \mathbb{Z}[\omega]$, then $\exists\;\delta \in \mathbb{Z}[\omega], \alpha\mathbb{Z}[\omega]+\beta\mathbb{Z}[\omega] = \delta\mathbb{Z}[\omega],\\ \text{ where }\delta = (\alpha,\beta).$
+\end{theorem}
+
+\begin{mydef}[]
+If $a,b,m\in\mathbb{Z}$ and $m\neq0$, we say thata is congruent to b modulo m if  $m\mid b-a$. This relation is written $a\equiv b\;(m).$
+\end{mydef}
+
+\begin{mydef}[$\mathbb{Z}_{n},\;+_{n},\;\cdot_{n}$]
+-FILL IN-
+\end{mydef}
+
+\begin{theorem}
+If $a\in\mathbb{Z}_n-\{0\}$ is a unit iff $(a,n)=1.$
+\end{theorem}
+
+\begin{proof}
+Let $a\in\mathbb{Z}_n-\{0\}$ be a unit. Then $\exists\,a^\prime\in\mathbb{Z}_n-\{0\}$, such that $a\cdot_n a^\prime=1$, i.e, $\exists\;q,\;aa^\prime=qn+1.$ $$\implies (a,n)=1.$$ 
+Now let $(a,n)=1$, then $\exists\,u,v\in\mathbb{Z},\;au+nv=1$. By Division Algorithm, $\exists\,q,r,\;such\;that\;u=qn+r,\,r\in\mathbb{Z}_n.$
+\begin{align*}
+&\implies a(qn+r)+nv=1 \\
+&\implies ar=n(-aq-v)+1 \\
+&\implies a\cdot_n r=1 \qquad(Since,\;a,r\in\mathbb{Z}_n).
+\end{align*}
+Therefore, a is a unit in $\mathbb{Z}_n.$
+\end{proof}
+
+\begin{mydef}
+We define $U_n$ to be the set of all units in $\mathbb{Z}_n$ and $\phi(n)$ to be the cardinality of $U_n$, where $\phi_n$ is called Euler totient function, i.e, $$U_n=\{a\in\mathbb{Z}_n-\{0\}\mid (a,n)=1\},\;\phi(n)=\vert U_n\vert.$$
+We define $\phi(1)=1.$
+\end{mydef}
+
+\begin{remark}
+If $n=p,$ p is prime, then every element is relatively prime to p, i.e, $U_p=\mathbb{Z}_p-\{0\}=\{1,2,\cdots,p-1\}$. And also $(\mathbb{Z}_p,+_p,\cdot_p)$ is a field. If $n=p^t,\;\phi(n)=p^{t-1}(p-1).$ If $n=pq,\;\phi(n)=(p-1)(q-1).$
+\end{remark}
+
+\begin{theorem}[Euler's Theorem]
+If $(a,n)=1$, then $a^{\phi(n)}\equiv 1\,(mod\,n).$
+\end{theorem}
+
+\begin{proof}
+Let's prove it for elements in $U_n$ first and then for any element in general. Let $U_n = \{a_1,a_2,\cdots,a_{\phi(n)}\}$ and let $a\in U_n.$ Then,
+$$a\cdot_n U_n=\{a\cdot_n a_1,a\cdot_n a_2,\cdots,a\cdot_n a_{\phi(n)}\}\subseteq U_n$$
+\textbf{Claim.} All elements of $a\cdot_n U_n$ are distinct, i.e, $a\cdot_n U_n = U_n$. \\
+We prove this by contradiction. Assume, $a\cdot_n a_i = a\cdot_n a_j,\;such\;that\;i\neq j$. Then $a^{-1}\cdot_n a\cdot_n a_i = a^{-1}\cdot_n a\cdot_n a_j$, hence $a_i=a_j$. Therefore, $a\cdot_n U_n = U_n$. 
+\begin{align*}
+&\implies \prod_{i=1}^{\phi(n)}a\cdot_n a_i = \prod_{j=1}^{\phi(n)}a_j \\
+&\implies a^{\phi(n)}\Bigg(\prod_{i=1}^{\phi(n)}a_i\Bigg) = \prod_{j=1}^{\phi(n)}a_j \\
+&\implies a^{\phi(n)}b = b,\;where\;b=\prod_{i=1}^{\phi(n)}a_i \in U_n \\
+&\implies a^{\phi(n)} = 1\;in\;(\mathbb{Z}_{n},\;+_{n},\;\cdot_{n}).
+\end{align*}
+Now, let's prove the theorem for any $a\in\mathbb{Z},\;such\;that\;(a,n)=1.$
+By Division Algorithm, $\exists\,q,r,\;such\;that\;a=qn+r,\,r\in\mathbb{Z}_n.$ Since $(a,n)=1$, we have $(r,n)=1$.
+\begin{align*}
+\implies a^\phi(n) &= (qn+r)^{\phi(n)} \\
+&= r^{\phi(n)} +  \binom{\phi(n)}{1}(nq)+\cdots+(nq)^{\phi(n)} \\
+&= r^{\phi(n)} +nk \\
+\implies a^\phi(n)-1 &=r^{\phi(n)}-1+nk \\
+But\;n\mid r^{\phi(n)}-&1,\;then\;n\mid a^{\phi(n)}-1\\
+\implies a^{\phi(n)}&\equiv 1\,(mod\,n)
+\end{align*}
+\end{proof}
+\textbf{Notation:} ${\mathbb{Z}_p}^x=\mathbb{Z}_p-\{0\}\;and\;{\mathbb{Z}_p}^{x^2}$ to be set of elements in ${\mathbb{Z}_p}^x$ which are square. Here p is a prime.
+
+\begin{prop}
+$\vert {\mathbb{Z}_p}^{x^2}\vert=\frac{p-1}{2}$, therefore $\exists\,u\in{\mathbb{Z}_p}^x$ which is a non-sqaure. Then $u{\mathbb{Z}_p}^{x^2}$ will be the set of all non-square in ${\mathbb{Z}_p}^x$.
+\end{prop}
+
+\begin{proof}
+First, we prove that $\vert {\mathbb{Z}_p}^{x^2}\vert=\frac{p-1}{2}$. Consider the following mapping:
+\begin{align*}
+{\mathbb{Z}_p}^{x} &\mapsto {\mathbb{Z}_p}^{x^2} \\
+x &\mapsto x^2 \\
+\implies p-x &\mapsto (p-x)^2 = p^2-2px+x^2 = x^2 + pk \\
+\implies p-x &\mapsto x^2\;in\;(\mathbb{Z}_p,+_p,\cdot_p)
+\end{align*}
+Therefore this mapping is a 2-1 mapping and hence $\vert {\mathbb{Z}_p}^{x^2}\vert=\frac{p-1}{2}$. There are $\frac{p-1}{2}$ non-sqaure elements in ${\mathbb{Z}_p}^x$. Let u be a non-square. Then consider the following mapping:
+\begin{align*}
+{\mathbb{Z}_p}^{x^2} &\mapsto u{\mathbb{Z}_p}^{x^2} \\
+x^2 &\mapsto ux^2 \\
+\end{align*}
+We prove that this mapping is bijective. It is enough to show that all the elements in $u{\mathbb{Z}_p}^{x^2}$ are distinct and non-squares. Consider two elements $ux^2,uy^2\in u{\mathbb{Z}_p}^{x^2}$.
+\begin{align*}
+\text{If }ux^2&=uy^2 \\
+\implies u^{-1}ux^2&=u^{-1}uy^2 \qquad(\text{since }\mathbb{Z}_p\text{ is a field})\\
+\implies x^2&=y^2
+\end{align*}
+This shows that all the elements of $u{\mathbb{Z}_p}^{x^2}$. Now we show that elements of $u{\mathbb{Z}_p}^{x^2}$ are all the non-sqaure elements in ${\mathbb{Z}_p}^{x}$. Suppose some element in $u{\mathbb{Z}_p}^{x^2}$ is a square, i.e,
+\begin{align*}
+&\implies ux^2=y^2 \\
+&\implies ux^2x^{-2}=y^2x^{-2} \\
+&\implies u=(yx^{-1})^2 \in {\mathbb{Z}_p}^{x^2}
+\end{align*}
+But u is a non-square, which is a contradiction. Therefore, this mapping is not just a bijection, but none of the elements in one set belongs to other. Hence, $u{\mathbb{Z}_p}^{x^2}$ is the set of all non-squares in ${\mathbb{Z}_p}^x$.
+\end{proof}
+
+\begin{remark}
+From the above proposition it can be concluded that $${\mathbb{Z}_p}^x=u{\mathbb{Z}_p}^{x^2}\oplus {\mathbb{Z}_p}^{x^2}$$.
+\end{remark}
+
+\begin{mydef}[Legendre Symbol]
+Let $c\in\mathbb{Z},\;p$ is an odd prime. Then we define:
+\[   
+\Big(\frac{c}{p}\Big) = 
+     \begin{cases}
+       \;\;\,0, &\quad\text{if }p\mid c\\
+       \;\;\,1, &\quad\text{if }\exists\;x\in\mathbb{Z},\,x^2\equiv c(mod\;p) \\
+      -1, &\quad\text{otherwise}\\ 
+     \end{cases}
+\]
+\end{mydef}
+
+
+\end{document}
