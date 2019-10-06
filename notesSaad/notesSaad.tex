@@ -297,7 +297,8 @@ Arnoldi's procedure is an algorithm for building an orthogonal basis of the Kryl
 		\State $w_j = w_j - h_{ij}v_i$
 	\EndFor
 	\State EndDo
-	\State $h_{j+1,j} = \|w_j\|_2$. If $h_{j+1,j}=0$ Stop
+	\State $h_{j+1,j} = \|w_j\|_2$. 
+	\State If $h_{j+1,j}=0$ Stop; found an invariant subspace $[v_1,\cdots,v_j]$
 	\State $v_{j+1}=w_j/h_{j+1,j}$
 \EndFor
 \State EndDo
@@ -321,8 +322,7 @@ $$\mathcal{K}_m(A,r_0)=span\{r_0,Ar_0,A^2r_0,\cdots,A^{m-1}r_0\},$$
 in which $r_0=b-Ax_0.$ This method seeks an approximate solution $x_m$ from the affine subspace $x_0+\mathcal{K}_m$ of dimension m by imposing the following orthogonality constraint:
 $$b-Ax_m\perp \mathcal{K}_m.$$
 If $v_1=r_0/\|r_0\|_2$ in Arnoldi's method, and we set $\beta=\|r_0\|_2,$ then
-$$V^T_mAV_m=H_m,$$
-$$V^T_mr_0=V^T_m(\beta v_1)=\beta e_1.$$
+$$V^T_mAV_m=H_m,\;V^T_mr_0=V^T_m(\beta v_1)=\beta e_1.$$
 As a result, the approximate solution using the above m-dimensional subspaces is given by:
 $$x_m=x_0+V_my_m,$$
 where $y_m$ can be found by imposing orthogonality constraint that $$V^T_m(b-Ax_m)=0\implies y_m=H^{-1}_m(\beta e_1).$$
@@ -358,8 +358,7 @@ $$\|b-Ax_m\|_2=h_{m+1,m}|e^T_my_m|.$$
 b-Ax_m &= b-Ax_0-AV_my_m \\
 &= r_0 - (V_mH_m+w_me^T_m)y_m \\
 &= r_0 - V_mH_m(H^{-1}_m\beta e_1) - w_me^T_my_m \\
-&= r_0 - V_mV^T_mr_0 - h_{m+1,m}e^T_my_mv_{m+1} \\
-\implies b-Ax_m&=-h_{m+1,m}e^T_my_mv_{m+1}. \\
+&= r_0 - V_mV^T_mr_0 - h_{m+1,m}e^T_my_mv_{m+1}=-h_{m+1,m}e^T_my_mv_{m+1}.
 \end{align*}
 \end{proof}
 \end{prop}
@@ -500,6 +499,7 @@ This leads to the following form of Modified Gram-Schmidt variant of \\ Arnoldi'
 \caption{Lanczos Method for Linear Systems}
 \begin{algorithmic}[1]
 \State Compute $r_0=b-Ax_0,\;\beta=\|r_0\|_2,\;and\;v_1=r_0/\beta$
+\State Set $\beta_1=0\;and\;v_0=0$
 \For{$j= 1,2,\cdots,m$} \Comment Orthogonalization Procedure
 	\State $w_j = Av_j-\beta_jv_{j-1}$
 	\State $\alpha_j=(w_j,v_j)$
@@ -555,13 +555,66 @@ This gives the following algorithm, which we call as direct version of Lanczos a
 \For{$m= 1,2,\cdots$, until convergence}
 	\State Compute $w_m = Av_m-\beta_mv_{m-1}\;and\;\alpha_m=(w,v_m)$
 	\State If $m > 1$ then compute $\lambda_m=\frac{\beta_m}{\eta_{m-1}}$ and $\zeta_m=-\lambda_m\zeta_{m-1}$
-	
 	\State $\eta_m=\alpha_m-\lambda_m\beta_m$
 	\State $p_m = \eta^{-1}_m[v_m-\beta_mp_{m-1}]$
 	\State $x_m=x_{m-1}+\zeta_mp_m$
 	\State If $x_m$ has converged then Stop
 	\State $w=w-\alpha_mv_m$
 	\State $\beta_{m+1}=\|w\|_2,\;v_{m+1}=w/\beta_{m+1}$
+\EndFor
+\State EndDo
+\end{algorithmic}
+\end{algorithm}
+
+Observe that the residual vector for this algorithm is in the direction of $v_{m+1}.$ Therefore, the residual vectors are orthogonal to each other as in FOM. Likewise, the vectors $p_i$ are A-orhogonal or conjugate to each other.
+
+\begin{prop}
+Let $r_m=b-Ax_m,\;and\;p_m,m=0,1,\cdots,$ be the residual vectors and auxiliary vectors produced by D-Lanczos algorithm. Then,
+\begin{enumerate}[i)]
+\item Each residual vector $r_m$ is such that $r_m=\sigma_{m}v_{m+1}$, where $\sigma_m$ is a certain scalar. As a result, the residual vectors are orthogonal to each other.
+\item The auxiliary vectors $p_i$ form an A-conjuagte set, i.e,
+$$(Ap_i,p_j)=0,\;for\;i\neq j.$$
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+The first part is immediate consequence of the following relation:
+$$r_m=b-Ax_m=-h_{m+1,m}e^T_my_mv_{m+1}$$
+Now we prove the second part. Consider the matrix $P^T_mAP_m$,
+$$P^T_mAP_m = U^{-T}_mV^T_mAV_mU^{-1}_m = U^{-T}_mT_mU^{-1}_m = U^{-T}_mL_m$$
+Now we observe $U^{-T}_mL_m$ is a lower triangular matrix which is also symmetric since it is equal to the symmetric matrix $P^T_mAP_m$. Therefore it must be diagonal.
+\end{proof}
+
+A consequence of the above proposition is that a version of the algorithm  can be derived by imposing the orthogonality and conjugacy conditions. This gives the Conguate Gradient algorithm which we now derive. 
+
+\begin{remark}
+Inorder to conform with the standard notation used in the literature to describe the algorithm, the indexing of the p vectors now begins at zero instead of one as was done so far.
+\end{remark}
+
+The vector $x_{j+1},r_{j+1},p_{j+1}$ can be expressed as follows:
+$$x_{j+1}=x_j+\alpha_jp_j,\quad r_{j+1}=r_j-\alpha_jAp_j,\quad p_{j+1}=r_{j+1}-\beta_jp_j.$$
+It can be seen that $(Ap_j,r_j)=(Ap_j,p_j+\beta_jp_{j-1})=(Ap_j,p_j).$ Now imposing constraints,
+\begin{enumerate}
+\item Orthogonality Conditions on $r_i$'s gives $(r_j-\alpha_jAp_j,r_j)=0$, as a result,
+$$\alpha_j = \frac{(r_j,r_j)}{(Ap_j,r_j)}=\frac{(r_j,r_j)}{(Ap_j,p_j)}$$
+\item Conjugacy Conditions on $p_i$'s gives $(r_{j+1}-\beta_jp_j,Ap_j)=0$\\$\implies(r_{j+1}-\beta_jp_j,-\frac{1}{\alpha_j}(r_{j+1}-r_j))=0$, as a result,
+$$\beta_j=\frac{(r_{j+1},r_{j+1})}{(r_j,r_j)}$$
+\end{enumerate}
+It is important to note that the scalar $\alpha_j,\beta_j$ in this algorithm and D-Lanczos are different.
+
+Putting these relation together gives the following algorithm.
+\newpage
+
+\begin{algorithm}
+\caption{Conjugate Gradient}
+\begin{algorithmic}[1]
+\State Choose $x_0$ and compute $r_0=b-Ax_0,\;p_0=r_0.$
+\For{$j= 1,2,\cdots$, until convergence}
+	\State $\alpha_j=(r_j,r_j)/(Ap_j,p_j)$
+	\State $x_{j+1}=x_j+\alpha_jp_j$
+	\State $r_{j+1}=r_j-\alpha_jAp_j$
+	\State $\beta_j=(r_{j+1},r_{j+1})/(r_j,r_j)$
+	\State $p_{j+1}=r_{j+1}+\beta_jp_j$
 \EndFor
 \State EndDo
 \end{algorithmic}
