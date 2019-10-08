@@ -22,6 +22,7 @@
 \newtheorem{mydef}{Definition}
 \newtheorem*{remark}{Remark}
 \newtheorem*{prop}{Proposition}
+\newcommand{\leg}[2]{\big(\frac{#1}{#2}\big)}
 	
 \begin{mydef}[Binary Operation]
 A binary operation on a set S is a function from $S\times{S}$ to $S$.
@@ -355,20 +356,79 @@ But u is a non-square, which is a contradiction. Therefore, this mapping is not 
 \end{proof}
 
 \begin{remark}
-From the above proposition it can be concluded that $${\mathbb{Z}_p}^x=u{\mathbb{Z}_p}^{x^2}\oplus {\mathbb{Z}_p}^{x^2}$$.
+From the above proposition it can be concluded that $${\mathbb{Z}_p}^x=u{\mathbb{Z}_p}^{x^2}\oplus {\mathbb{Z}_p}^{x^2}.$$
 \end{remark}
+
+\newpage
+
+\begin{theorem}[Chinese Remainder Theorem]
+Suppose $(m,n)=1$. Let
+\end{theorem}
+
+\begin{theorem}
+Some important facts from group theory that are used later.
+\begin{enumerate}[i)]
+\item If order of an element in the group is equal to order of the group, then the group is cyclic.
+\item Let $(G,*)$ be a finite group and $(H,*)$ be a subgroup of G, then $|H|\bigm\vert|G|.$
+\item In a  finite group the order of an element must divide the order of the group.
+\item If $a\in G$, $(G,*)$ be a finite group, then $a^{|G|}=e.$
+\item If $a\in G$, $(G,*)$ be a finite group and if $a^i=e,$ then $o(a)\mid i.$
+\item If $a\in G$, $(G,*)$ be a finite group, then $o(a^i)=\frac{o(a)}{(i,o(a))}$ and $o(a^i)=o(a)$ iff $(i,o(a))=1.$ Therefore, there are $\phi(n)$ generators in a cyclic group of order n.
+\end{enumerate}
+\end{theorem}
+
+\begin{lemma}
+$\sum_{d\mid n}\phi(d)=n\;\forall\;n\in\mathbb{N}.$
+\end{lemma}
+
+\begin{proof}
+Define $f(n)=\sum_{d\mid n}\phi(d)$. We show that if $(m,n)=1$, then $f(mn)=f(m)f(n).$ Let $m=p^{e_1}_1p^{e_2}_2\cdots p^{e_r}_r$ and $n=q^{e_1}_1q^{e_2}_2\cdots q^{e_s}_s$. If $d\mid mn$, then $d=(p^{l_1}_1p^{l_2}_2\cdots p^{l_r}_r)(q^{r_1}_1q^{r_2}_2\cdots q^{r_s}_s)=d_1d_2,$ such that $(d,m)=d_1$ and $(d,n)=d_2.$
+Now,
+\begin{align*}
+f(mn)&=\sum_{d\mid mn}\phi(d) = \sum_{d_1\mid m,\;d_2\mid n}\phi(d_1d_2)= \sum_{d_1\mid m,\;d_2\mid n}\phi(d_1)\phi(d_2)\\
+&=\sum_{d_1\mid m}\phi(d_1)\sum_{d_2\mid n}\phi(d_2)=f(m)f(n)
+\end{align*}
+Let n be a non-zero, such that $n>1$. Let $n=p^{e_1}_1p^{e_2}_2\cdots p^{e_r}_r$, where $p_i$'s are distinct primes.
+\begin{align*}
+f(p^{e_1}_1) &= \sum_{d\mid p^{e_1}_1}\phi(d) = \phi(1) + \phi(p_1) + \phi(p^2_1) + \cdots + \phi(p^{e_1}_1) \\
+&= 1+p_1+\cdots+p^{e_1-1}_1(p_1-1) = p^{e_1}_1 \\
+\text{Then, }f(n) &= f(p^{e_1}_1p^{e_2}_2\cdots p^{e_r}_r) = f(p^{e_1}_1)f(p^{e_2}_2\cdots p^{e_r}_r) \\
+&= p^{e_1}_1p^{e_2}_2\cdots p^{e_r}_r = n = \sum_{d\mid n}\phi(d).
+\end{align*}
+\end{proof}
+
+\begin{theorem}
+Let $(\mathbb{F},+,\cdot)$ be a field and G a finite subgroup of $(\mathbb{F}-\{0\},\cdot)$, then G is a cyclic group.
+\end{theorem}
+
+\begin{proof}
+Given that $G\subseteq (\mathbb{F}-\{0\},\cdot)$ is finite, i.e, $|G|<\infty$. Let $|G|=n.$ If $d\mid n$ define $G_d$ as the set containing all the elements in G of order d. We have $G=\coprod_{d\mid n}\,G_d$, then $|G|=\sum_{d\mid n}|G_d|$. If $G_d=\phi,$ then $|G_d|=0.$ Suppose $|G_d|\neq0,$ let $a\in G_d$, then $o(a)=d$. \\
+Consider $H=\{1,a,a^2,\cdots,a^{d-1}\},\;a^d=1$. Then $X^d-1$ is a polynomial in $\mathbb{F}[X]$. Notice that all the elements of H are the roots of the polynomial and these are the only roots of $X^d-1\;in\;\mathbb{F}.$ Therefore, $G_d\subseteq H$. Notice that the number of elements in H of order d are $\phi(d)$, since $o(a^i)=o(a)=d$ iff $(i,d)=1$, then $|G_d|=\phi(d).$ Hence, $G_d = \phi(d)$ or $0$. \\
+We know, $\sum_{d\mid n}\phi(d)=n$ and $n=\sum_{d\mid n}|G_d|$, hence $|G_d|$ is never 0, i.e, $G_d$ is never empty $\forall\;d\mid n$. In particular, $G_n\neq \phi$, therefore there exists an element of order n. Hence, G is cyclic.
+\end{proof}
 
 \begin{mydef}[Legendre Symbol]
 Let $c\in\mathbb{Z},\;p$ is an odd prime. Then we define:
 \[   
-\Big(\frac{c}{p}\Big) = 
-     \begin{cases}
+\leg{c}{p} = 
+     \begin{cases}	
        \;\;\,0, &\quad\text{if }p\mid c\\
-       \;\;\,1, &\quad\text{if }\exists\;x\in\mathbb{Z},\,x^2\equiv c(mod\;p) \\
+       \;\;\,1, &\quad\text{if }\exists\;x\in{Z},\,x^2\equiv c(mod\;p) \\
       -1, &\quad\text{otherwise}\\ 
      \end{cases}
 \]
 \end{mydef}
 
+\newcommand{\modp}[2]{#1(mod\;#2)}
+
+\begin{theorem}
+The properties of Legendre Symbol are listed below:
+\begin{enumerate}[i)]
+\item If $a\equiv \modp{b}{p}$, then $\leg{a}{p}=\leg{b}{p}.$
+\item $\leg{xy}{p}=\leg{x}{p}\leg{y}{p}.$
+\item $\leg{a}{p}={\bar{a}}^{(\frac{p-1}{2})},\;where\;\bar{a}=\modp{a}{p}.$
+\item 
+\end{enumerate}
+\end{theorem}
 
 \end{document}
