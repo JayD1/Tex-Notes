@@ -23,6 +23,7 @@
 \newtheorem*{remark}{Remark}
 \newtheorem*{prop}{Proposition}
 \newcommand{\leg}[2]{\big(\frac{#1}{#2}\big)}
+\newcommand{\modp}[2]{#1(mod\;#2)}
 	
 \begin{mydef}[Binary Operation]
 A binary operation on a set S is a function from $S\times{S}$ to $S$.
@@ -359,11 +360,70 @@ But u is a non-square, which is a contradiction. Therefore, this mapping is not 
 From the above proposition it can be concluded that $${\mathbb{Z}_p}^x=u{\mathbb{Z}_p}^{x^2}\oplus {\mathbb{Z}_p}^{x^2}.$$
 \end{remark}
 
-\newpage
+\begin{mydef}
+We define a mapping such that,
+\begin{align*}
+\mathbb{Z}&\rightarrow\mathbb{Z}_n \\
+x&\mapsto\bar{x},\bar{x}=\modp{x}{n}
+\end{align*}
+\end{mydef}
+
+\begin{theorem}
+The following properties hold for $x,\,y\in\mathbb{Z}$:
+\begin{align*}
+&i)\;\overline{x+y}=\bar{x}+_n\bar{y}
+&ii)\;\overline{xy}=\bar{x}\cdot_n\bar{y}
+\end{align*}
+Define the following mapping from $\mathbb{Z}_{mn}\rightarrow\mathbb{Z}_n$ in the similar way as above. Then the following properties hold:
+\begin{align*}
+&i)\;\overline{x+_{mn}y}=\bar{x}+_n\bar{y}
+&ii)\;\overline{x\cdot_{mn}y}=\bar{x}\cdot_n\bar{y}
+\end{align*}
+\end{theorem}
 
 \begin{theorem}[Chinese Remainder Theorem]
-Suppose $(m,n)=1$. Let
+Suppose $(m,n)=1$. Let $\bar{x}=\modp{x}{m}$ and $\bar{\bar{x}}=\modp{x}{n}$, $x\in\mathbb{Z}.$ Then the following mapping is bijection which preserves operation:
+\begin{align*}
+\mathbb{Z}_{mn} &\rightarrow\mathbb{Z}_m\times\mathbb{Z}_n \\
+x&\mapsto(\bar{x},\bar{\bar{x}})
+\end{align*}
 \end{theorem}
+
+\begin{proof}
+Since the sets are finite, by pigeon hole principle, it is enough to show the mapping $f:\mathbb{Z}_{mn}\rightarrow\mathbb{Z}_m\times\mathbb{Z}_n,x\mapsto(\bar{x},\bar{\bar{x}})$ is onto for it to be bojective, i.e, if $\forall\;(u,v)\in\mathbb{Z}_m\times\mathbb{Z}_n\;\exists\;x\in\mathbb{Z}_{mn},$ such that $\bar{x}=\modp{x}{m}$ and $\bar{\bar{x}}=\modp{x}{n}$. \\
+We will first show that $\exists\;x\in\mathbb{Z}$ satisfying the above conditions. Since $(m,n)=1,\;\exists\;M,N\in\mathbb{Z},Mm+nN=1.$ Let $x=mMv+nNu,$ then $x-u=mMv+(nN-1)u=mM(v-u)=mq\implies x=mq+u\implies \bar{x}=u.$ Similarly, $\bar{\bar{x}}=v.$ So $\exists\;x\in\mathbb{Z},\;\bar{x}=u,\bar{\bar{x}}=v$, then by division algortihm, $\exists\;r\in\mathbb{Z}_{mn},q,\;x=mnq+r.$ Notice that $u=\bar{x}=\overline{mnq+r}=\overline{mnq}+_m\bar{r}=\bar{r}$ and similarly $\bar{\bar{r}}=v.$ Therefore, $$\exists\;x\in\mathbb{Z},\;\bar{x}=\modp{x}{m}\;and\;\bar{\bar{x}}=\modp{x}{n}.$$
+We know,
+\begin{align*}
+&i)\;\overline{x+_{mn}y}=\bar{x}+_m\bar{y} &ii)\;\overline{x\cdot_{mn}y}=\bar{x}\cdot_m\bar{y} \\
+&i)\;\overline{\overline{x+_{mn}y}}=\bar{\bar{x}}+_n\bar{\bar{y}} &ii)\;\overline{\overline{x\cdot_{mn}y}}=\bar{\bar{x}}\cdot_n\bar{\bar{y}} 
+\end{align*}
+\begin{align*}
+f(x+_{mn}y)&=(\overline{x+_{mn}y},\overline{\overline{x+_{mn}y}})\\
+&=(\bar{x}+_m\bar{y},\bar{\bar{x}}+_n\bar{\bar{y}})\\
+&=(\bar{x},\bar{\bar{x}})+(\bar{y},\bar{\bar{y}})\\
+&=f(x)+f(y).
+\end{align*}
+Similarly, $f(x\cdot_{mn}y)=f(x)\times f(y)$. Here addition(+) and mutliplication($\times$) are component-wise. Therefore, f is onto and hence bijective(???).
+\end{proof}
+
+
+\begin{theorem}
+If $(m,n)=1,$ then $\phi(m)=\phi(m)\phi(n)$.
+\end{theorem}
+
+\begin{proof}
+First we show that under this bijection mapping defined above the elements of $U_{mn}$ group map bijetively to the elements of $U_m\times U_n$, i.e,
+\begin{enumerate}[i)]
+\item if $x\in U_{mn},$ then $\bar{x}\in U_m\;and\;\bar{\bar{x}}\in U_n.$ If $x\in\mathbb{Z}_{mn},$ then $(x,mn)=1$, i.e, $ax+bmn=1$, this implies $(x,m)=1\;and\;(x,n)=1$, i.e, $\bar{x}\in\mathbb{Z}_m\;and\;\bar{\bar{x}}\in\mathbb{Z}_n$.
+\item if $\bar{x}\in U_m\;and\;\bar{\bar{x}}\in U_n,$ then $x\in U_{mn}$. Then $\exists\;u\in\mathbb{Z}_m$ and $v\in\mathbb{Z}_n$, such that $\bar{x}\cdot_m u=1$ and $\bar{\bar{x}}\cdot_n v=1$. Since f is onto, $\exists\;y\in\mathbb{Z}_{mn},\;\bar{y}=u\;and\;\bar{\bar{y}}=v.$ Then $\overline{x\cdot_{mn}y}=\bar{x}\cdot_m\bar{y}=1$ and $\overline{\overline{x\cdot_{mn}y}}=\bar{\bar{x}}\cdot_m\bar{\bar{y}}=1$. Therefore, $f(x\cdot_{mn}y)=(\bar{1},\bar{\bar{1}})=f(1)$. Since f is one-to-one, $x\cdot_{mn}y=1,$ i.e, $x\in U_{mn}$.
+\end{enumerate}
+Therefore, 
+\begin{align*}
+U_{mn}&\leftrightarrow U_m\times U_n\\
+\implies |U_{mn}|&=|U_m||U_n|\\
+\implies \phi(mn)&=\phi(m)\phi(n).
+\end{align*}
+\end{proof}
 
 \begin{theorem}
 Some important facts from group theory that are used later.
@@ -407,6 +467,10 @@ Consider $H=\{1,a,a^2,\cdots,a^{d-1}\},\;a^d=1$. Then $X^d-1$ is a polynomial in
 We know, $\sum_{d\mid n}\phi(d)=n$ and $n=\sum_{d\mid n}|G_d|$, hence $|G_d|$ is never 0, i.e, $G_d$ is never empty $\forall\;d\mid n$. In particular, $G_n\neq \phi$, therefore there exists an element of order n. Hence, G is cyclic.
 \end{proof}
 
+\begin{corollary}
+$(\mathbb{Z}_p-\{0\},\cdot_p)$ is cyclic group in $F=(\mathbb{Z}_p-\{0\},+,\cdot_p)$.
+\end{corollary}
+
 \begin{mydef}[Legendre Symbol]
 Let $c\in\mathbb{Z},\;p$ is an odd prime. Then we define:
 \[   
@@ -419,7 +483,6 @@ Let $c\in\mathbb{Z},\;p$ is an odd prime. Then we define:
 \]
 \end{mydef}
 
-\newcommand{\modp}[2]{#1(mod\;#2)}
 
 \begin{theorem}
 The properties of Legendre Symbol are listed below:
