@@ -163,7 +163,7 @@ An approximate solution $\tilde{x}$ is defined by
 
 \begin{theorem}[\textbf{General Error Bound}]
 Let $\gamma=\|\mathcal{Q}^\mathcal{L}_\mathcal{K}A(I-\mathcal{P}_\mathcal{K})\|_2$ and assume that b is a member of $\mathcal{K}$ and $x_0=0$. Then the exact solution $x_*$ of the problem is such that
-$$\|b-\mathcal{Q}^\mathcal{L}_\nmathcal{K}A\mathcal{P}_\mathcal{K}x_*\|_2\le\gamma\|(I-\mathcal{P}_\mathcal{K})x_*\|_2.$$
+$$\|b-\mathcal{Q}^\mathcal{L}_\mathcal{K}A\mathcal{P}_\mathcal{K}x_*\|_2\le\gamma\|(I-\mathcal{P}_\mathcal{K})x_*\|_2.$$
 \end{theorem}
 
 \begin{proof}
@@ -204,7 +204,7 @@ $$(Bx,x)(B^{-1}x,x)=\lambda\psi(y).$$
 Noting that $f(\lambda)=1/{\lambda}$ is a convex function for $x\in\mathbb{R}_{++}$, $\psi(y)$ containis all the convex combinations of $1/\lambda_i$s which is bounded above by line passing through $(\lambda_1,1/{\lambda_1})\;and\;(\lambda_n,1/{\lambda_n})$, i.e,
 $$\psi(y)\le \frac{1}{\lambda_1}+\frac{1}{\lambda_n}-\frac{\lambda}{\lambda_1\lambda_n}.$$
 $$\implies (Bx,x)(B^{-1}x,x)=\lambda\psi(y)\le \lambda\Big(\frac{1}{\lambda_1}+\frac{1}{\lambda_n}-\frac{\lambda}{\lambda_1\lambda_n}\Big).$$
-The right-hand side is maximum when $\lambda=\frac{\lambda_1+\lambda_n}{2}$  yielding,
+The right-hand side is maximum when $\lambda=\dfrac{\lambda_1+\lambda_n}{2}$  yielding,
 $$(Bx,x)(B^{-1}x,x)\le\frac{(\lambda_1+\lambda_n)^2}{4\lambda_1\lambda_n}$$
 \end{proof}
 
@@ -592,18 +592,23 @@ Inorder to conform with the standard notation used in the literature to describe
 \end{remark}
 
 The vector $x_{j+1},r_{j+1},p_{j+1}$ can be expressed as follows:
-$$x_{j+1}=x_j+\alpha_jp_j,\quad r_{j+1}=r_j-\alpha_jAp_j,\quad p_{j+1}=r_{j+1}-\beta_jp_j.$$
+$$x_{j+1}=x_j+\alpha_jp_j,\quad r_{j+1}=r_j-\alpha_jAp_j,\quad p_{j+1}=r_{j+1}+\beta_jp_j.$$
 It can be seen that $(Ap_j,r_j)=(Ap_j,p_j+\beta_jp_{j-1})=(Ap_j,p_j).$ Now imposing constraints,
 \begin{enumerate}
 \item Orthogonality Conditions on $r_i$'s gives $(r_j-\alpha_jAp_j,r_j)=0$, as a result,
 $$\alpha_j = \frac{(r_j,r_j)}{(Ap_j,r_j)}=\frac{(r_j,r_j)}{(Ap_j,p_j)}$$
-\item Conjugacy Conditions on $p_i$'s gives $(r_{j+1}-\beta_jp_j,Ap_j)=0$\\$\implies(r_{j+1}-\beta_jp_j,-\frac{1}{\alpha_j}(r_{j+1}-r_j))=0$, as a result,
-$$\beta_j=\frac{(r_{j+1},r_{j+1})}{(r_j,r_j)}$$
+\item Conjugacy Conditions on $p_i$'s gives $(p_{j+1},Ap_j)=0$. But,
+\begin{align*}
+(p_{j+1},Ap_j) &= (r_{j+1}+\beta_jp_j,Ap_j) = -\frac{1}{\alpha_j}(r_{j+1}+\beta_jp_j,r_{j+1}-r_j)\\ 
+&= -\frac{1}{\alpha_j}[(r_{j+1},r_{j+1})-\beta_j(r_j-r_{j+1},p_j)] \\
+&= -\frac{1}{\alpha_j}[(r_{j+1},r_{j+1})-\beta_j\alpha_j(Ap_j,p_j)]  \\
+&= -\frac{1}{\alpha_j}(r_{j+1},r_{j+1})+\beta_j(Ap_j,p_j)\\
+(p_{j+1},&Ap_j) = 0 \implies \beta_j=\frac{(r_{j+1},r_{j+1})}{(r_j,r_j)}
+\end{align*}
 \end{enumerate}
 It is important to note that the scalar $\alpha_j,\beta_j$ in this algorithm and D-Lanczos are different.
 
 Putting these relation together gives the following algorithm.
-\newpage
 
 \begin{algorithm}
 \caption{Conjugate Gradient}
@@ -619,5 +624,104 @@ Putting these relation together gives the following algorithm.
 \State EndDo
 \end{algorithmic}
 \end{algorithm}
+
+\section{Convergence Analysis}
+
+Here we show the convergence of CG Algorithm using Chebyshev polynomials.
+
+\subsection{Real Chebyshev Polynomials}
+
+\begin{mydef}
+The Chebyshev polynomial of the first kind of degree k is defined by:
+\[   
+C_k(t) = 
+     \begin{cases}	
+      \, cos[k\,cos^{-1}(t)], &\quad\text{for }|t|\le 1\\
+       cosh[k\,cosh^{-1}(t)], &\quad\text{otherwise.}\\
+     \end{cases}
+\]
+\end{mydef}
+
+It can be seen that $C_0(t)=1,\;C_1(t)=t,$ can be easily extended by the following trigonometric relation
+$$cos[(k+1)\theta]+cos[(k-1)\theta]=2cos\theta\,cosk\theta.$$
+This also shows the important three-term recurrence relation
+$$C_{k+1}(t)=2tC_k(t)-C_{k-1}(t).$$
+
+\begin{prop}
+If $|t|>1$, then $C_k(t)=\frac{1}{2}\bigg[\Big(t+\sqrt{t^2-1}\Big)^k+\Big(t+\sqrt{t^2-1}\Big)^{-k}\bigg]$
+\end{prop}
+
+\begin{proof}
+$\text{We know, }C_k(t) = cosh[k\,cosh^{-1}(t)],|t|>1,\;cosh\,\theta=\frac{1}{2}\big(e^\theta+e^{-\theta}\big).$ Then,
+$C_k(t) = \frac{1}{2}\Big[(e^\theta)^k+(e^\theta)^{-k}\Big],$ where $\theta = cosh^{-1}(t),$ i.e, $t=cosh\,\theta$ 
+\begin{align*}
+&\implies t = \frac{1}{2}\big(e^\theta+e^{-\theta}\big) \implies e^{2\theta}-2te^\theta+1=0 \\
+&\implies e^\theta = t \pm \sqrt{t^2-1}
+\end{align*}
+Notice that $t + \sqrt{t^2-1}=\frac{1}{t - \sqrt{t^2-1}}.$ Then, for $|t|>1,$
+$$C_k(t)=\frac{1}{2}\bigg[\Big(t+\sqrt{t^2-1}\Big)^k+\Big(t+\sqrt{t^2-1}\Big)^{-k}\bigg]\gtrapprox\frac{1}{2}\Big(t+\sqrt{t^2-1}\Big)^k.$$
+\end{proof}
+
+In what follows  we denote by $\mathbb{P}_k$ as the set of all polynomials of degree k.
+
+\begin{remark}
+The Chebyshev polynomials are polynomials with the largest possible leading coefficient whose absolute value on the interval $[-1,1]$ is bounded by 1.
+\end{remark}
+
+\begin{theorem}
+Let $[\alpha,\beta]$ be a non-empty interval in $\mathbb{R}$ and let $\gamma$ be any real scalar outside $[\alpha,\beta].$ Then,
+$$\hat{C}_k(t)=\frac{C_k\Big(1+2\frac{t-\beta}{\beta-\alpha}\Big)}{C_k\Big(1+2\frac{\gamma-\beta}{\beta-\alpha}\Big)}=\underset{p\in\mathbb{P}_k,\,p(\gamma)=1}{\arg\min}\;\;\underset{t\in[\alpha,\beta]}{\max}|p(t)|.$$
+\end{theorem}
+
+\begin{remark}
+If $\gamma\le\alpha$, the absolute values are needed in the denominators and exchanging the roles of $\alpha$ and $\beta$, i.e,
+$$\hat{C}_k(t)=\frac{C_k\Big(1+2\frac{\alpha-t}{\beta-\alpha}\Big)}{C_k\Big(1+2\frac{\alpha-\gamma}{\beta-\alpha}\Big)}.$$
+\end{remark}
+
+We can further state following which is the result of the above remark and theorem.
+
+\begin{corollary}
+$\underset{p\in\mathbb{P}_k,\,p(\gamma)=1}{\arg\min}\;\;\underset{t\in[\alpha,\beta]}{\max}|p(t)| = \dfrac{1}{|C_k(1+2\frac{\gamma-\beta}{\beta-\alpha})|}$
+\end{corollary}
+
+\subsection{Convergence of CG Algorithm}
+
+\begin{lemma}
+Let $x_m$ be the approximate solution obtained from the m-th step of the CG algorithm, and let $d_m=x_*-x_m$ where $x_*$ is the exact solution. Then, $x_m=x_0+q_m(A)r_0$, where $q_m$ is a polynomial of degree $m-1$ such that
+$$\|(I-Aq_m(A))d_0\|_A = \underset{q\in \mathbb{P}_{m-1}}{\min}\|(I-Aq(A))d_0\|_A.$$
+\end{lemma}
+
+\begin{proof}
+Consider the following objective function in the polynomial q
+$$\|(I-Aq(A))d_0\|_A = \|d_0-Aq(A)d_0\|_A = \|x_*-(x_0+Aq(A)r_0)\|_A = \|x_*-x\|_A.$$
+And also observe that $\forall\,x\in x_0+\mathcal{K}_m(A,r_0),\,x=x_0+q(A)r_0,q\in\mathbb{P}_{m-1}$. Therefore minimizing x over $x_0+\mathcal{K}_m(A,r_0)$ and q over $\mathbb{P}_{m-1}$ are equivalent. We know that $x_m = \underset{x\in x_0+\mathcal{K}}{\arg\min}\|x_*-x\|_A$. $\text{Hence, }q_m=\underset{q\in \mathbb{P}_{m-1}}{\arg\min}\|(I-Aq(A))d_0\|_A.$
+\end{proof}
+
+\begin{theorem}
+Let $\eta=\dfrac{\lambda_n}{\lambda_1-\lambda_n}$ and $\kappa = \dfrac{\lambda_1}{\lambda_n},$ then
+$$\|x_*-x_m\|_A\le \dfrac{\|x_*-x_0\|_A}{C_m(1+2\eta)}\le 2\bigg[\dfrac{\sqrt{\kappa}-1}{\sqrt{\kappa}+1}\bigg]^m\|x_*-x_0\|_A.$$
+\end{theorem}
+
+\begin{proof}
+From the previous lemma, it is known that $\|x_*-x_m\|_A$ is the minimum of the error over polynomials $r(t)=1-tq(t)$ which take the value one at 0, i.e,
+$$\|x_*-x_m\|_A=\underset{r\in \mathbb{P}_m,\;r(0)=1}{\min}\|r(A)d_0\|_A.$$
+Let $\lambda_i,i=1,2,\cdots,n$ are the eigenvalues of A, and $\xi_i,i=1,2,\cdots,n$ are the components of the initial error $d_0$ in the eigenbasis. Let eigen decomposition of $A=U\Lambda U^T,$ where $\Lambda=diag(\lambda_1,\lambda_2,\cdots,\lambda_n),$ then $d_0=U\xi,\;\xi=[\xi_1\;\xi_2\;\cdots\;\xi_n]^T$ and $r(A)=Ur(\Lambda)U^T$. Then,
+\begin{align*}
+\|r(A)d_0\|^2_A &= (Ar(A)d_0,r(A)d_0) = d^T_0r(A)A\,r(A)d_0 \\
+&= \xi^TU^TUr(\Lambda)U^TU{\Lambda}U^TUr(\Lambda)U^T U\xi \\
+&= \xi^T \Lambda r(\Lambda)^2\xi = \sum^n_{i=1}\lambda_ir(\lambda_i)^2\xi^2_i \le \underset{i}{\max}(r(\lambda_i)^2)\|d_0\|^2_A \\
+\implies \|r(A)d_0\|^2_A &\le \underset{\lambda\in[\lambda_n,\lambda_1]}{\max}(r(\lambda_i)^2)\|d_0\|^2_A.
+\end{align*}
+Therefore,
+\begin{align*}
+\|x_*-x_m\|_A&\le\underset{r\in \mathbb{P}_m,\;r(0)=1}{\min}\;\;\underset{\lambda\in[\lambda_n,\lambda_1]}{\max}|r(\lambda_i)|\|d_0\|_A \\
+&= \dfrac{\|x_*-x_0\|_A}{C_m(1+2\eta)}.
+\end{align*}
+We know, $C_m(t)\ge \frac{1}{2}\Big(t+\sqrt{t^2-1}\Big)^m$, then 
+$$C_m(1+2\eta)\ge \frac{1}{2}\Big(1+2\eta+2\sqrt{\eta(\eta-1)}\Big)^m.$$
+Now notice that
+$$1+2\eta+2\sqrt{\eta(\eta-1)} = (\sqrt{\eta}+\sqrt{\eta+1})^2  = \dfrac{(\sqrt{\lambda_n}+\sqrt{\lambda_1})^2}{\lambda_1-\lambda_n} = \dfrac{\sqrt{\kappa}-1}{\sqrt{\kappa}+1}.$$
+$$\text{Therefore, }\|x_*-x_m\|_A\le 2\bigg[\dfrac{\sqrt{\kappa}-1}{\sqrt{\kappa}+1}\bigg]^m\|x_*-x_0\|_A.$$
+\end{proof}
 
 \end{document}

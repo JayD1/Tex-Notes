@@ -8,3 +8,6 @@
 \contentsline {subsection}{\numberline {4.2}Variation 1: IOM and DIOM}{10}
 \contentsline {section}{\numberline {5}Symmetric Lanczos Algorithm}{12}
 \contentsline {section}{\numberline {6}Conjugate Gradient}{13}
+\contentsline {section}{\numberline {7}Convergence Analysis}{15}
+\contentsline {subsection}{\numberline {7.1}Real Chebyshev Polynomials}{15}
+\contentsline {subsection}{\numberline {7.2}Convergence of CG Algorithm}{16}
