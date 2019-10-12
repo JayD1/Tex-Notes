@@ -237,7 +237,9 @@ Now consider,
 (d_{k+1},\alpha_k r_k)_A &= (Ad_{k+1},\alpha_k r_k) = (r_{k+1},\alpha_k r_k), \\
 &= (r_k-\alpha_kAr_k,r_k),\text{ where }\alpha_k=\frac{(r_k,r_k)}{(Ar_k,r_k)}, \\
 &= (r_k,r_k)-\frac{(r_k,r_k)}{(Ar_k,r_k)}(Ar_k,r_k) = 0 = (r_{k+1},r_k). \\
-\implies (d_{k+1},\alpha_k r_k)_A &= 0, \\
+\implies (d_{k+1},\alpha_k r_k)_A &= 0.
+\end{align*}
+\begin{align*}
 \implies \|d_{k+1}\|^2_A &= (d_{k+1},d_k)_A \\
 &= (d_{k+1},Ad_k) \qquad(\text{since A is SPD}),\\
 &= (d_k-\alpha_k r_k,r_k) \\
@@ -374,6 +376,8 @@ b-Ax_m &= b-Ax_0-AV_my_m \\
 \State Set $x_0=x_m$ and go to 1.
 \end{algorithmic}
 \end{algorithm}
+
+\newpage
 
 \subsection{Variation 1: IOM and DIOM}
 
@@ -513,8 +517,6 @@ This leads to the following form of Modified Gram-Schmidt variant of \\ Arnoldi'
 \end{algorithmic}
 \end{algorithm}
 
-\newpage
-
 \section{Conjugate Gradient}
 
 The conjugate gradient algorithm can be derived from the Lanczos algorithm in the same way DIOM was derived from IOM. Infact, the conjugate gradient algorithmm can be viewed as a variation of DIOM for the case when A is symmetric.
@@ -609,6 +611,8 @@ $$\alpha_j = \frac{(r_j,r_j)}{(Ap_j,r_j)}=\frac{(r_j,r_j)}{(Ap_j,p_j)}$$
 It is important to note that the scalar $\alpha_j,\beta_j$ in this algorithm and D-Lanczos are different.
 
 Putting these relation together gives the following algorithm.
+
+\newpage
 
 \begin{algorithm}
 \caption{Conjugate Gradient}

@@ -4,10 +4,10 @@
 \contentsline {subsection}{\numberline {2.1}Steepest Descent}{5}
 \contentsline {section}{\numberline {3}Krylov Subspace Methods}{7}
 \contentsline {section}{\numberline {4}Arnoldi's Method for Linear Systems (FOM)}{8}
-\contentsline {subsection}{\numberline {4.1}Variation 1: Restarted FOM}{10}
+\contentsline {subsection}{\numberline {4.1}Variation 1: Restarted FOM}{9}
 \contentsline {subsection}{\numberline {4.2}Variation 1: IOM and DIOM}{10}
 \contentsline {section}{\numberline {5}Symmetric Lanczos Algorithm}{12}
-\contentsline {section}{\numberline {6}Conjugate Gradient}{13}
+\contentsline {section}{\numberline {6}Conjugate Gradient}{12}
 \contentsline {section}{\numberline {7}Convergence Analysis}{15}
 \contentsline {subsection}{\numberline {7.1}Real Chebyshev Polynomials}{15}
 \contentsline {subsection}{\numberline {7.2}Convergence of CG Algorithm}{16}
