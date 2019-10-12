@@ -284,6 +284,8 @@ Therefore, $\mathcal{K}_\mu$ is invariant under A. Similarily it can be seen tha
 $dim(\mathcal{K}_m) = min\{m,grade(v)\}.$
 \end{corollary}
 
+\newpage
+
 \section{Arnoldi's Method for Linear Systems (FOM)}
 
 Arnoldi's procedure is an algorithm for building an orthogonal basis of the Krylov subspace $\mathcal{K}_m$.
@@ -328,6 +330,8 @@ $$V^T_mAV_m=H_m,\;V^T_mr_0=V^T_m(\beta v_1)=\beta e_1.$$
 As a result, the approximate solution using the above m-dimensional subspaces is given by:
 $$x_m=x_0+V_my_m,$$
 where $y_m$ can be found by imposing orthogonality constraint that $$V^T_m(b-Ax_m)=0\implies y_m=H^{-1}_m(\beta e_1).$$
+
+\newpage
 
 \begin{algorithm}
 \caption{Full Orthogonalization Method (FOM)}
@@ -377,9 +381,10 @@ b-Ax_m &= b-Ax_0-AV_my_m \\
 \end{algorithmic}
 \end{algorithm}
 
-\newpage
-
 \subsection{Variation 1: IOM and DIOM}
+
+A formula can be developed whereby the current approximate solution $x_m$ can be computed from the previous approximation $x_{m-1}$ and a small number vectors are updated at each step. This progressive formulation of the solution leads to an algorithm termed as Direct IOM (DIOM).\\
+The Hessenberg matrix obtained from IOM has a band structure with bandwidth $k+1$, i.e,
 
 \begin{algorithm}
 \caption{Incomplete Orthogonalization Method (IOM)}
@@ -401,8 +406,7 @@ b-Ax_m &= b-Ax_0-AV_my_m \\
 \end{algorithmic}
 \end{algorithm}
 
-A formula can be developed whereby the current approximate solution $x_m$ can be computed from the previous approximation $x_{m-1}$ and a small number vectors are updated at each step. This progressive formulation of the solution leads to an algorithm termed as Direct IOM (DIOM).\\
-The Hessenberg matrix obtained from IOM has a band structure with bandwidth $k+1$, i.e,
+
 \begin{align*}
 H_m &= \left( \begin{array}{ccccc}
 h_{11} & h_{12} & h_{13} &  &  \\
@@ -602,17 +606,12 @@ $$\alpha_j = \frac{(r_j,r_j)}{(Ap_j,r_j)}=\frac{(r_j,r_j)}{(Ap_j,p_j)}$$
 \item Conjugacy Conditions on $p_i$'s gives $(p_{j+1},Ap_j)=0$. But,
 \begin{align*}
 (p_{j+1},Ap_j) &= (r_{j+1}+\beta_jp_j,Ap_j) = -\frac{1}{\alpha_j}(r_{j+1}+\beta_jp_j,r_{j+1}-r_j)\\ 
-&= -\frac{1}{\alpha_j}[(r_{j+1},r_{j+1})-\beta_j(r_j-r_{j+1},p_j)] \\
-&= -\frac{1}{\alpha_j}[(r_{j+1},r_{j+1})-\beta_j\alpha_j(Ap_j,p_j)]  \\
-&= -\frac{1}{\alpha_j}(r_{j+1},r_{j+1})+\beta_j(Ap_j,p_j)\\
 (p_{j+1},&Ap_j) = 0 \implies \beta_j=\frac{(r_{j+1},r_{j+1})}{(r_j,r_j)}
 \end{align*}
 \end{enumerate}
 It is important to note that the scalar $\alpha_j,\beta_j$ in this algorithm and D-Lanczos are different.
 
 Putting these relation together gives the following algorithm.
-
-\newpage
 
 \begin{algorithm}
 \caption{Conjugate Gradient}
@@ -628,6 +627,8 @@ Putting these relation together gives the following algorithm.
 \State EndDo
 \end{algorithmic}
 \end{algorithm}
+
+\newpage
 
 \section{Convergence Analysis}
 
