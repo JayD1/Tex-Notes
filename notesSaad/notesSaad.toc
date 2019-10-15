@@ -11,3 +11,6 @@
 \contentsline {section}{\numberline {7}Convergence Analysis}{15}
 \contentsline {subsection}{\numberline {7.1}Real Chebyshev Polynomials}{15}
 \contentsline {subsection}{\numberline {7.2}Convergence of CG Algorithm}{16}
+\contentsline {section}{\numberline {8}Deflated-CG Algorithm}{17}
+\contentsline {subsection}{\numberline {8.1}Deflated Lanczos algorithm}{17}
+\contentsline {subsection}{\numberline {8.2}Deflated-CG algorithm}{18}

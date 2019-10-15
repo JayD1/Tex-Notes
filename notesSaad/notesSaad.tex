@@ -729,4 +729,95 @@ $$1+2\eta+2\sqrt{\eta(\eta-1)} = (\sqrt{\eta}+\sqrt{\eta+1})^2  = \dfrac{(\sqrt{
 $$\text{Therefore, }\|x_*-x_m\|_A\le 2\bigg[\dfrac{\sqrt{\kappa}-1}{\sqrt{\kappa}+1}\bigg]^m\|x_*-x_0\|_A.$$
 \end{proof}
 
+\section{Deflated-CG Algorithm}
+
+\subsection{Deflated Lanczos algorithm}
+
+A $\in \mathbb{R}^{n \times n}$ is SPD and define $W=[w_1\;w_2\;\cdots\;w_k],\;w_i\in\mathbb{R}^n$ are linearly independent vectors. Let $v_1\in\mathbb{R}^n$ be a unit vector such that $W^Tv_1=0.$
+
+\begin{prop}
+Let W and A be defined as above, then $W^TAW$ is non-singular.
+\end{prop}
+
+\begin{proof}
+FILL IN
+\end{proof}
+
+We want to generate a sequence $\{v_j\}_{j=1,2,\cdots}$ of vectors such that 
+$$v_{j+1}\perp \text{span}\{W,v_1,v_2,\cdots,v_j\},\;\|v_{j+1}\|_2=1.$$
+
+To obtain such a sequence, we apply Lanczos algorithm to the following auxiliary  matrix:
+$$B=A-AW(W^TAW)^{-1}W^TA,$$
+with the given initial vector $v_1$. Then we get a sequence $\{v_j\}_{j=1,2,\cdots}$ which satisfies
+$$BV_j=V_jT_j+\sigma_{j+1}v_{j+1}e^T_j,\text{ where }
+T_j = \left( \begin{array}{ccccc}
+\rho_1 & \sigma_2 &  &  &  \\
+\sigma_2 & \rho_2 & \sigma_3 &  &  \\
+ & . & . & . &  \\
+ &  & \sigma_{j-1} & \rho_{j-1} & \sigma_{j} \\
+ &  &  & \sigma_j & \rho_j \\
+\end{array} \right)$$
+
+It is guaranteed by the Lanczos algorithm that the vectors $v_j$ are orthogonal to each other. By comparing the last column on the both sides of the above equation, we get
+$$\sigma_{j+1}v_{j+1}=Bv_j-\sigma_jv_{j-1}-\rho_jv_j.$$
+
+It can also be seen that $W^TB=0.$
+
+\begin{prop}
+Let W and $v_{j+1}$ be defined as above. Then $W^Tv_{j+1}=0\;\forall\;j=1,2,\cdots.$
+\end{prop}
+
+\begin{proof}
+We prove by induction on j. It is clear from the definition that $W^Tv_1=0.$ Now assume that the propsition is true till $j-1$, i.e, $W^Tv_{k+1}=0\;\forall\;k=1,2,\cdots,j.$ Now we prove for $k=j+1.$ 
+
+We know, $\sigma_{j+1}v_{j+1}=Bv_j-\sigma_jv_{j-1}-\rho_jv_j$, then
+$$\implies \sigma_{j+1}W^Tv_{j+1} = W^TBv_j-\sigma_jW^Tv_{j-1}-\rho_jW^Tv_j=0.$$
+\end{proof}
+
+Therefore, we arrive at the following algorithm:
+
+\begin{algorithm}
+\caption{Deflated Lanczos Algorithm}
+\begin{algorithmic}[1]
+\State Choose k linearly independent vectors $w_1,w_2,\cdots,w_k$ and \\ \qquad define $W=[w_1\;w_2\;\cdots\;w_k]$
+\State Choose an initial vector $v_1$ such that $W^Tv_1=0\text{ and }\|v_1\|_2=1.$
+\For{$j= 1,2,\cdots,m$}
+	\State Solve $W^TAW\hat{v_j}=W^TAv_j\text{ for }\hat{v_j}$
+	\State $z_j=Av_j-AW\hat{v_j}$
+	\State $\rho_j=v^T_jz_j$
+	\State $\hat{v_{j+1}}=z_j-\sigma_jv_{j-1}\rho_jv_j$
+	\State $\sigma_{j+1}=\|\hat{v_{j+1}}\|_2$; If $\sigma_{j+1}=0$ Exit.
+	\State $v_{j+1}=\hat{v_{j+1}}/\sigma_{j+1}$
+\EndFor
+\State EndDo
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Deflated-CG algorithm}
+
+We want to solve $Ax=b$, A is SPD. Based on deflated Lanczos algorithm we wish to derive a projection method similar to CG-algorithm. 
+
+Assume $x_0$ is the initial guess such that $r_0=b-Ax_0$ such that $r_0\perp W.$ Now set $v_1=r_0/\|r_0\|_2$ and define $\mathcal{K}_{k,j}(A,W,r_0)\equiv\text{span}\{W,V_j\}$. At j-th step of the projection, we seek for the approximate solution $x_j\in x_0+\mathcal{K}_{k,j}(A,W,r_0)$ and $r_j=b-Ax_j\perp \mathcal{K}_{k,j}(A,W,r_0).$
+
+\begin{lemma}
+If $x_i\;and\;r_j$ satisfy the above conditions, then $r_j=c_jv_{j+1},$ for some scalar $c_j$. Thus $\mathcal{K}_{k,j}(A,W,r_0)=\text{span}\{W,r_0,r_1,\cdots,v_{j-1}\}$ and the residuals $r_i$'s are orthogonal to each other.
+\end{lemma}
+
+\begin{proof}
+Let $x_j=x_0+W\hat{\xi}_j+V_j\hat{\eta}_j$, for some $\hat{\xi}_j, \hat{\eta}_j.$ And we know $B=A-AW(W^TAW)^{-1}W^TA$ and $BV_j=V_jT_j+\sigma_{j+1}v_{j+1}e^T_j$, then we get $$AV_j=AW\Delta_j+V_jT_j+\sigma_{j+1}v_{j+1}e^T_j, \;\Delta_j=(W^TAW)^{-1}W^TA.$$
+Hence, $r_j = r_0-AW\hat{\xi}_j-AV_j\hat{\eta}_j = r_0-AW\hat{\xi}_j-(AW\Delta_j+V_jT_j+\sigma_{j+1}v_{j+1}e^T_j)\hat{\eta}_j.$
+\begin{align*}
+W^Tr_j &= W^Tr_0-(W^TAW)(\hat{\xi}_j-\Delta_j\hat{\eta}_j)-W^T(V_jT_j+\sigma_{j+1}v_{j+1}e^T_j)\hat{\eta}_j \\
+\implies 0 &= -(W^TAW)\hat{\xi}_j - (W^TAW)\Delta_j\hat{\eta}_j \\
+\implies (&W^TAW)\hat{\xi}_j + (W^TAW)\Delta_j\hat{\eta}_j = 0 \implies \hat{\xi}_j = -\Delta_j\hat{\eta}_j
+\end{align*}
+Therefore, we have $$x_j = x_0-W\Delta_j\hat{\eta}_j+V_j\hat{\eta}_j$$ and $$r_j = r_0-(V_jT_j+\sigma_{j+1}v_{j+1}e^T_j)\hat{\eta}_j.$$
+We know, $V^Tr_j=0\implies 0 = V^Tr_0-T_j\hat{\eta}_j\implies \hat{\eta}_j = \|r_0\|_2T^{-1}_je_1$. Now substituting this equation in the above, we get
+\begin{align*}
+r_j &= r_0-\|r_0\|_2V_jT_j(T^{-1}_je_1)-\|r_0\|_2\sigma_{j+1}v_{j+1}e^T_j(T^{-1}_je_1) \\
+\implies r_j &= (-\sigma_{j+1}e^T_jT^{-1}_je_1)v_{j+1} \\
+\implies r_j &= c_jv_{j+1}
+\end{align*}
+\end{proof}
+
 \end{document}
