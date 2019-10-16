@@ -29,7 +29,7 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{mydef}{Definition}
 \newtheorem*{remark}{Remark}
-\newtheorem*{prop}{Proposition}
+\newtheorem{prop}{Proposition}
 
 \section{General Projection Methods}
 
@@ -800,7 +800,7 @@ We want to solve $Ax=b$, A is SPD. Based on deflated Lanczos algorithm we wish t
 Assume $x_0$ is the initial guess and initial residue $r_0=b-Ax_0$ such that $r_0\perp W.$ Now set $v_1=r_0/\|r_0\|_2$ and define $\mathcal{K}_{k,j}(A,W,r_0)\equiv\text{span}\{W,V_j\}$. At j-th step of the projection, we seek for the approximate solution $x_j\in x_0+\mathcal{K}_{k,j}(A,W,r_0)$ and $r_j=b-Ax_j\perp \mathcal{K}_{k,j}(A,W,r_0).$
 
 \begin{lemma}
-If $x_i\;and\;r_j$ satisfy the above conditions, then $r_j=c_jv_{j+1},$ for some scalar $c_j$. Thus $\mathcal{K}_{k,j}(A,W,r_0)=\text{span}\{W,r_0,r_1,\cdots,r_{j-1}\}$ and the residuals $r_i$'s are orthogonal to each other.
+If $x_j\;and\;r_j$ satisfy the above conditions, then $r_j=c_jv_{j+1},$ for some scalar $c_j$. Thus $\mathcal{K}_{k,j}(A,W,r_0)=\text{span}\{W,r_0,r_1,\cdots,r_{j-1}\}$ and the residuals $r_i$'s are orthogonal to each other.
 \end{lemma}
 
 \begin{proof}
@@ -819,5 +819,101 @@ r_j &= r_0-\|r_0\|_2V_jT_j(T^{-1}_je_1)-\|r_0\|_2\sigma_{j+1}v_{j+1}e^T_j(T^{-1}
 \implies r_j &= c_jv_{j+1}
 \end{align*}
 \end{proof}
+
+Let $T_j=L_jD_jL^T_j$ and define $P_j\equiv [p_0\;p_1\;\cdots\;p_{j-1}]=(-W\Delta_j+V_j)L^{-T}_j\Lambda_j$, where $\Lambda_j=\text{diag}\{c_0,c_1,\cdots,c_{j-1}\}.$
+
+\begin{prop}
+The approximate solution $x_j$, the residual $r_j$ and the descent direction $p_j$ satisfy the following recurrence relations:
+\begin{align*}
+x_j=x_{j-1}+\alpha_{j-1}p_{j-1},\;r_j=r_{j-1}-\alpha_{j-1}Ap_{j-1},\;p_j=r_j+\beta_{j-1}p_{j-1}-W\hat{\mu}_j,
+\end{align*}
+for some $\alpha_{j-1},\beta_{j-1},\hat{\mu}_j.$ Thus $\mathcal{K}_{k,j}(A,W,r_0)=\text{span}\{W,p_0,p_1,\cdots,p_{j-1}\}$.
+\end{prop}
+
+\begin{proof}
+Let $\hat{\zeta}_j=\|r_0\|_2(L_jD_j\Lambda_j)^{-1}e_1$. We know,
+\begin{align*}
+x_j&=x_0+\|r_0\|_2(-W\Delta_j+V_j)T^{-1}_je_1\\
+&=x_0+[(-W\Delta_j+V_j)L^{-T}_j\Lambda_j][\|r_0\|_2\Lambda^{-1}_jL^{T}_j(L_jD_jL^T_j)^{-1}_je_1] \\
+&= x_0+P_j\zeta_j
+\end{align*}
+Now notice that $L_jD_j\Lambda_j$ is lower bidiagonal matrix, then we have,
+$$\zeta_j=\left[ \begin{array}{c} \zeta_{j-1} \\ \alpha_{j-1} \end{array} \right],\text{ for some scalar }\alpha_{j-1}.$$
+Hence, $$x_j = x_{j-1}+\alpha_{j-1}p_{j-1}\text{ and }r_j = r_{j-1}-\alpha_{j-1}Ap_{j-1}.$$
+We know that $P_j=(-W\Delta_j+V_j)L^{-T}_j\Lambda_j,$ then 
+$$P_j\Lambda^{-1}_jL^{T}_j\Lambda_j=(-W\Delta_j\Lambda_j+V_j\Lambda_j).$$
+Now notice that $\Lambda^{-1}_jL^{T}_j\Lambda_j$ is a unit upper bidiagonal matrix. Comparing the last columns of the both sides of this equation 
+$$p_{j-1}-\beta_{j-2}p_{j-2}=-W\hat{\mu}_{j-1}+c_{j-1}v_j,$$
+where $\hat{\mu}_{j-1}=c_{j-1}\hat{v}_j\;and\;\beta_{j-2}=-c_{j-1}u_{j-1,j}/c_{j-2}.$
+\end{proof}
+
+\begin{prop}
+The vectors $p_j$ are A-orthogonal to each other, i.e, $P^T_jAP_j$ is diagonal. In addition, they are also A-orthogonal to all $w_i$'s, i.e, $W^TAP_j=0.$
+\end{prop}
+
+\begin{proof}
+\begin{align*}
+P^T_jAP_j&= P^T_j(-AW\Delta_j+AV_j)L^{-T}_j\Lambda_j \\
+&= P^T_j(V_jT_j+\sigma_{j+1}v_{j+1}e^T_j)L^{-T}_j\Lambda_j \\
+&= \Lambda_jL^{-1}_j(-\Delta^T_jW^T+V^T_j)(V_jT_j+\sigma_{j+1}v_{j+1}e^T_j)L^{-T}_j\Lambda_j \\
+&= \Lambda_jL^{-1}_jT_jL^{-T}_j\Lambda_j = \Lambda^2_jD_j\text{, which is diagonal.}
+\end{align*}
+Consider, 
+$$W^TAP_j=W^T(V_jT_j+\sigma_{j+1}v_{j+1}e^T_j)L^{-T}_j\Lambda_j=0.$$
+\end{proof}
+
+\begin{prop}
+The coefficients in Delfated-CG satisfy the relations
+$$\alpha_j=\dfrac{(r_j,r_j)}{(Ap_j,p_j)},\quad \hat{\mu}_j=(W^TAW)^{-1}Ar_j,\quad \beta_j=\dfrac{(r_{j+1},r_{j+1})}{(r_j,r_j)}.$$
+\end{prop}
+
+\begin{proof}
+From the orthogonality constraints on residuals, $r^T_{j-1}r_j=0.$ Then,
+\begin{align*}
+&\implies r^T_{j-1}(r_{j-1}-\alpha_{j-1}Ap_{j-1}) = 0 \\
+&\implies \alpha_{j-1}=\dfrac{(r_{j-1},r_{j-1})}{(r_{j-1},Ap_{j-1})} \\
+\text{But, }&(p_{j-2},Ap_{j-1})=0\;and\;(W\hat{\mu}_{j-1},Ap_{j-1})=0 \\
+&\implies \alpha_{j-1}=\dfrac{(r_{j-1},r_{j-1})}{(\beta_{j-2}p_{j-2}+r_{j-1}-W\hat{\mu}_{j-1},Ap_{j-1})} \\
+&\implies \alpha_{j-1}=\dfrac{(r_{j-1},r_{j-1})}{(p_{j-1},Ap_{j-1})}
+\end{align*}
+We know, 
+\begin{align*}
+p_j&=r_j+\beta_{j-1}p_{j-1}-W\hat{\mu}_j \\
+\implies W^TAp_j&=W^TAr_j+\beta_{j-1}W^TAp_{j-1}-W^TAW\hat{\mu}_j \\
+\implies \hat{\mu}_j&=(W^TAW)^{-1}Ar_j \\
+\text{Similarly, }p^T_{j-1}Ap_j&=p^T_{j-1}Ar_j+\beta_{j-1}p^T_{j-1}Ap_{j-1}-p^T_{j-1}AW\hat{\mu}_j \\
+\implies \beta_{j-1} &= -\dfrac{(Ap_{j-1},r_j)}{(p_{j-1},Ap_{j-1})}=\dfrac{1}{\alpha_{j-1}}\dfrac{(r_j-r_{j-1},r_j)}{(p_{j-1},Ap_{j-1})} \\
+\implies \beta_{j-1} &= \dfrac{(r_{j+1},r_{j+1})}{(r_j,r_j)}
+\end{align*}
+\end{proof}
+
+\begin{remark}
+To guarantee that initial guess $x_0$ satisfies $W^Tr_0=0$, we can choose $x_0$ in the form 
+$$x_0=x_{-1}+W(W^TAW)^{-1}W^Tr_{-1},$$
+where $x_{-1}$ is arbitrary and $r_{-1}=b-Ax_{-1}$. \\
+Then, $$W^Tr_0 = W^Tr_{-1}-(W^TAW)(W^TAW)^{-1}W^Tr_{-1}=0.$$
+\end{remark}
+
+Putting these relation together gives the following algorithm.
+
+\newpage
+
+\begin{algorithm}
+\caption{Deflated-CG}
+\begin{algorithmic}[1]
+\State Choose k linearly independent vectors $w_1,w_2,\cdots,w_k$ and \\ \qquad define $W=[w_1\;w_2\;\cdots\;w_k]$
+\State Choose an initial guess $x_0$ such that $W^Tr_0=0,$ where $r_0=b-Ax_0$
+\State Solve $W^TAW\hat{\mu}_0=W^TAr_0$ for $\hat{\mu}_0$ and set $p_0=r_0-W\hat{\mu}_0$
+\For{$j= 1,2,\cdots,m$,}
+	\State $\alpha_{j-1}=(r_{j-1},r_{j-1})/(Ap_{j-1},p_{j-1})$
+	\State $x_{j}=x_{j-1}+\alpha_{j-1}p_{j-1}$
+	\State $r_{j}=r_{j-1}-\alpha_{j-1}Ap_{j-1}$
+	\State $\beta_{j-1}=(r_j,r_j)/(r_{j-1},r_{j-1})$
+	\State Solve $W^TAW\hat{\mu}_j=W^TAr_j$ for $\hat{\mu}_j$
+	\State $p_{j}=r_{j}+\beta_{j-1}p_{j-1}-W\hat{\mu}_j$
+\EndFor
+\State EndDo
+\end{algorithmic}
+\end{algorithm}
 
 \end{document}
