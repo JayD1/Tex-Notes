@@ -785,7 +785,7 @@ Therefore, we arrive at the following algorithm:
 	\State Solve $W^TAW\hat{v_j}=W^TAv_j\text{ for }\hat{v_j}$
 	\State $z_j=Av_j-AW\hat{v_j}$
 	\State $\rho_j=v^T_jz_j$
-	\State $\hat{v_{j+1}}=z_j-\sigma_jv_{j-1}\rho_jv_j$
+	\State $\hat{v_{j+1}}=z_j-\sigma_jv_{j-1}-\rho_jv_j$
 	\State $\sigma_{j+1}=\|\hat{v_{j+1}}\|_2$; If $\sigma_{j+1}=0$ Exit.
 	\State $v_{j+1}=\hat{v_{j+1}}/\sigma_{j+1}$
 \EndFor
@@ -797,10 +797,10 @@ Therefore, we arrive at the following algorithm:
 
 We want to solve $Ax=b$, A is SPD. Based on deflated Lanczos algorithm we wish to derive a projection method similar to CG-algorithm. 
 
-Assume $x_0$ is the initial guess such that $r_0=b-Ax_0$ such that $r_0\perp W.$ Now set $v_1=r_0/\|r_0\|_2$ and define $\mathcal{K}_{k,j}(A,W,r_0)\equiv\text{span}\{W,V_j\}$. At j-th step of the projection, we seek for the approximate solution $x_j\in x_0+\mathcal{K}_{k,j}(A,W,r_0)$ and $r_j=b-Ax_j\perp \mathcal{K}_{k,j}(A,W,r_0).$
+Assume $x_0$ is the initial guess and initial residue $r_0=b-Ax_0$ such that $r_0\perp W.$ Now set $v_1=r_0/\|r_0\|_2$ and define $\mathcal{K}_{k,j}(A,W,r_0)\equiv\text{span}\{W,V_j\}$. At j-th step of the projection, we seek for the approximate solution $x_j\in x_0+\mathcal{K}_{k,j}(A,W,r_0)$ and $r_j=b-Ax_j\perp \mathcal{K}_{k,j}(A,W,r_0).$
 
 \begin{lemma}
-If $x_i\;and\;r_j$ satisfy the above conditions, then $r_j=c_jv_{j+1},$ for some scalar $c_j$. Thus $\mathcal{K}_{k,j}(A,W,r_0)=\text{span}\{W,r_0,r_1,\cdots,v_{j-1}\}$ and the residuals $r_i$'s are orthogonal to each other.
+If $x_i\;and\;r_j$ satisfy the above conditions, then $r_j=c_jv_{j+1},$ for some scalar $c_j$. Thus $\mathcal{K}_{k,j}(A,W,r_0)=\text{span}\{W,r_0,r_1,\cdots,r_{j-1}\}$ and the residuals $r_i$'s are orthogonal to each other.
 \end{lemma}
 
 \begin{proof}
@@ -812,10 +812,10 @@ W^Tr_j &= W^Tr_0-(W^TAW)(\hat{\xi}_j-\Delta_j\hat{\eta}_j)-W^T(V_jT_j+\sigma_{j+
 \implies (&W^TAW)\hat{\xi}_j + (W^TAW)\Delta_j\hat{\eta}_j = 0 \implies \hat{\xi}_j = -\Delta_j\hat{\eta}_j
 \end{align*}
 Therefore, we have $$x_j = x_0-W\Delta_j\hat{\eta}_j+V_j\hat{\eta}_j$$ and $$r_j = r_0-(V_jT_j+\sigma_{j+1}v_{j+1}e^T_j)\hat{\eta}_j.$$
-We know, $V^Tr_j=0\implies 0 = V^Tr_0-T_j\hat{\eta}_j\implies \hat{\eta}_j = \|r_0\|_2T^{-1}_je_1$. Now substituting this equation in the above, we get
+We know, $V_j^Tr_j=0\implies 0 = V_j^Tr_0-T_j\hat{\eta}_j\implies \hat{\eta}_j = \|r_0\|_2T^{-1}_je_1$. Now substituting this equation in the above equation, we get
 \begin{align*}
 r_j &= r_0-\|r_0\|_2V_jT_j(T^{-1}_je_1)-\|r_0\|_2\sigma_{j+1}v_{j+1}e^T_j(T^{-1}_je_1) \\
-\implies r_j &= (-\sigma_{j+1}e^T_jT^{-1}_je_1)v_{j+1} \\
+\implies r_j &= (-\|r_0\|_2\sigma_{j+1}e^T_jT^{-1}_je_1)v_{j+1} \\
 \implies r_j &= c_jv_{j+1}
 \end{align*}
 \end{proof}
