@@ -736,11 +736,11 @@ $$\text{Therefore, }\|x_*-x_m\|_A\le 2\bigg[\dfrac{\sqrt{\kappa}-1}{\sqrt{\kappa
 A $\in \mathbb{R}^{n \times n}$ is SPD and define $W=[w_1\;w_2\;\cdots\;w_k],\;w_i\in\mathbb{R}^n$ are linearly independent vectors. Let $v_1\in\mathbb{R}^n$ be a unit vector such that $W^Tv_1=0.$
 
 \begin{prop}
-Let W and A be defined as above, then $W^TAW$ is non-singular.
+Let W and A be defined as above, then $W^TAW$ is SPD.
 \end{prop}
 
 \begin{proof}
-FILL IN
+Let $x\in\mathbb{R}^k$. We know that the columns of W are linearly independent, hence $Wx=0 \Leftrightarrow x=0.$ Let $y=Wx$, then $x^TW^TAWx=y^TAy\ge 0$ (since A is SPD).
 \end{proof}
 
 We want to generate a sequence $\{v_j\}_{j=1,2,\cdots}$ of vectors such that 
