@@ -1,16 +1,19 @@
 \select@language {english}
-\contentsline {section}{\numberline {1}General Projection Methods}{2}
-\contentsline {section}{\numberline {2}One-Dimensional Projection Methods}{5}
-\contentsline {subsection}{\numberline {2.1}Steepest Descent}{5}
-\contentsline {section}{\numberline {3}Krylov Subspace Methods}{7}
-\contentsline {section}{\numberline {4}Arnoldi's Method for Linear Systems (FOM)}{8}
-\contentsline {subsection}{\numberline {4.1}Variation 1: Restarted FOM}{9}
-\contentsline {subsection}{\numberline {4.2}Variation 1: IOM and DIOM}{9}
-\contentsline {section}{\numberline {5}Symmetric Lanczos Algorithm}{12}
-\contentsline {section}{\numberline {6}Conjugate Gradient}{12}
-\contentsline {section}{\numberline {7}Convergence Analysis}{15}
-\contentsline {subsection}{\numberline {7.1}Real Chebyshev Polynomials}{15}
-\contentsline {subsection}{\numberline {7.2}Convergence of CG Algorithm}{16}
-\contentsline {section}{\numberline {8}Deflated-CG Algorithm}{17}
-\contentsline {subsection}{\numberline {8.1}Deflated Lanczos algorithm}{17}
-\contentsline {subsection}{\numberline {8.2}Deflated-CG algorithm}{18}
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}Iterative Methods}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Polynomial Methods}{2}{subsection.1.2}
+\contentsline {section}{\numberline {2}General Projection Methods}{3}{section.2}
+\contentsline {section}{\numberline {3}One-Dimensional Projection Methods}{6}{section.3}
+\contentsline {subsection}{\numberline {3.1}Steepest Descent}{6}{subsection.3.1}
+\contentsline {section}{\numberline {4}Krylov Subspace Methods}{8}{section.4}
+\contentsline {section}{\numberline {5}Arnoldi's Method for Linear Systems (FOM)}{9}{section.5}
+\contentsline {subsection}{\numberline {5.1}Variation 1: Restarted FOM}{10}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Variation 1: IOM and DIOM}{10}{subsection.5.2}
+\contentsline {section}{\numberline {6}Symmetric Lanczos Algorithm}{13}{section.6}
+\contentsline {section}{\numberline {7}Conjugate Gradient}{13}{section.7}
+\contentsline {section}{\numberline {8}Convergence Analysis}{16}{section.8}
+\contentsline {subsection}{\numberline {8.1}Real Chebyshev Polynomials}{16}{subsection.8.1}
+\contentsline {subsection}{\numberline {8.2}Convergence of CG Algorithm}{17}{subsection.8.2}
+\contentsline {section}{\numberline {9}Deflated-CG Algorithm}{18}{section.9}
+\contentsline {subsection}{\numberline {9.1}Deflated Lanczos algorithm}{18}{subsection.9.1}
+\contentsline {subsection}{\numberline {9.2}Deflated-CG algorithm}{19}{subsection.9.2}

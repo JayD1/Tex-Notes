@@ -8,9 +8,10 @@
 \usepackage[noend]{algpseudocode}
 \usepackage{amssymb}
 \usepackage{enumerate}
+\usepackage[hidelinks]{hyperref}
 
 \author{Jayadev Naram}
-\title{Iterative Methods}
+\title{Iterative Methods} 
 
 \begin{document}
 
@@ -30,6 +31,18 @@
 \newtheorem{mydef}{Definition}
 \newtheorem*{remark}{Remark}
 \newtheorem{prop}{Proposition}
+
+\section{Introduction}
+
+We want to solve $Ax=b$, where $A\in\mathbb{C}^{n\times n}$ is a large non-singular matrix. To solve such a large system using Gaussian elimination is very costly and hence we turn to iterative methods for approximate solutions.
+
+\subsection{Iterative Methods}
+An iterative method is defined by an initial guess $x_0$ to the exact solution $\tilde{x}=A^{-1}b,$ followed by a sequence of further approximations $\{x_i\}_{i>0}$. The error is given by $e_i=\tilde{x}-x_i$ and residual by $r_i=b-Ax_i=Ae_i.$ For a given choice of $x_0$, an iterative method converges if $\|\tilde{x}-x_m\|\rightarrow 0$ as $m\rightarrow \infty.$ An iterative method experiences finite termination if for some d we have $x_m=\tilde{x}\;\forall\;m\ge d.$
+
+\subsection{Polynomial Methods}
+A polynomial method is an iterative method satisfying, $e_m=P_m(A)e_0$, for some polynomial $P_m(z)=1-zQ_{m-1}(z)$ of degree no greater than m satisfy $P_m(0)=1$. 
+
+\newpage
 
 \section{General Projection Methods}
 
@@ -617,7 +630,7 @@ Putting these relation together gives the following algorithm.
 \caption{Conjugate Gradient}
 \begin{algorithmic}[1]
 \State Choose $x_0$ and compute $r_0=b-Ax_0,\;p_0=r_0.$
-\For{$j= 1,2,\cdots$, until convergence}
+\For{$j= 0,1,2,\cdots$, until convergence}
 	\State $\alpha_j=(r_j,r_j)/(Ap_j,p_j)$
 	\State $x_{j+1}=x_j+\alpha_jp_j$
 	\State $r_{j+1}=r_j-\alpha_jAp_j$
@@ -815,8 +828,7 @@ Therefore, we have $$x_j = x_0-W\Delta_j\hat{\eta}_j+V_j\hat{\eta}_j$$ and $$r_j
 We know, $V_j^Tr_j=0\implies 0 = V_j^Tr_0-T_j\hat{\eta}_j\implies \hat{\eta}_j = \|r_0\|_2T^{-1}_je_1$. Now substituting this equation in the above equation, we get
 \begin{align*}
 r_j &= r_0-\|r_0\|_2V_jT_j(T^{-1}_je_1)-\|r_0\|_2\sigma_{j+1}v_{j+1}e^T_j(T^{-1}_je_1) \\
-\implies r_j &= (-\|r_0\|_2\sigma_{j+1}e^T_jT^{-1}_je_1)v_{j+1} \\
-\implies r_j &= c_jv_{j+1}
+ &= (-\|r_0\|_2\sigma_{j+1}e^T_jT^{-1}_je_1)v_{j+1} = c_jv_{j+1}
 \end{align*}
 \end{proof}
 
@@ -915,5 +927,17 @@ Putting these relation together gives the following algorithm.
 \State EndDo
 \end{algorithmic}
 \end{algorithm}
+
+\begin{thebibliography}{9}
+\bibitem{SaadBook} 
+Y. Saad, Iterative Methods for Sparse Linear Systems, PWS publishing company, Boston, MA, 1996. 
+
+\bibitem{deflatedCG}
+Y. Saad, M. Yeung, J. Erhel, F. Guyomarc’H, A deflated version of the conjugate gradient algorithm, SIAM J. Sci. Comput., 21 (2000), pp. 1909–1926.
+
+\bibitem{iterMethNLS}
+W. D. Joubert and T. A. Manteuffel, Iterative Methods for Nonsymmetric Linear Systems, Academic Press, New York, 1990, pp. 149–171 
+
+\end{thebibliography}
 
 \end{document}
