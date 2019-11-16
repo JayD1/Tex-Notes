@@ -40,7 +40,37 @@ We want to solve $Ax=b$, where $A\in\mathbb{C}^{n\times n}$ is a large non-singu
 An iterative method is defined by an initial guess $x_0$ to the exact solution $\tilde{x}=A^{-1}b,$ followed by a sequence of further approximations $\{x_i\}_{i>0}$. The error is given by $e_i=\tilde{x}-x_i$ and residual by $r_i=b-Ax_i=Ae_i.$ For a given choice of $x_0$, an iterative method converges if $\|\tilde{x}-x_m\|\rightarrow 0$ as $m\rightarrow \infty.$ An iterative method experiences finite termination if for some d we have $x_m=\tilde{x}\;\forall\;m\ge d.$
 
 \subsection{Polynomial Methods}
-A polynomial method is an iterative method satisfying, $e_m=P_m(A)e_0$, for some polynomial $P_m(z)=1-zQ_{m-1}(z)$ of degree no greater than m satisfy $P_m(0)=1$. 
+A polynomial method is an iterative method satisfying, $e_m=P_m(A)e_0$, for some polynomial $P_m(z)=1-zQ_{m-1}(z)$ of degree no greater than m satisfy $P_m(0)=1$. Then, $e_m=(I-Q_{m-1}(A)A)e_0=e_0-Q_{m-1}(A)r_0.$ Equivalently,
+$$x_m-x_0\in\mathcal{K}_m(A,r_0),$$
+where $\mathcal{K}_m(A,v)=span\{A^iv\}^{m-1}_{i=0}$ is the Krylov subspace.
+
+\subsection{Projection Methods}
+A projection method is an iterative method satisfying the following relation. For any m and initial guess $x_0$ let $\mathcal{L}_m$ be a $l_m$-dimensional subspace and $\mathcal{R}_m$ be a $r_m$-dimensional subspace. Assuming $x_{m-1}$ exists, we define $x_m$ to be a vector satisfying:
+\begin{align}
+x_m-x_{m-1}\in\mathcal{R}_m,\;\tilde{x}-x_m\in\mathcal{L}_m
+\end{align}
+
+Note that such $x_m$ may not exist and may not be unique. In this setting, $x_{m-1}+\mathcal{R}_m$ is called the solution space and the orthogonality condition of (1) is called the Petrov-Galerkin condition.
+
+Now consider the specific form such $x_m$ takes. Let $L_m(R_m)$ be $n\times l_m\;(n\times r_m)$ matrix whose columns form a basis for $\mathcal{L}_m(\mathcal{R}_m)$. Then for some $r_m\times 1$ vector $\alpha$, we have $$x_m=x_{m-1}+R_m\alpha,\;e_m=e_{m-1}-R_m\alpha.$$ 
+The Petrov-Galerkin condition yields, $L^*_me_m=0\implies L^*_me_{m-1}=L^*_mR_m\alpha.$ If $L^*_mR_m$ is square and non-singular, then $\alpha=(L^*_mR_m)^{-1}L^*_me_{m-1}.$ Thus,
+$$x_m=x_{m-1}+R_m(L^*_mR_m)^{-1}L^*_me_{m-1},$$
+$$e_m=[I-R_m(L^*_mR_m)^{-1}L^*_m]e_{m-1}.$$
+
+Define $P_m=I-R_m(L^*_mR_m)^{-1}L^*_m$, then it easy to see that $P_m$ is a projection matrix (How does $P_m$ work\textbf{???}) and hence the name projection methods is appropriate. It is desirable that $x_m$ exist and be unique for any m. Given a particular $x_{m-1}$, a given projection method breaks down at step m if $x_m$ as defined by (1) does not exist or is not unique. If $l_m<r_m$ and $x_m$ satisfying (1) exists, then such $x_m$ cannot be unique(\textbf{???}).
+
+\begin{theorem}[\textbf{Existence/Uniquness}]
+Suppose $l_m=r_m>0.$ Then breakdown occurs at step m iff $L^*_mR_m$ is singular.
+\end{theorem}
+
+\begin{corollary}[\textbf{Finite Termination}]
+Suppose for a particular $e_0$ breakdown never occurs for any step of projection method, and $x_{m-1}\neq \tilde{x}$ implies $dim(\mathcal{R}_m)\gneqq dim(\mathcal{R}_{m-1})$ for any m. Then convergence is attained within n steps: $x_d=\tilde{x}$ for some $d\le n$.
+\end{corollary}
+
+\begin{proof}
+Suppose breakdown does not occur at step m. Then by uniqueness $$x_m=\tilde{x}\Leftrightarrow e_{m-1}\in\mathcal{R}_m,$$ 
+($e_m=P_me_{m-1}=0\implies e_{m-1}=R_m(L^*_mR_m)^{-1}L^*_me_{m-1}$). Since 
+\end{proof}
 
 \newpage
 
@@ -368,13 +398,14 @@ where $y_m$ can be found by imposing orthogonality constraint that $$V^T_m(b-Ax_
 
 \begin{prop}
 The residual vector of the approximate solution $x_m$ computed by the FOM Algorithm is such that 
-$$b-Ax_m=-h_{m+1,m}e^T_my_mv_{m+1}$$
+$$r_m=b-Ax_m=-h_{m+1,m}e^T_my_mv_{m+1}$$
 and, therefore,
-$$\|b-Ax_m\|_2=h_{m+1,m}|e^T_my_m|.$$
+$$\|r_m\|_2=\|b-Ax_m\|_2=h_{m+1,m}|e^T_my_m|.$$
 
 \begin{proof}
 \begin{align*}
-b-Ax_m &= b-Ax_0-AV_my_m \\
+r_m&=b-Ax_m \\
+&= b-Ax_0-AV_my_m \\
 &= r_0 - (V_mH_m+w_me^T_m)y_m \\
 &= r_0 - V_mH_m(H^{-1}_m\beta e_1) - w_me^T_my_m \\
 &= r_0 - V_mV^T_mr_0 - h_{m+1,m}e^T_my_mv_{m+1}=-h_{m+1,m}e^T_my_mv_{m+1}.
@@ -480,7 +511,7 @@ This gives the following algorithm, called \textbf{Incomplete Orthogonalization 
 \begin{remark}
 Observe that $V^T_mAV_m=H_m$ is still valid because the orthogonality properties were not used to derive this relation. As a consequence the following result  is also valid,
 \begin{align*}
-b-Ax_m &= -h_{m+1,m}e^T_my_mv_{m+1} \\
+r_m = b-Ax_m &= -h_{m+1,m}e^T_my_mv_{m+1} \\
 \implies \|b-Ax_m\|_2 &= h_{m+1,m}|e^T_my_m| \\
 \text{But, }y_m = H^{-1}_m(\beta	e_1) &= U^{-1}_mz_m \implies e^T_my_m = \zeta_m/u_{mm} \\
 \implies \|b-Ax_m\|_2 &= h_{m+1,m}\Bigl|\frac{\zeta_m}{u_{mm}}\Bigr|
@@ -642,6 +673,130 @@ Putting these relation together gives the following algorithm.
 \end{algorithm}
 
 \newpage
+
+\begin{remark}[$LDL^T$ Factorization of $T_m$]
+We have already seen the LU decomposition of $T_m$:
+$$
+T_m = 
+\left( \begin{array}{ccccc}
+1 &  &  &  &  \\
+\lambda_2 & 1 &  &  &  \\
+ & . & . &  &  \\
+ &  & \lambda_{m-1} & 1 &  \\
+ &  &  & \lambda_m & 1 \\
+\end{array} \right)\times 
+\left( \begin{array}{ccccc}
+\eta_1 & \beta_2 &  &  &  \\
+ & \eta_2 & \beta_3 &  &  \\
+ &  & . & . &  \\
+ &  &  & \eta_{m-1} & \beta_m \\
+ &  &  &  & \eta_m \\
+\end{array} \right),
+$$
+where $$\eta_1 = \alpha_1,\;\lambda_k=\dfrac{\beta_k}{\eta_{k-1}},\;\eta_k=\alpha_k-\lambda_k\beta_k,\;k=2,3,\cdots,m.$$ 
+Notice here that U can be further factorized as $U=DL^T$ such that $D=\text{diag}(\eta_1,\eta_2,\cdots,\eta_m)$. Therefore we arrive at the $LDL^T$ decomposition of $T_m$ to be $T_m=L_mD_mL^T_m$, i.e,
+$$
+T_m = 
+\left( \begin{array}{cccc}
+1 &  &  &   \\
+\lambda_2 & 1 &  &  \\
+ & . & . &  \\
+ &  & \lambda_m & 1 \\
+\end{array} \right)
+\left( \begin{array}{cccc}
+\eta_1 &  &  &   \\
+ & \eta_2 &  &  \\
+ &  & . &  \\
+ &  &  & \eta_m \\
+\end{array} \right)
+\left( \begin{array}{cccc}
+1 &  &  &   \\
+\lambda_2 & 1 &  &  \\
+ & . & . &  \\
+ &  & \lambda_m & 1 \\
+\end{array} \right)^T.
+$$
+\end{remark}
+
+\begin{prop}
+Let $A_m=(P^T_mP_m)^{-1}$, then $A_{m+1}=\left[ \begin{array}{cc}
+\tilde{A}_m & \lambda_{m+1}e_m \\
+\lambda_{m+1}e^T_m & 1\\
+\end{array} \right]$, where $\tilde{A}_m=A_m+\lambda^2_{m+1}e_me^T_m.$
+\end{prop}
+
+\begin{proof}
+First notice that from the above factorization of $L_m$ that, 
+$$P_m=V_mL^{-T}_m\implies A_m = L^T_mL_m.$$
+Then 
+\begin{align*}
+A_m&=\left( \begin{array}{ccccc}
+1 &  &  &  &  \\
+\lambda_2 & 1 &  &  &  \\
+ & . & . &  &  \\
+ &  & . & 1 &  \\
+ &  &  & \lambda_m & 1 \\
+\end{array} \right)
+\left( \begin{array}{ccccc}
+1 & \lambda_2 &  &  &  \\
+ & 1 & . &  &  \\
+ &  & . & . &  \\
+ &  &  & 1 & \lambda_m \\
+ &  &  &  & 1 \\
+\end{array} \right)^T \\
+&= \left( \begin{array}{ccccc}
+1+\lambda^2_2 & \lambda_2 &  &  &  \\
+\lambda_2 & 1+\lambda^2_3 & . &  &  \\
+ & . & . & . &  \\
+ &  & . & 1+\lambda^2_m & \lambda_m \\
+ &  &  & \lambda_m & 1 \\
+\end{array} \right)
+\end{align*}
+Therefore, $A_m=(P^T_mP_m)^{-1}$ is tridiagonal and $A_{m+1}$ can constructed from $A_m$ as follows:
+$A_{m+1}=\left[ \begin{array}{cc}
+\tilde{A}_m & \lambda_{m+1}e_m \\
+\lambda_{m+1}e^T_m & 1\\
+\end{array} \right]$, where $\tilde{A}_m=A_m+\lambda^2_{m+1}e_me^T_m.$
+\end{proof}
+
+\begin{prop}
+The $r_j$ vectors obtained in the Conjugate Gradient algorithm follow the following recurrence relation:
+$$Ar_j=\hat{\beta}_jr_{j-1}+(\alpha_{j+1})r_j+\hat{\beta}_{j+1}r_{j+1}.$$ 
+\end{prop}
+
+\begin{proof}
+We know, $r_m=b-Ax_m=c_mv_{m+1}=\{-\beta_{m+1}(e^T_my_m)\}v_{m+1}$, where  $y_m=T^{-1}_m(\beta_0e_1).$ Then $e^T_my_m=e^T_mL^{-T}_mD^{-1}_mL^{-1}_m(\beta_0e_1)$. Now we evaluate the value of $e^T_my_m$. It can be seen that 
+$$L^{-1}_m =
+\left( \begin{array}{cccccc}
+1 &  &  &  &  & \\
+-\lambda_2 & 1 &  &  &  & \\
+\lambda_2\lambda_3 & -\lambda_3 & 1 &  &  & \\
+\vdots &  &  & \ddots &  & \\
+ &  &  &  & 1 &  \\
+\hat{l} & -\hat{l}/\lambda_2 & \hdots &  & -\lambda_m & 1 \\
+\end{array} \right),\text{ where }\hat{l}=(-1)^{m-1}\prod^m_{i=2}\lambda_i.$$
+Each entry of $L^{-1}_m$ can be written as,
+\[   
+(L^{-1}_m)_{i,j} = 
+     \begin{cases}	
+      (-1)^{i-j}\underset{k = j+1}{\overset{i}{\prod}}\lambda_k, &\quad\text{for }i>j\\
+      \qquad \qquad 1, &\quad\text{for }i=j\\
+      \qquad \qquad 0, &\quad\text{for }i<j
+     \end{cases}
+\]
+Now notice that, $L^{-1}_me_1$ will give the first column of $L^{-1}_m$ and similarly $e^T_mL^{-T}_m = (L^{-1}_me_m)^T = e^T_m$ and hence $e^T_mD^{-1}_m=\frac{1}{\eta_m}e^T_m$. Then $$c_m=-\dfrac{\beta_0\beta_{m+1}}{\eta_m}e^T_mL^{-T}_me_1=-\dfrac{\beta_0\beta_{m+1}}{\eta_m}(L^{-1}_m)_{m,1}=\dfrac{(-1)^{m}}{\eta_m}\beta_0\beta_{m+1}\underset{i=2}{\overset{m}{\prod}}\lambda_i.$$
+Therefore, $r_m = c_mv_{m+1}$, where $c_m=\dfrac{(-1)^{m}}{\eta_m}\beta_0\beta_{m+1}\underset{i=2}{\overset{m}{\prod}}\lambda_i.$ 
+
+From Lanczos algorithm we know, $AV_m=V_mT_m+\beta_{m+1}v_{m+1}e^T_m.$ On compare the last column of the matrices on both sides of the equation we get, 
+$$Av_m=\beta_mv_{m-1}+\alpha_mv_m+\beta_{m+1}v_{m+1}.$$
+Raising the index of the terms in the above equation we get,
+$$Av_{m+1}=\beta_{m+1}v_{m}+\alpha_{m+1}v_{m+1}+\beta_{m+2}v_{m+2}.$$
+On substituting $r_m$ in it leads to,
+\begin{align*}
+A\dfrac{r_m}{c_m}&=\beta_{m+1}\dfrac{r_{m-1}}{c_{m-1}}+\alpha_{m+1}\dfrac{r_{m}}{c_{m}}+\beta_{m+2}\dfrac{r_{m+1}}{c_{m+1}} \\
+\implies Ar_m&=\bigg(\dfrac{\beta_{m+1}c_m}{c_{m-1}}\bigg)r_{m-1}+\alpha_{m+1}r_{m}+\bigg(\dfrac{\beta_{m+2}c_m}{c_{m+1}}\bigg)r_{m+1}.
+\end{align*}
+\end{proof}
 
 \section{Convergence Analysis}
 

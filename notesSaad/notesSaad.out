@@ -1,18 +1,19 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [2][-]{subsection.1.1}{Iterative Methods}{section.1}% 2
 \BOOKMARK [2][-]{subsection.1.2}{Polynomial Methods}{section.1}% 3
-\BOOKMARK [1][-]{section.2}{General Projection Methods}{}% 4
-\BOOKMARK [1][-]{section.3}{One-Dimensional Projection Methods}{}% 5
-\BOOKMARK [2][-]{subsection.3.1}{Steepest Descent}{section.3}% 6
-\BOOKMARK [1][-]{section.4}{Krylov Subspace Methods}{}% 7
-\BOOKMARK [1][-]{section.5}{Arnoldi's Method for Linear Systems \(FOM\)}{}% 8
-\BOOKMARK [2][-]{subsection.5.1}{Variation 1: Restarted FOM}{section.5}% 9
-\BOOKMARK [2][-]{subsection.5.2}{Variation 1: IOM and DIOM}{section.5}% 10
-\BOOKMARK [1][-]{section.6}{Symmetric Lanczos Algorithm}{}% 11
-\BOOKMARK [1][-]{section.7}{Conjugate Gradient}{}% 12
-\BOOKMARK [1][-]{section.8}{Convergence Analysis}{}% 13
-\BOOKMARK [2][-]{subsection.8.1}{Real Chebyshev Polynomials}{section.8}% 14
-\BOOKMARK [2][-]{subsection.8.2}{Convergence of CG Algorithm}{section.8}% 15
-\BOOKMARK [1][-]{section.9}{Deflated-CG Algorithm}{}% 16
-\BOOKMARK [2][-]{subsection.9.1}{Deflated Lanczos algorithm}{section.9}% 17
-\BOOKMARK [2][-]{subsection.9.2}{Deflated-CG algorithm}{section.9}% 18
+\BOOKMARK [2][-]{subsection.1.3}{Projection Methods}{section.1}% 4
+\BOOKMARK [1][-]{section.2}{General Projection Methods}{}% 5
+\BOOKMARK [1][-]{section.3}{One-Dimensional Projection Methods}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Steepest Descent}{section.3}% 7
+\BOOKMARK [1][-]{section.4}{Krylov Subspace Methods}{}% 8
+\BOOKMARK [1][-]{section.5}{Arnoldi's Method for Linear Systems \(FOM\)}{}% 9
+\BOOKMARK [2][-]{subsection.5.1}{Variation 1: Restarted FOM}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.2}{Variation 1: IOM and DIOM}{section.5}% 11
+\BOOKMARK [1][-]{section.6}{Symmetric Lanczos Algorithm}{}% 12
+\BOOKMARK [1][-]{section.7}{Conjugate Gradient}{}% 13
+\BOOKMARK [1][-]{section.8}{Convergence Analysis}{}% 14
+\BOOKMARK [2][-]{subsection.8.1}{Real Chebyshev Polynomials}{section.8}% 15
+\BOOKMARK [2][-]{subsection.8.2}{Convergence of CG Algorithm}{section.8}% 16
+\BOOKMARK [1][-]{section.9}{Deflated-CG Algorithm}{}% 17
+\BOOKMARK [2][-]{subsection.9.1}{Deflated Lanczos algorithm}{section.9}% 18
+\BOOKMARK [2][-]{subsection.9.2}{Deflated-CG algorithm}{section.9}% 19
