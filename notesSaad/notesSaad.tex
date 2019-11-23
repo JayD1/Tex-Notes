@@ -785,7 +785,7 @@ Each entry of $L^{-1}_m$ can be written as,
      \end{cases}
 \]
 Now notice that, $L^{-1}_me_1$ will give the first column of $L^{-1}_m$ and similarly $e^T_mL^{-T}_m = (L^{-1}_me_m)^T = e^T_m$ and hence $e^T_mD^{-1}_m=\frac{1}{\eta_m}e^T_m$. Then $$c_m=-\dfrac{\beta_0\beta_{m+1}}{\eta_m}e^T_mL^{-T}_me_1=-\dfrac{\beta_0\beta_{m+1}}{\eta_m}(L^{-1}_m)_{m,1}=(-1)^{m}\beta_0\bigg(\dfrac{\beta_{m+1}}{\eta_m}\bigg)\underset{i=2}{\overset{m}{\prod}}\lambda_i.$$
-Notice that $\lambda_{m+1}=\dfrac{\beta_{m+1}}{\eta_m}$. Therefore, $$r_m = c_mv_{m+1}\text{ , where }c_m=(-1)^{m}\beta_0\underset{i=2}{\overset{m}{\prod}}\lambda_i.$$
+Notice that $\lambda_{m+1}=\dfrac{\beta_{m+1}}{\eta_m}$. Therefore, $$r_m = c_mv_{m+1}\text{ , where }c_m=(-1)^{m}\beta_0\underset{i=2}{\overset{m+1}{\prod}}\lambda_i.$$
 
 From Lanczos algorithm we know, $AV_m=V_mT_m+\beta_{m+1}v_{m+1}e^T_m.$ On compare the last column of the matrices on both sides of the equation we get, 
 $$Av_m=\beta_mv_{m-1}+\alpha_mv_m+\beta_{m+1}v_{m+1}.$$
