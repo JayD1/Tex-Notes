@@ -1,0 +1,1475 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[hidelinks]{hyperref}
+
+\author{Jayadev Naram}
+\title{Topology} 
+
+\begin{document}
+
+\date{}
+\maketitle
+\tableofcontents
+\newpage
+
+\newtheorem{theorem}{Theorem}
+\newtheorem*{corollary}{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{mydef}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\highlight}[1]{\textsl{\textbf{#1}}}
+\newcommand{\mapping}[3]{#1:#2\rightarrow #3}
+\newcommand{\doubt}{\highlight{[??]}}
+\newcommand{\bigvert}[2]{\left.#1\right|_{#2}}
+\newcommand{\sdnn}[1]{${#1}$}
+\newcommand{\bsdnn}[1]{$\boldsymbol{#1}$}
+\newcommand{\ifthen}[2]{\textbf{(#1)}\boldsymbol{\implies}\textbf{(#2)}}
+\newcommand{\bsdn}[1]{\boldsymbol{#1}}
+\newcommand{\forward}{$(\implies)$}
+\newcommand{\converse}{$(\impliedby)$}
+
+\section{Topological Spaces}\label{sec:top_space}
+
+\begin{mydef}\label{def:top_space}
+Let $X$ be a set. A \highlight{topology on \bsdnn{X}} is a collection $\T$ of subsets of $X$, called the \highlight{open subsets}, satisfying
+\begin{enumerate}
+    \item $X$ and $\emptyset$ are open.
+    \item The union of any family of open subsets is open.
+    \item The intersection of any finite family of open subsets is open.
+\end{enumerate}
+The pair $(X,\T)$ consisting of a set $X$ together with a topology $\T$ on $X$ is called a \highlight{topological space}.
+\end{mydef}
+
+When the topology is understood, one omits mention of it and simply says ``$X$ is a topological space".
+
+\begin{mydef}
+Suppose $X$ is a topological space, $p\in X$, and $S\subseteq X$. A \highlight{neighborhood of \bsdnn{p}} is an open subset containing $p$. Similarly, a \highlight{neighborhood of the set \bsdnn{S}} is an open subset containing $S$. 
+\end{mydef}
+
+\begin{prop}[\highlight{Local criterion for open set}]\label{prop:local_criterion_for_openness}
+Let $X$ be a topological space. A subset $U$ is open iff for every $p\in U$, there is an open set $V$ such that $p\in V\subseteq U$.
+\end{prop}
+
+\begin{proof}
+\forward For any $p\in U$, take $V = U$ since $U$ is open. \\
+\converse For every $p\in U$ there exists an open set $V_p\subseteq U$. Then $U = \bigcup_{p\in U} V_p$ which is open.
+\end{proof}
+
+\begin{mydef}
+Suppose $X$ is a topological space, and $S\subseteq X$. $S$ is said to be \highlight{closed} if $X\setminus S$ is open.
+\end{mydef}
+
+\begin{mydef}
+Suppose $X$ is a topological space, and $S\subseteq X$. The \highlight{interior of \bsdnn{S}}, denoted by Int $S$, is the union of all open subsets of $X$ contained in $S$.
+\end{mydef}
+
+\begin{mydef}
+Suppose $X$ is a topological space, and $S\subseteq X$. The \highlight{closure of \bsdnn{S}}, denoted by $\bar{S}$, is the intersection of all closed subsets of $X$ containing $S$.
+\end{mydef}
+
+\begin{prop}[\highlight{Local criterion of closure}]\label{prop:local_characterization_of_closure}
+Let $S$ be a subset of a topological space $X$. A point $p\in X$ is in $\bar{S}$ iff every neighborhood of $p$ contains a point of $S$.
+\end{prop}
+
+\begin{proof}
+We will prove the contrapositive of the statement, i.e., $p\notin \bar{S}$ iff there is a neighborhood of $p$ disjoint from $S$.
+
+\forward $p\notin \bar{S} = \bigcap\{F:\; S\subseteq F\;\text{and \sdnn{F} is closed}\}$. Then $p\notin F$ for atleast one closed set containing $S$. It follows that $p\in X\setminus F$, an open set disjoint from $S$.
+
+\converse Suppose $p\in U$, an open set disjoint from $S$. Then the complement $X\setminus U$ is a closed set containing $S$ and not $p$, therefore $p\notin \bar{S}$.
+\end{proof}
+
+\begin{example}[\highlight{Discrete Spaces}]
+    If X is an arbitrary set, the \highlight{discrete topology} on X is the topology defined by declaring every subset of X to be open. Any space that has the discrete topology is called the \highlight{discrete space}.
+\end{example}
+
+\begin{example}[\highlight{Metric Spaces}]\label{ex:metric_topology}
+    A \highlight{metric space} is a set M endowed with a \highlight{metric} $\mapping{d}{M\times M}{\mathbb{R}}$ satisfying the following properties for all $x,y,z\in M$:
+    \begin{enumerate}[(i)]
+        \item POSITIVITY: $d(x,y)\ge 0$, with equality if and only if $x=y$.
+        \item SYMMETRY: $d(x,y)=d(y,x)$.
+        \item TRIANGLE INEQUALITY: $d(x,z)\le d(x,y)+d(y,z)$.
+    \end{enumerate}
+    If M is a metric space, $x\in M$, and $r>0$, the \highlight{open ball of radius r around x} is the set
+    \begin{equation*}
+        \bb_x(r) = \{y\in M: d(x,y)<r\},
+    \end{equation*}
+    and the \highlight{closed ball of radius r} is
+    \begin{equation*}
+        \bar{\bb}_x(r)=\{y\in M: d(x,y)\le r\}.
+    \end{equation*}
+    The \highlight{metric topology on M} is defined by declaring a subset $S\subseteq M$ to be open if for every $x\in S$, there is some $r>0$ such that $\bb_x(r)\subseteq S$.
+
+    If M is a metric space and S is any subset of M, the restriction of metric to the pair of points in S turns S into a metric space and thus a topological space. We use the following standard terminology for metric spaces:
+    \begin{enumerate}[(i)]
+        \item A subset S of M is \highlight{bounded} if there exists a positive number R such that $d(x,y)<R$ for all x,y in S.
+        \item If S is a nonempty subset of M, the \highlight{diameter of S} is the number 
+        \begin{equation*}
+            \delta(S) = sup\{d(x,y):x,y\in S\}.    
+        \end{equation*}
+    \end{enumerate}
+\end{example}
+
+\begin{example}[\highlight{Euclidean Spaces}]
+    For each integer $n\ge 1$, the set $\mathbb{R}^n$ of ordered n-tuples of real numbers is called \highlight{n-dimensional Euclidean space}. We denote a point in $\mathbb{R}^n$ by $(x^1,\cdots, x^n),(x^i),$ or $x$; the numbers $x^i$ are called \highlight{components} or \highlight{coordinates of x}. By convention, $\mathbb{R}^0$ is the one element set $\{0\}$.
+
+    For each $x\in \mathbb{R}^n$, the \highlight{Euclidean norm of x} is the nonnegative real number 
+    \begin{equation*}
+        \|x\| = \sqrt{(x^1)^2+\cdots+(x^n)^2},
+    \end{equation*}
+    and for any $x,y\in \mathbb{R}^n$, the \highlight{Euclidean metric} is defined by $d(x,y)=\|x-y\|$. The resulting metric topology on $\mathbb{R}^n$ is called the \highlight{Euclidean topology}.
+\end{example}
+
+\begin{example}[\highlight{Subsets of Euclidean Spaces}]
+    Every subset of $\mathbb{R}^n$ becomes a metric space, and thus a topological space, when endowed with the Euclidean metric. 
+    % It is complete metric space if and only if it is a closed subset of $\mathbb{R}^n$. 
+    Here are some standard subsets of Euclidean spaces that we work with frequently:
+    \begin{enumerate}[(i)]
+        \item The \highlight{unit interval} is the subset $I\subseteq \mathbb{R}$ defined by 
+        \begin{equation*}
+            I = [0,1] = \{x\in\mathbb{R}:0\le x\le 1\}.
+        \end{equation*}
+        \item The \highlight{(open) unit ball of dimension n} is the subset $\bb_0(1)\subseteq \mathbb{R}^n$ defined by
+        \begin{equation*}
+            \bb_0(1) = \{x\in\mathbb{R}^n:\|x\|<1\}.
+        \end{equation*}
+        \item The \highlight{closed unit ball of dimension n} is the subset $\bar{\bb}_0(1)\subseteq \mathbb{R}^n$ defined by
+        \begin{equation*}
+            \bar{\bb}_0(1) = \{x\in\mathbb{R}^n:\|x\|\le 1\}.
+        \end{equation*}
+        \item For $n\ge 0$, the \highlight{(unit) n-sphere} is the subset $\mathbb{S}^n\subseteq \mathbb{R}^{n+1}$ defined by
+        \begin{equation*}
+            \mathbb{S}^n = \{x\in\mathbb{R}^{n+1}:\|x\|= 1\}.
+        \end{equation*}
+        \item The \highlight{(unit) circle} is the 1-sphere $\mathbb{S}^1$, considered as a subset of $\mathbb{R}^2$.
+    \end{enumerate}
+\end{example}
+
+\begin{mydef}
+Suppose $X$ is a topological space, $p\in X$, and $S\subseteq X$. A point $p\in X$ (not necessarily in $S$) is said to be a \highlight{limit point of \bsdnn{S}} or \highlight{accumulation point of \bsdnn{S}} if every neighborhood of $p$ contains at least one point of $S$ other than $p$. The set of all accumulation points of $S$ is denoted by ac$(S)$.
+\end{mydef}
+
+\begin{prop}
+Let $S$ be subset of a topological space $X$. Then $\bar{S} = S\cup ac(S)$.
+\end{prop}
+
+\begin{proof}
+Suppose $p\in \bar{S}$. Then $p\in S$ or $p\notin S$. If $p\in S$, then $p\in S\cup ac(S)$. If $p\notin S$, then by Prop. \ref{prop:local_characterization_of_closure}, every neighborhood of $p$ contains a point of $S$. Since $p\notin S,$ there is atleast one point from $S$ other than $p$. Thus $p\in ac(S)$. In which case, $p\in ac(S)\cup S$. Thus, $\bar{S}\subseteq S\cup ac(S)$.
+
+To prove the converse, note that $S\subseteq \bar{S}$. Also note that $ac(S)\subseteq \bar{S}$ by Prop. \ref{prop:local_characterization_of_closure}. Thus $S\cup ac(S)\subseteq \bar{S}$.
+\end{proof}
+
+\begin{prop}
+Let $S$ be subset of a topological space $X$. $S$ is closed iff $S = \bar{S}$.
+\end{prop}
+
+\begin{prop}\label{prop:subsets_closure}
+If $A\subseteq B$ in a topological space $X$, then $\bar{A}\subseteq\bar{B}$.
+\end{prop}
+
+\begin{proof}
+Since $B\subseteq \bar{B}$, it also contains $A$. As a closed set containing $A$, it also contains $\bar{A}$ by definition. 
+\end{proof}
+
+\begin{prop}[\highlight{Unions and Intersections of Closures}]
+Let $A, B$ and $A_\alpha$ be subsets of a topological space $X$. Then,
+\begin{enumerate}[(a)]
+    \item $\overline{A\cup B} = \bar{A}\cup \bar{B}$.
+    \item $\overline{\bigcup A_\alpha} \supseteq \bigcup \bar{A}_\alpha$.
+    \item $\overline{A\cap B} \subseteq \bar{A}\cap \bar{B}$.
+    \item $\overline{\bigcap A_\alpha} \subseteq \bigcap \bar{A}_\alpha$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(a) Since $A\subseteq \bar{A}$ and $B\subseteq \bar{B}$, then $A\cup B\subseteq \bar{A}\cup \bar{B}$ which is closed. Then $\overline{A\cup B}\subseteq \bar{A}\cup\bar{B}$. Now we prove the converse. Note that $A\subseteq A\cup B$ and $B\subseteq A\cup B$. Then by Prop. \ref{prop:subsets_closure}, $\bar{A}\subseteq \overline{A\cup B}$ and $\bar{B}\subseteq \overline{A\cup B}$. Then $\bar{A}\cup\bar{B}\subseteq \overline{A\cup B}$. Thus, $\overline{A\cup B} = \bar{A}\cup \bar{B}$.
+
+(b) Let $x\in \bigcup \bar{A}_\alpha$, then $x\in \bar{A}_\beta$ for some $\beta$. Let $U$ be neighborhood of $x$, then $U$ intersects $A_\beta$ at some point $y\in A_\beta\subseteq \bigcup A_\alpha$, so $U$ intersects $\bigcup A_\alpha$ at $y$. Then $x\in \overline{\bigcup A_\alpha}$.
+
+(c) Since $A\subseteq \bar{A}$ and $B\subseteq \bar{B}$, then $A\cap B\subseteq \bar{A}\cap \bar{B}$ which is closed. Then $\overline{A\cap B}\subseteq \bar{A}\cap\bar{B}$.
+
+(d) Let $x\in \overline{\bigcap A_\alpha}$, then $x\in \bar{A}_\alpha$ for all $\alpha$. For any neighborhood $U$ of $x$, we find a $y\in U\cap A_\alpha$ for all $\alpha$. Then $x\in \bigcap \bar{A}_\alpha$.
+\end{proof}
+
+\begin{remark}
+Converse of (b) is not true in general. Let $A_n = (1/n,2], n\in \mathbb{Z}_+$ as a subset of $\R$ with Euclidean topology. Then $\bigcup A_n = (0,2]$ and $\bigcup \bar{A}_n = [0,2]$. 
+But $0\notin \bar{A}_n$ for all $n$ because $(-1,1/n)$ is a neighborhood of $0$ which does not intersect any $A_n$. 
+Then $\overline{\bigcup A_n}\nsubseteq \bigcup\bar{A}_n$.
+
+Converse of (c) and (d) is also not true in general. Consider the example of $A = (-1,0)$ and $B = (0,1)$ in the $\R$ with Euclidean topology. Then $\{0\} = \bar{A}\cap\bar{B} \nsubseteq \overline{A\cap B} = \emptyset$.
+\end{remark}
+
+\begin{mydef}
+Suppose $X$ is a topological space, and $S\subseteq X$. $S$ is said to be \highlight{dense in \bsdnn{X}} if $\bar{S}=X$, or equivalently if every nonempty open subset of $X$ contains at least one point of $S$.
+\end{mydef}
+
+\begin{mydef}
+Suppose $X$ is a topological space, and $S\subseteq X$. $S$ is said to be \highlight{nowhere dense in \bsdnn{X}} if $\bar{S}$ contains no nonempty open subset.
+\end{mydef}
+
+\begin{mydef}
+A topological space $X$ is said to be \highlight{separable} if it contains a countable dense subset.
+\end{mydef}
+
+\begin{mydef}
+Suppose $X$ is a topological space, $S\subseteq X$. A point $p\in S$ is said to be an \highlight{isolated point of \bsdnn{S}} if $p$ has a neighborhood $U\subseteq X$ such that $U\cap S = \{p\}$.
+\end{mydef}
+
+\section{Bases and Countability}
+
+\begin{mydef}
+A subcollection $\B$ of a topology $\T$ on a topological space $X$ is a \highlight{basis for the topology \bsdnn{\T}} if given an open set $U$ and a point $p\in U$, there is an open set $B\in\B$ such that $p\in B\subseteq U$. We also say that \highlight{\bsdnn{\B} generates topology \bsdnn{\T}} or that $\B$ is a \highlight{basis for the topological space \bsdnn{X}}.
+\end{mydef}
+
+\begin{prop}\label{prop:basis_union_characterization}
+A collection $\B$ of open sets of $X$ is a basis iff every open set in $X$ is a union of sets in $\B$.
+\end{prop}
+
+\begin{proof}
+\forward Suppose $\B$ is a basis for $X$. Then for any open set $U$, and for any $p\in U$, there exists an open set $B_p\in \B$ such that $p\in B_p\subseteq U$. Then note that $U = \bigcup_{p\in U} B_p$ which is indeed the union of sets in $\B$.
+
+\converse Suppose every open set in $X$ is a union of set in $\B$, then we need to show that $\B$ is a basis for $X$. For any open set $U$ in $X$, we know that it can be written as $U = \bigcup_{i} B_i$, $B_i\in \B$ for all $i$. Then note that any point $p\in U$ must belong to atleast one of the sets $B_i$, i.e., for any $p\in U$, there is a set $B_i$ in $\B$ such that $p\in B_i\subseteq U$, thus $\B$ is a basis for $X$. 
+\end{proof}
+
+\begin{prop}\label{prop:basis_equivalence}
+A collection $\B$ of subsets of a set $X$ is a basis for some topology $\T$ on $X$ iff
+\begin{enumerate}[(a)]
+    \item $X$ is the union of all set in $\B$, and
+    \item given any two set $B_1, B_2\in \B$, and a point $p\in B_1\cap B_2$, there is a set $B\in \B$ such that $p\in B\subseteq B_1\cap B_2$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\forward Suppose $\B$ is a basis for $X$. Then $X$ is an open set and every open set is union of set in $\B$ from Prop. \ref{prop:basis_union_characterization}. Similarly, for any two sets $B_1, B_2\in \B$, they are open, so $B_1\cap B_2$ is also an open set. Again using Prop. \ref{prop:basis_union_characterization}, for any $p\in B_1\cap \B_2,$ there exists a set $B\in \B$ with the required property.
+
+\converse Suppose for a collection $\B$, (a) and (b) hold. Then we will show that the set $\T$ formed by taking unions of sets in $\B$ is a topology on $X$. It is easy to note that $X,\emptyset\in \T$. It is also easy to note that the sets in $\T$ are closed under arbitrary union. To show that $\T$ is closed under finite intersection, let $U = \bigcup_{\alpha} B_\alpha$ and $V = \bigcup_{\beta}B_\beta$ be in $\T$, where $B_\alpha, B_\beta\in \B$. Then $U\cap V = \Big(\bigcup_{\alpha}B_\alpha\Big) \cap \Big(\bigcup_{\beta}B_\beta\Big) = \bigcup_{\alpha,\beta} (B_\alpha\cap B_\beta)$. Now note that by (b), there exists a set $B_p$ for every $p\in B_\alpha\cap B_\beta$, such that $p\in B_p\subseteq B_\alpha\cap B_\beta$, so that $U\cap V$ can be written as union of sets in $\B$. Thus $\T$ is a topology.
+\end{proof}
+
+\begin{prop}
+Let $M$ be a metric space. Then the collection $\mathcal{B}$ of all open balls $\bb_x(r)$, for $x\in M$ and $r>0$, is a basis for metric topology defined in Eg. \ref{ex:metric_topology}.
+\end{prop}
+
+\begin{proof}
+We show that the collection $\mathcal{B}$ satisfies both the conditions in Prop. \ref{prop:basis_equivalence}. \\
+(a) For every $x\in M$, the open ball $\bb_x(r)$, $r>0$ is a element of $\mathcal{B}$ containing $x$.\\
+(b) Let $B_1, B_2\in\mathcal{B}$, and that $y\in B_1\cap B_2$. Suppose $B_1 = \bb_x(r)$, for some $x\in M$ and $r>0$. Then setting $r_1 = r-d(x,y)>0$, we have that $\bb_y(r_1)\subseteq \bb_x(r) = B_1$ because for any $z\in \bb_y(r_1)$, $d(x,z)\le d(x,y)+d(y,z) < d(x,y) + r - d(x,y) = r$. Similarly we can choose $r_2>0$ such that $\bb_y(r_2)\subseteq B_2$. Then taking $r_0 = \text{min}\{r_1,r_2\}$, we see that $y\in \bb_y(r_0)\subseteq B_1\cap B_2$.
+\end{proof}
+
+We say that a point in $\R^n$ is \highlight{rational} if all its coordinates are rational numbers.
+
+\begin{lemma}\label{lemma:rational_point_in_real_line}
+Every open interval in $\R$ contains a rational point.
+\end{lemma}
+
+\begin{lemma}\label{lemma:rational_point_in_R_n}
+Every open set in $\R^n$ contains a rational point.
+\end{lemma}
+
+\begin{proof}
+An open set $U$ in $\R^n$ containing $p\in\R^n$ contains an open ball $\bb_p(r)$ for some $r$. It in turn contains an open cube $\prod_{i=1}^n I_i$, where $I_i =  (p^{(i)}-r/\sqrt{n}, p^{(i)}+r/\sqrt{n})$. For each $i$, let $q^{(i)}$ be a rational number(by Lemma \ref{lemma:rational_point_in_real_line}) in $I_i$. Then $(q^{(1)},\ldots,q^{(n)})$ is a rational point in $\prod_{i=1}^n I_i\subseteq \bb_p(r)\subseteq U$.
+\end{proof}
+
+\begin{prop}
+The collection $\B_{rat}$ of all open balls in $\R^n$ with rational centers and rational radii is a basis for $\R^n$.
+\end{prop}
+
+\begin{proof}
+To show that $\B_{rat}$ is a basis for $\R^n$, we will show that for any open set $U$ in $\R^n$, for $p\in U$, there exists $B\in\B$ such that $p\in B\subseteq U$. Since $U$ is an open set and $p\in U$, $\bb_p(r')\subseteq U$ for some real number $r'>0$. There exists a rational $r\in (0,r')$ and $\bb_p(r)\subseteq U$. By Lemma \ref{lemma:rational_point_in_R_n}, there exists a rational point $q\in\bb_p(r/2)$, then $p\in \bb_q(r/2)$. For any $x\in \bb_q(r/2)$, we have $d(x,p)\le d(x,q)+d(q,p) < r/2+r/2 = r$, so that $\bb_q(r/2)\subseteq \bb_p(r)$. Thus we have found a set $\bb_q(r/2)\in \B_{rat}$ such that for an open set $U$ and $p\in U$, $p\in \bb_q(r/2)\subseteq U$.
+\end{proof}
+
+\begin{mydef}
+    A topological space is said to be \highlight{second countable} if it has a countable basis.
+\end{mydef}
+
+\begin{prop}
+    The set of all open balls in $\mathbb{R}^n$ whose radii are rational and whose centers have rational coordinates is a countable basis for the Euclidean topology, and thus $\mathbb{R}^n$ is second-countable.
+\end{prop}
+
+\begin{mydef}
+    Let X be a topological space. A \highlight{cover of X} is a collection $\mathcal{U}$ of subsets of X whose union is X; it is called an \highlight{open cover} if each of the sets in $\mathcal{U}$ is open. A \highlight{subcover of $\mathcal{U}$} is a subcollection of U that is still a cover.
+\end{mydef}
+
+\begin{prop}\label{prop:countable_subcover}
+Let $X$ be a second-countable topological space. Every open cover of $X$ has a countable subcover.
+\end{prop}
+
+\begin{proof}
+Let $\mathcal{B}$ be the countable basis for X and let $\mathcal{U}$ be any arbitrary open cover of X. Consider a collection $\mathcal{U}^\prime = \{U\in \mathcal{U}: \exists\; B\in \mathcal{B}, B\subseteq U\}$. Then $\mathcal{U}^\prime$ is countable. Now consider a point $x$ in $X$. There exists $V\in \mathcal{U}$ such that $x\in V$. But as $\mathcal{B}$ is basis, there exists a $B\in\mathcal{B}$ such that $x\in B\subseteq V$, which implies that $V\in \mathcal{U}^\prime$. Thus $\mathcal{U}^\prime$ also covers X.
+\end{proof}
+
+\begin{mydef}\label{def:first_countable_space}
+If $X$ is a topological space and $p\in X$, a \highlight{neighborhood basis at \bsdnn{p}} is a collection $\mathcal{B}_p$ of neighborhoods of $p$ such that every neighborhood of p contains at least one $B\in \mathcal{B}_p$. A topological space X is said to be \highlight{first-countable} if there is a countable neighborhood basis at each point. 
+\end{mydef}
+
+\begin{remark}\label{remark:descending_neighborhood_basis}
+Suppose $p$ is a point in a first countable topological space and $\{V_i\}_{i=1}^\infty$ is a countable neighborhood basis at $p$. By taking $U_j = \bigcap_{i = 1}^j V_i$, we obtain a countable descending sequence $U_1\supset U_2\supset \ldots$ that is also a neighborhood basis at $p$. Thus, in definition of first countability, we may assume that at every point the countable neighborhood basis at the point is a descending sequence of open sets.
+\end{remark}
+
+\begin{example}
+Every metric space M is first-countable as for any point $x\in M$, the set $\B=\{\bb_x(1/n):n\in\mathbb{Z}_+\}$ is countable and forms a neighborhood basis at x. But there exists metric spaces that are not second countable. For example, consider an uncountable set $X$ with the discrete metric defined as:
+\[
+d(x,y) = 
+\begin{cases}
+    1, \quad{\text{ if } x \neq y}\\
+    0, \quad{\text{ otherwise.}}
+\end{cases}
+\]
+By considering the metric topology on $X$, we note that for any $x\in X$, $\bb_x(1) = \{x\}$ should be an open set. Thus every singleton set is an open set on $X$. A base for this topology must include all these singleton sets, so it is uncountable.
+\end{example}
+
+\begin{remark}
+Since a countable basis for $X$ contains a countable neighborhood basis at each point, second-countability implies first-countability.
+\end{remark}
+
+\begin{prop}\label{prop:metric_space_separable_second_countable}
+Every second countable space is separable. Every separable metric space is second countable.
+\end{prop}
+
+\begin{proof}
+Suppose $X$ is a second countable space. Then there exists a countable basis $\mathcal{B}$ such that any open subset of $X$ can be written as union of a subcollection of $\mathcal{B}$. If $\mathcal{B}$ contains $\emptyset$, discard it. Let $A = \{x:\,x\text{ is any element of } B,B\in \mathcal{B}\}$. Then $A$ is countable since we take one element each from a countable collection of basis elements. Moreover for every nonempty open subset $U$ of $X$, $U = \cup B$, for some $B\in \mathcal{B}$. Since $A\cap B\neq \emptyset$, we have that $A\cap U\neq \emptyset$ showing that $A$ is dense in $X$. Thus $X$ is separable. 
+
+Suppose $(X,d)$ is a separable metric space. Let $A$ be the countable dense subset in $X$. The set $\mathbb{Q}$ of rational numbers is countable, so $\mathcal{B} = \{\bb_{x}(r):\,x\in D, 0<r\in \mathbb{Q}\}$ is a countable collection of open balls in $X$. We show that $\mathcal{B}$ is a basis for the metric topology. Let $U$ be an open subset in $X$, and $x\in U$. By openness of $U$, there is some $\epsilon>0$ such that $\bb_x(\epsilon)\subseteq U$. But $x\in \bar{D}$ and $\bb_x(\epsilon/2)$ is a neighborhood of $x$, then there is some $y\in \bb_x(\epsilon/2)\cap D$. For any $z\in \bb_y(\epsilon/2)$, $d(x,z)\le d(x,y)+d(y,z)<\epsilon$, i.e., $x\in \bb_y(\epsilon/2)\subseteq \bb_x(\epsilon)$. Since $\epsilon/2>0$, there is a rational number $0<r<\epsilon/2$ by Lemma \ref{lemma:rational_point_in_real_line}. Then we have $x\in \bb_y(r)\subseteq \bb_x(\epsilon),\bb_y(r)\in \mathcal{B}$. 
+\end{proof}
+
+\section{Hausdorff Spaces and Convergent Sequences}
+
+\begin{mydef}
+    Given a sequence $(p_i)_{i=1}^\infty$ of points in X and a point $p\in X$, the sequence is said to \highlight{converge to \bsdnn{p}} if for every neighborhood $U$ of $p$, there exists a positive integer $N$ such that $p_i\in U$ for all $i\ge N$. In this case, we write $p_i\rightarrow p$ or $\underset{i\rightarrow\infty}{Lt} p_i=p$.
+\end{mydef}
+
+Topological spaces allows us to describe a wide variety of concepts if ``spaces." But for the purposes of manifold theory, arbitrary topological spaces are far too general, because they can have some unpleasant properties, as the next example illustrates.
+
+\begin{example}
+    Let X be any set. Then $\{X,\emptyset\}$ is a topology on X, called \highlight{trivial topology}. When X is endowed with this topology, every sequence in X converges to every point of X, and every map from a topological space into X is continuous. For a better example consider the topology $\T = \{[a,+\infty):a\in\R\}\cup \{\emptyset\}$ on $\R$. It is easy to verify that it is indeed a topology on $\R$. Then consider a constant sequence $\{a\}$. Applying the standard definition of limit of a sequence, the sequence converges to $a+r$ for any $r\ge 0$.
+\end{example}
+
+To avoid pathological cases like this, which results when $X$ does not have sufficiently many open subsets, we often restrict our attention to topological spaces satisfying the following special condition.
+
+\begin{mydef}
+A topological space $X$ is said to be a \highlight{Hausdorff space} if for every pair of distinct points $p,q$ in $X$, there exist disjoint open subsets $U,V\subseteq X$, such that $p\in U$ and $q\in V$.
+\end{mydef}
+
+\begin{prop}
+Every metric space is Hausdorff in the metric topology.
+\end{prop}
+
+\begin{proof}
+    For any distinct points $x,y$ in a metric space, setting $r = \dfrac{1}{2}d(x,y)$ and $U = \bb_x(r), V = \bb_y(r)$ proves that the metric space is Hausdorff. 
+\end{proof}
+
+\begin{prop}
+    Let $X$ be a Hausdorff space. Then each finite subset of $X$ is closed, and that each convergent sequence in $X$ has a unique limit.
+\end{prop}
+
+\begin{proof}
+    To prove that a finite subset of X is closed, it suffices to prove that a singleton set $\{x\}$, x in X is closed. Consider the set $X\setminus\{x\}$ and let p be a point in it. Since it is distinct from x, there exists a disjoint open neighborhood $U_p$ of p in X, such that $U_p\subseteq X\setminus\{x\}$. Then $\underset{p\neq x}{\bigcup}U_p = X\setminus\{x\}$, which makes it open, thus singleton set is closed. 
+
+    Now consider a convergent sequence $(x_i)_{i=1}^\infty$ converging to two points x,y in X. Then for every neighborhoods U, V of x and y, there exists positive numbers $N_1, N_2$ respectively such that for all $i\ge N_1, j\ge N_2, x_i\in U, x_j\in V$. WLOG suppose that $N_1>N_2$, then $i>N_1$, we have $x_i\in U, x_i\in V$. Since U and V were chosen arbitrarily, this must hold for every neighborhoods of U and V, which can happen only if $x=y$. 
+\end{proof}
+
+\begin{remark}[$T_1$-axiom]
+It states that for each pair of distinct points in $X$, each has a neighborhood not containing the other. This axiom is strictly weaker than Hausdorff axiom. This axiom guarantees that finite point sets are closed, but not the uniqueness of limit of convergent sequences. Therefore, we are not interested in this axiom.
+\end{remark}
+
+\begin{prop}\label{prop:limit_point_infinite_intersection}
+Suppose $X$ is a Hausdorff space and $A\subseteq X$. If $p\in X$ is a limit point of $A$, then every neighborhood of p contains infinitely many points of $A$.
+\end{prop}
+
+\begin{proof}
+We prove the contrapositive. Suppose there is a neighborhood $U$ of $p$ containing only finitely many points $x_1\ldots,x_k\in A$. Since $X$ is Hausdorff, there exist disjoint neighborhoods $U_i$ and $V_i$ of $x_i$ and $p$ respectively for each $i$. Then note that $V = \cap_{i=1}^k V_i$ is a neighborhood of $p$ which disjoint from each of $U_i$. Then $p$ is not a limit point of $A$.
+\end{proof}
+
+\section{Continuous Maps}
+
+\begin{mydef}\label{def:continuous_map}
+    A map $\mapping{F}{X}{Y}$ is said to be \highlight{continuous} if for every open subset $U\subseteq Y$, the preimage $F^{-1}(U)$ is open in X.
+\end{mydef}
+
+\begin{remark}
+It is easy to check that a map $\mapping{F}{X}{Y}$ is continuous iff for every basis element $B$ of $Y$, $F^{-1}(B)$ is open in $X$.
+\end{remark}
+
+\begin{prop}\label{prop:epsilon_delta_continuity}
+Suppose $(M_1,d_1)$ and $(M_2,d_2)$ are metric spaces, and $\mapping{F}{M_1}{M_2}$ is a map. Then $F$ is continuous(by Def. \ref{def:continuous_map}) iff for all $x,y\in M_1$ and every $\epsilon>0$, there exists a $\delta>0$ such that $d_1(x,y)<\delta$ implies $d_2(F(x),F(y))<\epsilon$.
+\end{prop}
+
+\begin{proof}
+\forward Let $x_0\in M_1$ and $\epsilon>0$. Consider the open ball $\bb_{F(x_0)}(\epsilon)$ containing $F(x_0)$ of radius $\epsilon$. Then by continuity of $F$, we have $F^{-1}(\bb_{F(x_0)}(\epsilon))$ is open in $M_1$. Note that $x_0\in F^{-1}(\bb_{F(x_0)}(\epsilon))$. Then there exists a open ball $\bb_{x_0}(\delta)\subseteq F^{-1}(\bb_{F(x_0)}(\epsilon))$ for some $\delta>0$. It follows that $F(\bb_{x_0}(\delta))\subseteq F(F^{-1}(\bb_{F(x_0)}(\epsilon)))\subseteq \bb_{F(x_0)}(\epsilon)$ by elementary set theory, i.e., for all $x\in M_1$ such that $d_1(x,x_0)<\delta$ implies $d_2(F(x),F(y))<\epsilon$.  
+
+\converse Let $V\subseteq Y$ be open and $x_0\in F^{-1}(V)$. Then for some $\epsilon>0$ we have $\bb_{F(x_0)}(\epsilon)\subseteq V$. Then by assumption there exists a $\delta>0$ such that for all $x\in \bb_{x_0}(\delta)$, we have $F(x)\in \bb_{F(x_0)}(\epsilon)$, i.e., $F(\bb_{x_0}(\delta))\subseteq \bb_{F(x_0)}(\epsilon)\subseteq V$ which implies that $F^{-1}(V)\supseteq F^{-1}(F(\bb_{x_0}(\delta)))\supseteq \bb_{x_0}(\delta)$ by elementary set theory. So $F^{-1}(V)$ is open in $X$.
+\end{proof}
+
+\begin{prop}\label{prop:continuity_equivalence}
+Let $\mapping{F}{X}{Y}$ be a map between topological spaces. Then all of the following properties are equivalent:
+\begin{enumerate}[(a)]
+    \item $F$ is continuous.
+    \item For every $p\in X$ and a neighborhood $V$ of $f(p)$ in $Y$, there is a neighborhood $U$ of $p$ in $X$ such that $F(U)\subseteq V$.
+    \item For every subset $B\subseteq Y$, $F^{-1}(Int\;B)\subseteq Int\; F^{-1}(B)$.
+    \item For every subset $A\subseteq X$, $F(\bar{A})\subseteq \overline{F(A)}$.
+    \item For every closed subset $C\subseteq Y$, $F^{-1}(C)$ is closed subset in X.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+    We show that (a) iff (b), (a) iff (c) and (a)$\implies$ (d) $\implies$ (e) $\implies$ (a).\\
+    $\ifthen{a}{b}$ Suppose $F$ is continuous and $p\in X$. Let $V$ be a neighborhood of $f(p)$ in $Y$. Then by continuity of $F$, $F^{-1}(V)$ is open in $X$ which contains $p$. Then set $U = F^{-1}(V)$ since $F(F^{-1}(V))\subseteq V$. \\
+    $\ifthen{b}{a}$ Let $p\in X$, such that $V$ is any open set in $Y$ containing $f(p)$. Then there is a neighborhood $U\subseteq X$ containing $p$ such that $F(U)\subseteq V\implies U\subseteq F^{-1}(V)$. Then by Prop. \ref{prop:local_criterion_for_openness}, $F^{-1}(V)$ is open. 
+    \\
+    $\ifthen{a}{c}$ For any subset $B$ in $Y$, $Int\;B = \cup_i U_i$, where $U_i\subseteq B$ are open in $Y$. Then $F^{-1}(Int\;B) = F^{-1}(\cup_i U_i) = \cup_i F^{-1}(U_i)$. Since $F$ is continuous, $\cup_i F^{-1}(U_i)$ is open in $X$. Then $\cup_i F^{-1}(U_i) = Int\;\cup_i F^{-1}(U_i) = Int F^{-1}(\cup_i U_i) \subseteq Int F^{-1}(B)$.\\
+    $\ifthen{c}{a}$ Suppose $B$ is open in $Y$ such that $F^{-1}(Int B)\subseteq Int F^{-1}(B)$. Then $F^{-1}(B) = F^{-1}(Int B)\subseteq Int F^{-1}(B)$. So $F^{-1}(B)$ is open in $X$.
+    \\
+    $\ifthen{a}{d}$ Assume $F$ is continuous and $A$ is a subset of $X$. Let $x\in \bar{A}$. Let $V$ be a neighborhood of $F(x)$. Then $F^{-1}(V)$ is an open set containing $x$; it must intersect $A$ in some point $y$. Then $V$ intersects $F(A)$ in the point $F(y)$, so that $F(x)\in F(\bar{A})$.\\
+    $\ifthen{d}{e}$ Let $C$ be a closed set in $Y$ and let $B = F^{-1}(C)$. Then $F(B) = F(F^{-1}(C))\subseteq C.$ Therefore, if $x\in \bar{B}$, then $F(x)\in F(\bar{B})\subseteq \overline{F(B)}\subseteq \bar{C} = C$, so that $x\in F^{-1}(C) = B$. Then $\bar{B}\subseteq B$ or $B = F^{-1}(C)$ is closed.\\
+    $\ifthen{e}{a}$ Let $V$ be an open set of $Y$. Then $F^{-1}(Y-V)$ is a closed set. But $F^{-1}(Y - V) = F^{-1}(Y) - F^{-1}(V) = X - F^{-1}(V)$, which is a closed set. Then $F^{-1}(V)$ is open in $X$, thus $F$ is continuous.
+\end{proof}
+
+\begin{prop}
+    Let X, Y and Z be topological spaces. Then the following maps are continuous:
+    \begin{enumerate}[(a)]
+        \item The \highlight{identity map} $\mapping{Id_X}{X}{X}$, defined by $Id_X(x)=x$ for all $x\in X$.
+        \item Any \highlight{constant map} $\mapping{F}{X}{Y}$ (i.e., a map such that $F(x)=F(y)$ for all $x,y\in X$).
+        \item Any composition $\mapping{G\circ F}{X}{Z}$ of continuous map $\mapping{F}{X}{Y}$ and $\mapping{G}{Y}{Z}$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    (a) For every open set U in X, $Id_X^{-1}(U) = U$, which is open.
+
+    (b) Let $F(x)=k$, for all $x\in X$. Then for every open set U in Y, either $F^{-1}(U) = {X}$, when $k\in U$ or $F^{-1}(U)=\emptyset$. In both cases the preimage of U is open in X.
+
+    (c) Let $U$ be open in $Z$. Since $G$ is continuous from $Y$ to $Z$, $G^{-1}(U)$ is open in $Y$. By the continuity of $F$, $F^{-1}(G^{-1}(U)) = (G\circ F)^{-1}(U)$ is open in X.
+\end{proof}
+
+\begin{mydef}
+    A continuous bijective map $\mapping{F}{X}{Y}$ with continuous inverse is called a \highlight{homeomorphism}.
+\end{mydef}
+
+\begin{mydef}\label{def:local_homeormorphism}
+    A continuous map $\mapping{F}{X}{Y}$ is said to be a \highlight{local homeomorphism} if every point $p\in X$ has a neighborhood $U\subseteq X$ such that $F(U)$ is open in $Y$ and $F$ restricts to a homeomorphism from $U$ to $F(U)$.
+\end{mydef}
+
+To say that a sequence is \highlight{eventually in a subset} means that all but finitley many terms of the sequence are in the subset.
+
+\begin{prop}[\highlight{Sequence Lemma}]\label{prop:seq_lemma}
+    Let X be a first-countable space, let $A\subseteq X$ be any subset, and let $x\in X$.
+    \begin{enumerate}[(a)]
+        \item $x\in \bar{A}$ if and only if x is a limit of a sequence of points in A.
+        \item $x\in Int\;A$ if and only if every sequence in X converging to x is eventually in A.
+        \item A is closed in X if and only if A contains every limit of every convergent sequence of points in A.
+        \item A is open in X if and only if every sequence in X converging to a point of A is eventually in A. 
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    (a) Suppose x is a limit of a sequence of points in A and let $x\notin \bar{A}$. Then there exists at least one closed set C in X containing A such that $x\notin C$. Then $x\in X\setminus C$ which is open. Then there exists an open set U in X such that $x\in U, U\subseteq X\setminus C$. Notice that this open set contains no point of the sequence which is a contradiction. \highlight{(First-countability is not need to prove this.)}
+
+    Let $x\in \bar{A}$ and X be first-countable. Then there exists a countable neighborhood basis $\mathcal{B}_x$ at x. Let $U_1\in \mathcal{B}_x$ and since $x\in \bar{A}$, $U_1\cap A$ is nonempty. (If it were empty then $X\setminus U_1$ is a closed set containing A but not x,  a contradiction!) Let $x_1\in U_1\cap A$. Similarly, for every positive number i, if $U_i\in \mathcal{B}_x$, then $U_i^\prime = (\bigcap_i U_i)\cap A$ is also nonempty. Then we get a sequence $(x_i)$ such that $x_i\in U_i^\prime\in A$ for each i. This sequence converges to x.
+    
+    (b) Let $x\in Int\;A$, and suppose there exists a sequence $(x_i)$ converging to x in X. Since \text{Int A} is itself a neighborhood of x, there exists a positive integer N such that for all $n\ge N, x_n\in Int A\subseteq A$, so $(x_i)$ eventually converges in A.
+
+    Suppose that every sequence in X converging to x is eventually in A and let $x\in X\setminus Int A$. Then there exists a countable neighborhood basis $\{U_n : n\in\mathbb{N}\}$ at x. For each $n\in\mathbb{N}$, define $B_n = \cap_{i=1}^n U_i$ and $\mathcal{B}=\{B_n : n\in\mathbb{N}\}$. Then $\mathcal{B}$ is a neighborhood basis at x. Since $x\notin Int A$, $B_n\setminus A \neq \emptyset$ for all $n\in \mathbb{N}$ (otherwise  $x\in B_n\subseteq A$ implies $x\in Int A$). So for each $n\in \mathbb{N}$, we can pick $x_n\in B_n\setminus A$ and form the sequence $(x_i)$. Let V be a neighborhood of x, as $\mathcal{B}$ is a neighborhood basis at x, there exists $m\in \mathbb{N}$ such that $B_m\subseteq V$. Notice that for all $n\ge m$, we have $x_n\in V$. Thus $x_n\rightarrow x$ but $(x_i)$ is never in A. 
+
+    (c) Follows from (a) and the fact that for a closed set $A=\bar{A}$.
+
+    (d) Follows from (b) and the fact that for an open set $A=Int\;A$.
+\end{proof}
+
+\begin{prop}
+    Let X and Y be topological spaces and suppose $\mapping{F}{X}{Y}$ is continuous. Then for every convergent sequence $x_n\rightarrow x$ in X, $F(x_n)$ converges to $F(x)$ in Y. The converse holds if $X$ is first-countable.
+\end{prop}
+
+\begin{proof}
+    Suppose $x_n\rightarrow x$ is a convergent sequence in $X$ and let U be a neighborhood of $F(x)$. Since F is continuous, $x\in F^{-1}(U)$ which is open in $X$. Then there exists a positive integer N such that $x_n\in F^{-1}(U)$ for all $n\ge N$. Since $F(F^{-1}(U))\subseteq U$, $F(x_n)\in U$ for all $n\ge N$. Thus, $F(x_n)\rightarrow F(x)$.
+    
+    To prove the converse assume that the convergent sequence condition is satisfied. Let $A$ be a subset of $X$. We show that $F(\bar{A})\subseteq \overline{F(A)}$. If $x\in \bar{A}$, then there is a sequence $\{x_n\}$ of points of $A$ converging to $x$(by Prop. \ref{prop:seq_lemma}). By assumption the sequence $\{F(x_n)\}$ converges to $F(x)$. Since $F(x_n)\in F(A)$, by Prop. \ref{prop:seq_lemma} we have $F(x)\in \overline{F(A)}$. Thus, $F(\bar{A})\subseteq \overline{F(A)}$.
+\end{proof}
+
+\section{Subspaces}
+
+Probably the simplest way to obtain new topological spaces from the old ones is by taking subsets of other spaces.
+
+\begin{mydef}
+    Let $X$ be a topological space and $S\subseteq X$ any arbitrary subset. We define the \highlight{subspace topology on \bsdnn{S}} as follows:
+    $$
+        \mathcal{T}_S = \{U\subseteq S: U = V\cap S \text{ for some } V\in \mathcal{T}\}.
+    $$
+\end{mydef}
+
+It is easy to see that subspace topology is a topology on $S$. Any subset $X$ endowed with the subspace topology is said to be a \highlight{subspace of \bsdnn{X}}.
+
+\begin{mydef}
+    Let $X$ and $Y$ be topological spaces. A continuous injective map $\mapping{F}{X}{Y}$ is called a \highlight{topological embedding} if it is a homeomorphism onto its image $F(X)\subseteq Y$ in the subspace topology.
+\end{mydef}
+
+The most important properties of the subspace topology are summarized in the next proposition.
+
+\begin{prop}[\highlight{Properties of the Subspace Topology}]
+Let $X$ be a topological space and let $S$ be a subspace of $X$.
+\begin{enumerate}[(a)]
+    \item (CHARACTERISTIC PROPERTY). If $Y$ is a topological space, a map $\mapping{F}{Y}{S}$ is continuous if and only if the composition $\iota_S\circ F: Y\rightarrow X$ is continuous, where $\iota_S:S\hookrightarrow X$ is the inclusion map (the restriction of the identity map of X to S).
+    \item The inclusion map $\iota_S:S\hookrightarrow X$ is continuous.
+    \item The subspace topology is the unique topology on S for which the characteristic property holds.
+    \item A subset $K\subseteq S$ is closed in S if and only if there exists a closed subset $:L\subseteq X$, such that $K=L\cap S$.
+    \item The inclusion map $\iota_S:S\hookrightarrow X$ is a topological embedding.
+    \item If Y is a topological space and $\mapping{F}{X}{Y}$ is continuous, then $\mapping{\bigvert{F}{S}}{S}{Y}$ (the restriction of F to S) is continuous.
+    \item If $\mathcal{B}$ is a basis for the topology of X, then $\mathcal{B}_S = \{B\cap S: B\in\mathcal{B}\}$ is a basis for the subspace topology on S.
+    \item If X is Hausdorff, then so is S.
+    \item If X is first-countable, then so is S.
+    \item If X is second-countable, then so is S. 
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(a) \forward Suppose $F$ is continuous. Let $U$ be an open set in $X$, then 
+\begin{equation*}
+(\iota_S\circ F)^{-1}(U) = F^{-1}(\iota_S^{-1}(U)) = F^{-1}(U\cap S),
+\end{equation*}
+which is open in Y as $S\cap U$ is open in $S$.\\
+\converse Suppose $\iota_S\circ F$ is continuous. Let $V$ be an open set in $S$, then there is an open set $U$ in $X$ such that $V = S\cap U = \iota_S^{-1}(U)$. Consider
+\begin{equation*}
+F^{-1}(V) = F^{-1}(\iota_S^{-1}(U)) = (\iota_S\circ F)^{-1}(U),
+\end{equation*}
+which is open in Y as $\iota_S\circ F$ is continuous.
+
+(b) In (a) set $F$ to be $\mapping{Id_S}{S}{S},$ such that $Id_S(x) = x,\;x\in S$. Then we have $Id_S$ is continuous iff $\iota_S\circ Id_S = \iota_S$ is continuous. Since $Id_S$ is continuous, we have $\iota_S$ is also continuous.
+
+(c) See \cite[Thm. 3.24]{JohnLee}.
+
+(d) \forward Suppose $K$ is closed in $S$. Then $S\setminus K$ is open in $S$, so that $S\setminus K = S\cap U$, for some open set $U$ in $X$. Then 
+$K = S\setminus (S\setminus K) = S \setminus (S\cap U) = S\cap (X\setminus U)$,
+which is required.\\
+\converse Suppose a set $K\subseteq S, K = S\cap C$, for some closed set $C$ in $X$. Then $S\setminus K = S\setminus (S\cap C) = S\cap(X\setminus C)$ which is open in $S$ as $X\setminus C$ is open in $X$. Thus $K$ is closed in $S$.
+
+(e) The image of the inclusion map is $S$ and $\iota_S$ when defined onto $S,$ it is essentially $Id_S$ which is a homeomorphism. Thus, $\iota_S$ is a topological embedding.
+
+(f) Take note that $\bigvert{F}{S} = F\circ\iota_S$ which is continuous as $F$ and $\iota_S$ are continuous.
+
+(g) Suppose $U$ is an open set in $S$ and $p\in U$. Then $U = V\cap S$, for some open set $V$ in $X$ and $p\in V$. Since $\B$ is a basis for $X$, there exists a $B\in \B$ such that $p\in B\subseteq V$. Then $p\in B\cap S\subseteq V\cap S = U$.
+
+(h) For any two distinct points $x,y\in S\subseteq X$, since $X$ is Hausdorff, there exists two disjoint open sets $U, V\subseteq X$ such that $x\in U, y\in V$. Then note that $x\in U\cap S, y\in V\cap S$ which are disjoint.
+
+(i) For a point $p\in S$, there exists a countable neighborhood basis $\B = \{B_\alpha\}$ in $X$. Let $U$ be a neighborhood of $p$ in $S$. Then, $U = S\cap U'$ for some open set $U'$ in $X$, so that there exists a set $B_\alpha\in \B$ such that $p\in B_\alpha\subseteq U'$. Then $p\in B_\alpha\cap S \subseteq U'\cap S = U$.
+
+(j) For a countable basis $\B$ for $X$, we know that $\B_S = \{B\cap S:B\in\B\}$ is basis for $S$ which is countable.
+\end{proof}
+
+If X and Y are topological space and $\mapping{F}{X}{Y}$ is a continuous map, part (f) of the preceding proposition guarantees that the restriction of F to every subspace of X is continuous(in the subspace topology). We can also ask the converse question.: If we know that the restriction of F to certain subspaces of X is continuous, is F itself continuous? The next two propositions express two somewhat different answers to this question.
+
+\begin{prop}[\highlight{Continuity is Local property}]
+Let $\mapping{F}{X}{Y}$ be a map between topological spaces. If every point $p\in X$ has a neighborhood $U$ on which the restriction $\bigvert{F}{U}$ is continuous, then $F$ is continuous.
+\end{prop}
+
+\begin{proof}
+Given that every point $p\in X$ has a neighborhood $U_x$, then $X$ can be written as union of these open sets $U_x$, such that $\bigvert{F}{U_x}$ is continuous. Let $V$ be an open set in $Y$. Then $F^{-1}(V)\cap U_x = (\bigvert{F}{U_x})^{-1}(V)$, because both the expressions represents the set of points $x$ lying in $U_x$ for which $F(x)\in V$. Since $\bigvert{F}{U_x}$ is continuous this set is open in $U_x$ and hence open in $X$. But $F^{-1}(V) = \bigcup_x (F^{-1}(V)\cap U_x)$.
+\end{proof}
+
+\begin{prop}[\highlight{Gluing Lemma for Continuous Maps}] \label{prop:gluing_lemma}
+Let $X$, $Y$ be topological spaces, and suppose one of the following holds:
+\begin{enumerate}[(a)]
+    \item $B_1,\ldots,B_n$ are finitely many closed subsets of $X$ whose union is $X$, i.e., $\{B_i\}$ is a finite closed cover of $X$.
+    \item $\{B_i\}_{i\in A}$ is a collection of open subsets of $X$ whose union is $X$, i.e., $\{B_i\}$ is an arbitrary open cover of $X$.
+\end{enumerate}
+Suppose that for all $i$ we are given continuous maps $\mapping{F_i}{B_i}{Y}$ that agree on overlaps: $\bigvert{F_i}{B_i\cap B_j} = \bigvert{F_j}{B_i\cap B_j}$. Then there exists a unique continuous map $\mapping{F}{X}{Y}$ whose restriction to each $B_i$ is equal to $F_i$.
+\end{prop}
+
+\begin{proof}
+(a) Suppose $X = \bigcup_{i=1}^n B_n$, where each $B_i$ is a closed set. Define $F(x) = F_i(x),$ if $x\in B_i$, so that $\bigvert{F}{B_i} = F_i$. We show that $F$ is continuous from $X$ to $Y$. Let $C$ be a closed set in $Y$. Then $F^{-1}(C) = \bigcup_{i=1}^n F_i(C)$, by elementary set theory. But each $F_i^{-1}(C)$ is closed in $B_i$ as $F_i$ is continuous. Since $B_i$ is closed in $X$, $F_i^{-1}(C)$ is also closed in $X$. Then $F^{-1}(C)$ is closed in $X$.
+\\
+(b) Suppose $X = \bigcup_\alpha B_\alpha$, where each $B_\alpha$ is open in $X$. Define $F(x) = F_\alpha(x),$ if $x\in B_\alpha$, so that $\bigvert{F}{B_\alpha} = F_\alpha$. We show that $F$ is continuous from $X$ to $Y$. Let $V$ be an open set in $Y$. Then $F^{-1}(V) = \bigcup_\alpha F_\alpha(V)$, by elementary set theory. But each $F_\alpha^{-1}(V)$ is open in $B_\alpha$ as $F_\alpha$ is continuous. Since $B_\alpha$ is open in $X$, $F_\alpha^{-1}(V)$ is also closed in $X$. Then $F^{-1}(V)$ is open in $X$.
+\end{proof}
+
+\begin{prop}
+    Let X be a topological space, and suppose X admits a countable open cover $\{U_i\}$ such that each set $U_i$ is second-countable in the subspace topology. Then X is second-countable.
+\end{prop}
+
+\begin{proof}
+    
+\end{proof}
+
+\begin{prop}
+Let $A\subseteq X$. If $d$ is a metric for the topology of $X$, then $\bigvert{d}{A\times A}$ is a metric for the subspace topology on $A$.
+\end{prop}
+
+\begin{proof}
+We show that metric topology induced by $d'\equiv \bigvert{d}{A\times A}$ is same as the subspace topology. Any basis element of metric topology induced by $d'$ is $\bb'_x(r)$, for some $x\in A$ and $r>0$, the corresponding basis element induced by subspace topology of $M$ is $\bb_x(r)\cap A$. We show that $\bb'_x(r) = \bb_x(r)\cap A$. Any $y\in \bb'_x(r) \Leftrightarrow y\in A$ and $y\in \bb_x(r) \Leftrightarrow y\in \bb_x(r)\cap A$. Then we see that for any $x\in A$, $x\in \bb'_x(r)\subseteq \bb_x(r)\cap A$ and $x\in \bb_x(r)\cap A\subseteq \bb'_x(r)$ showing that each topology is finer than the other.
+\end{proof}
+
+\section{Product Spaces}
+
+\begin{mydef}
+Suppose $X_1,\ldots, X_n$ are finitely many sets. Then their \highlight{Cartesian product} is the set $X_1\times\ldots\times X_n$ consisting of all ordered $n$-tuples of the form $(x_1,\ldots,x_n)$ with $x_i\in X_i$ for each $i$. The \highlight{\bsdnn{i}-th projection map} is the map $\mapping{\pi_i}{X_1\times\ldots\times X_n}{X_i}$ defined by $\pi_i(x_1,\ldots,x_n) = x_i$.
+\end{mydef}
+
+\begin{prop}
+$\B = \{U_1\times \ldots\times U_n:U_i\subseteq X_i\text{ is open},\; i = 1,\ldots, n\}$ forms a basis for a topology on $X_1\times\ldots\times X_n$, called the \highlight{product topology}.
+\end{prop}
+
+\begin{proof}
+We use Prop. \ref{prop:basis_equivalence}. Since $X_i$ is open in $X_i$, we have a set of the form $X_1\times\ldots\times X_n\in \B$ thus $\bigcup_{B\in \B} B = X_1\times\ldots\times X_n$.  Now suppose $B_1,B_2\in \B$. Then $B_1 = U_1\times \ldots\times U_n$ and $B_2 = V_1\times \ldots\times V_n$ for some open sets $U_i, V_i$ in $X_i$. Let $p = (p^{(1)},\ldots,p^{(n)})\in B_1\cap B_2$. Then for each $i$, $p^{(i)}\in U_i\cap V_i$ which is also open in $X_i$. Therefore, $p\in B\subseteq B_1\cap B_2$, where $B = B_1\cap B_2$.
+\end{proof}
+
+\begin{prop}[\highlight{Properties of the Product Topology}]\label{prop:product_topology}
+Suppose $X_1\times\ldots\times X_n$ are topological spaces, and let $X_1\times\ldots\times X_n$ be their product space.
+\begin{enumerate}[(a)]
+    \item (CHARACTERISTIC PROPERTY). If $B$ is a topological space, a map $\mapping{F}{B}{X_1\times\ldots\times X_n}$ is continuous iff each of its component functions $\mapping{F_i = \pi_i\circ F}{B}{X_i}$ is continuous.
+    \item The product topology is the unique topology on $X_1\times\ldots\times X_n$ for which the characteristic property holds.
+    \item Each projection map $\mapping{\pi_i}{X_1\times\ldots\times X_n}{X_i}$ is continuous.
+    \item Given any continuous map $\mapping{F_i}{X_i}{Y_i}$ for $i=1,\ldots,n$ the \highlight{product map} $\mapping{F_1\times \ldots\times F_n}{X_1\times\ldots\times X_n}{Y_1\times\ldots\times Y_n}$ is continuous, where 
+    \begin{equation*}
+    F_1\times \ldots\times F_n(x_1,\ldots,x_n) = (F_1(x_1),\ldots,F_n(x_n)).
+    \end{equation*}
+    \item If $S_i$ is a subspace of $X_i$ for $i=1,\ldots,n$ the product topology and the subspace topology on $S_1\times\ldots\times S_n\subseteq X_1\times\ldots\times X_n$ coincide.
+    \item For any $i\in \{1,\ldots,n\}$ and any choices of points $a_j\in X_j$ for $j\neq i$, the map $x\mapsto (a_1,\ldots,a_{i-1},x,a_{i+1},\ldots,a_n)$ is a topological embedding of $X_i$ into the product space $X_1\times\ldots\times X_n$.
+    \item If $\B_i$ is a basis for the topology of $X_i$ for $i = 1,\ldots,n$, then the collection $$\B = \{B_1\times \ldots\times B_k:B_i\in\B_i\}$$ is a basis for the topology of $X_1\times\ldots\times X_n$.
+    \item Every finite product of Hausdorff spaces is Hausdorff.
+    \item Every finite product of first-countable spaces is first-countable.
+    \item Every finite product of second-countable spaces is second-countable.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(a) \forward Suppose $F$ is continuous and let $U_i$ is an open set in $X_i$. Then consider the set $U = X_1\times\ldots\times U_i\times\ldots\times X_n$ which is open in the product space. Then $$F^{-1}(U) = F^{-1}(X_1\times\ldots\times U_i\times\ldots\times X_n) = \Big(\bigcap_{j\neq i} F_j^{-1}(X_j)\Big)\cap F_i^{-1}(U_i) = F_i^{-1}(U_i) $$ is open in $B$, since $F_j^{-1}(X_j) = B$. Thus, $F_i$ is continuous for each $i$. \\
+\converse Suppose $F_i$ is continuous for each $i$. Consider the set $U_1\times\ldots\times U_n$, an open set in the product space, for some open sets $U_i\subseteq X_i$. Then $F^{-1}(U_1\times\ldots\times U_n) = \bigcap_{i = 1}^n F^{-1}_i(U_i)$ by elementary set theory, which is a finite intersection of open sets in $B$ as $F_i$ is continuous for each $i$. Thus, $F$ is continuous.
+
+(b) See \cite[Thm. 3.30]{JohnLee}.
+
+(c) In the characteristic property of the product space, set $B = X_1\times\ldots\times X_n$ and $F = Id$ on the product space, which is continuous map. Then $F_i = \pi_i\circ Id = \pi_i$ is continuous on $X_i$.
+
+(d) Let $U_1\times\ldots\times U_n$ is open in $Y_1\times\ldots\times Y_n$. Then its inverse image under the product map is 
+\begin{align*}
+(F_1\times \ldots\times F_n)^{-1}(U_1\times \ldots\times U_n) 
+&= \{(x_1,\ldots,x_n):\,(F_1(x_1),\ldots,F_n(X_n)\in U_1\times \ldots\times U_n\} \\
+&= \bigcap_{i=1}^n\{(x_1,\ldots,x_n):\,F_i(x_i)\in U_i)\} \\
+&= \bigcap_{i=1}^n X_1\times\ldots\times F_i(U_i)\times\ldots\times X_n = \bigcap_{i=1}^n \bar{V}_i, 
+\end{align*}
+where $\bar{V}_i = X_1\times\ldots\times F_i(U_i)\times\ldots\times X_n$. Note that $\bar{V}_i$ is open in $X_1\times \ldots\times X_n$, and $(F_1\times \ldots\times F_n)^{-1}(U_1\times \ldots\times U_n)$ is finite intersection of open sets which is again open in $X_1\times \ldots\times X_n$.
+
+(e) Considering subspace topology, any open subset of $S_1\times\ldots\times S_n$ can be written as $U = S_1\times\ldots\times S_n\cap U_1\times\ldots\times U_n$, for some open set $U_i\subseteq X_i$. But note that $(S_1\cap U_1)\times\ldots\times (S_n\cap U_n)$, which is open set with respect to the product topology on $S_1\times\ldots\times S_n$, since $S_i\cap U_i$ is open in $S_i$.
+
+(f) \forward Considered as a map from $X_i$ to $V = \{(a_1,\ldots,a_{i-1},x,a_{i+1},\ldots,a_n):x\in X_i\}$, it is bijective. It is continuous by using characteristic property with $F$ being the given function and $B = X_i$. Then note that $F_j(x) = a_j$, for $j\neq i$, which is a constant function and $F_i(x) = x$, which is an identity function. For each $j$, $F_j$ is continuous on $X_i$, thus $F$ is continuous on $X_i$.\\
+\converse Notice that the inverse function is just the $i$-th projection map, which is again continuous on domain restricted $X$.
+
+(g) Since $\B_i$ is a basis for $X_i$, we have that $\bigcup_{B_i\in\B_i}B_i = X_i$, so that $\bigcup_{B\in\B}B = X_1\times\ldots\times X_n$. Suppose $B' = \prod_{i=1}^n B'_i$, and $B'' = \prod_{i=1}^n B''_i$, $B'_i,B''_i\in\B_i$. Let $p\in B'\cap B''$. Then note that $$B'\cap B'' = \Big(\prod_{i=1}^n B'_i\Big)\cap \Big(\prod_{i=1}^n B''_i\Big) = \prod_{i=1}^n (B'_i\cap B''_i),$$
+so that there exists a basic open set $\bar{B}_i\subseteq B'_i\cap B''_i$, such that $p\in \prod_{i=1}^n \bar{B}_i\subseteq B'\cap B''$.
+
+(h) Let $p,q$ be two distinct points in the product space. Then there exists $i$, such that $p^{(i)}\neq q^{(i)}$. Then consider the neighborhoods $U = X_1\times\ldots X_{i-1}\times U_i \times X_{i+1}\times\ldots\times X_n$ and $V = X_1\times\ldots X_{i-1}\times V_i \times X_{i+1}\times\ldots\times X_n$, where $U_i,V_i\subseteq X_i$ are disjoint neighborhoods of $p^{(i)}$ and $q^{(i)}$. Then we have $U\cap V = X_1\times\ldots X_{i-1}\times (U_i\cap V_i) \times X_{i+1}\times\ldots\times X_n = \emptyset.$
+
+(i) 
+
+(j) 
+\end{proof}
+
+\begin{lemma}
+The addition, subtraction, and multiplication operations are continuous functions from $\R\times \R$ into $\R$; and the quotient operation is continuous from $\R\times(\R-\{0\})$ into $\R$.
+\end{lemma}
+
+\begin{prop}
+If $X$ is a topological space, and if $\mapping{F,G}{X}{\R}$ are continuous, then $F+G,F-G,F\cdot G$ are continuous. If $G(x)\neq 0$ for all $x$, then $F/G$ is continuous.
+\end{prop}
+
+\begin{proof}
+The map $\mapping{H}{X}{\R\times\R}$ defined by $H(x) = (F(x),G(x))$ is continuous by Prop. \ref{prop:product_topology}. Then $F+G$ is continuous as  is $F = +\circ H$, where $\mapping{+}{\R\times \R}{\R}$ is the addition function which is continuous. Similar arguments apply for $F-G,F\cdot G$ and $F/G$.
+\end{proof}
+
+\begin{prop}
+Let $(M,d)$ be a metric space. Then $\mapping{d}{M\times M}{\R}$ is continuous in the metric topology.
+\end{prop}
+
+\begin{proof}
+We show that inverse image of every basis element(open interval) of $\R$ is open in $M\times M$. Consider an open interval $I = (a..b), 0<a<b$. Then the inverse image of $I$ is $U = d^{-1}(I) = \{(x,y)\in M\times M:a<d(x,y)<b\}$. Now choose $r>0$ such that $\bb_{d(x,y)}(2r)\subseteq I$. We show that $\bb_x(r)\times \bb_y(r) \subseteq U$ which completes the proof. For any $(x',y')\in \bb_x(r)\times \bb_y(r)$, we have $d(x',y')\le d(x',x)+d(x,y)+d(y,y')<d(x,y)+2r$ so that $d(x',y')<d(x,y)+2r$ and similarly, $d(x,y)\le d(x,x')+d(x',y')+d(y',y)<d(x',y')+2r$ so that $d(x,y) - 2r < d(x',y')$. Combining the two inequalities, we have $a< d(x,y)-2r<d(x',y')<d(x,y)+2r<b$ such that $(x',y')\in U$. 
+\end{proof}
+
+\section{Disjoint Union Spaces}
+
+\begin{mydef}
+If $\{X_\alpha\}_{\alpha\in J}$ is an indexed family of sets, their \highlight{disjoint union} is the set $\coprod_{\alpha\in J}X_\alpha = \{(x,\alpha):\,\alpha \in J, x\in X_\alpha\}$. For each $\alpha$ there is a canonical injective map $\mapping{\iota_\alpha}{X_\alpha}{\coprod_{\alpha\in J}X_\alpha}$ given by $\iota_\alpha(x) = (x,\alpha)$, and the images of these maps for different values of $\alpha$ are disjoint. 
+\end{mydef}
+
+Typically, we implicitly identify $X_\alpha$ with its image in the disjoint union, thereby viewing $X_\alpha$ as a subset of $\coprod_{\alpha\in J}X_\alpha$. 
+
+\begin{mydef}\label{def:disjoint_union_topology}
+Given an indexed family of topological spaces $\{X_\alpha\}_{\alpha\in J}$, we define the \highlight{disjoint union topology} on $\coprod_{\alpha\in J}X_\alpha$ by declaring a subset of $\coprod_{\alpha\in J}X_\alpha$ to be open iff its intersection with each $X_\alpha$ is open in $X_\alpha$.
+\end{mydef}
+
+\begin{prop}[\highlight{Properties of the Disjoint Union Topology}] \label{prop:disjoint_union_topology}
+Suppose $\{X_\alpha\}_{\alpha\in J}$ is an indexed family of topological spaces, and $\coprod_{\alpha\in J}X_\alpha$ is endowed with the disjoint union topology.
+\begin{enumerate}[(a)]
+    \item (CHARACTERISTIC PROPERTY). If $Y$ is a topological space, a map $\mapping{F}{\coprod_{\alpha\in J}X_\alpha}{Y}$ is continuous iff $\mapping{F\circ\iota_\alpha}{X_\alpha}{Y}$ is continuous for each $\alpha\in J$.
+    \item The disjoint union topology is the unique topology on $\coprod_{\alpha\in J}X_\alpha$ for which the characteristic property holds.
+    \item A subset of $\coprod_{\alpha\in J}X_\alpha$ is closed iff its intersection with each $X_\alpha$ is closed.
+    \item Each injection $\mapping{\iota_\alpha}{X_\alpha}{\coprod_{\alpha\in J}X_\alpha}$ is a topological embedding.
+    \item Every disjoint union of Hausdorff spaces is Hausdorff.
+    \item Every disjoint union of first-countable spaces is first-countable.
+    \item Every disjoint union of countably many second-countable spaces is second-countable.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(a) Suppose $U\subseteq Y$ is an open set. Then note that $F^{-1}(U)$ is open in $\coprod_{\alpha}X_\alpha$ iff the restriction of $F^{-1}(U)$ to $X_\alpha$ is open in $X_\alpha$ for each $\alpha$ iff $\iota^{-1}(F^{-1}(U)) = (F\circ \iota_\alpha)^{-1}(U)$ is open in $X_\alpha$ for each $\alpha\in J$.
+
+(b)
+
+(c) Suppose $C\subseteq \coprod_{\alpha}X_\alpha$ is closed. Then $\coprod_{\alpha}X_\alpha-C$ is open so that $\iota_\alpha^{-1}(\coprod_{\alpha}X_\alpha-C) = X_\alpha - \iota_\alpha^{-1}(C)$ is open for each $\alpha\in J$.
+
+(d) Define the map $\mapping{\iota'_\alpha=\iota_\alpha}{X_\alpha}{\iota_\alpha(X_\alpha)}$. The map $\iota'_\alpha$ is a bijection. The continuity of the map is implied from the definition of disjoint union topology. For any open subset $U\subseteq X_\alpha$, consider $\iota'_\alpha(U)$. For $\alpha\neq \beta$ we have $\iota_\beta^{-1}(\iota'_\alpha(U)) = \emptyset$ which is open in $X_\beta$ and $\iota_\alpha^{-1}(\iota'_\alpha(U)) = U$ which is open in $X_\alpha$ by assumption. Then $\iota'_\alpha(U)$ is open in $\coprod_\alpha X_\alpha$. Thus $\iota'_\alpha$ is a topological embedding.
+
+(e) Suppose $(x,\alpha)$ and $(y,\beta)$ be two distinct points of $\coprod_\alpha X_\alpha$. Then $\iota_\alpha^{-1}(x,\alpha) = x\in X_\alpha$ and $\iota_\beta^{-1}(y,\beta) = y\in X_\beta$. If $\alpha\neq\beta$, then any neighborhood $\iota_\alpha(U)$ of $(x,\alpha)$ and $\iota_\beta(V)$ of $(y,\beta)$ are disjoint, where $U$ is open in $X_\alpha$ and $V$ is open in $X_\beta$. If $\alpha=\beta$, then there exist disjoint neighborhoods of $U,V\subseteq X_\alpha$ of $x$ and $y$ respectively. Then $\iota_\alpha(U)$ and $\iota_\alpha(V)$ are disjoint neighborhood of $(x,\alpha)$ and $(y,\alpha)$ since $\iota_\gamma^{-1}(\iota_\alpha(U)) = \iota_\gamma^{-1}(\iota_\alpha(V)) = \emptyset$ for $\gamma\neq \alpha$ and $\iota_\alpha^{-1}(\iota_\alpha(U)) = U$, $\iota_\alpha^{-1}(\iota_\alpha(V)) = V$ which are all disjoint.
+
+(f)
+
+(g)
+\end{proof}
+
+\section{Quotient Spaces and Quotient Maps}
+
+\begin{mydef}\label{def:saturated_set}
+Let $\mapping{\pi}{X}{Y}$ be a map between two topological spaces. A subset $U\subseteq X$ is said to be \highlight{saturated with respect to \bsdnn{\pi}} if $U$ is the entire preimage of its image, i.e., if $U = \pi^{-1}(\pi(U))$. Given $y\in Y$, the \highlight{fiber of \bsdnn{\pi} over \bsdnn{y}} is the set $\pi^{-1}(\{y\})$.
+\end{mydef}
+
+\begin{prop}\label{prop:saturated_sets_equivalent_conditions}
+Let $\mapping{\pi}{X}{Y}$ be a map between two topological spaces and $U$ be a subset of $X$. The following are equivalent:
+\begin{enumerate}[(a)]
+    \item $U$ is saturated w.r.t. $\pi$.
+    \item There exists a subset $V\subseteq Y$, such that $U=\pi^{-1}(V)$.
+    \item If $\pi^{-1}(\{y\}) \cap U \neq \emptyset$ for any $y\in Y$, then $\pi^{-1}(\{y\})\subseteq U$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+We show that $(a)\implies (b), (b)\implies(c)$ and $(c)\implies (a)$.\\
+$\ifthen{a}{b}$ Take $V = \pi(U)$.
+\\
+$\ifthen{b}{c}$ Let $U = \pi^{-1}(V)$ for some $V\subseteq Y$ and let $y\in Y$ be any point. If $u\in \pi^{-1}(\{y\})\cap U$, then $u\in U$ and $y = \pi(u)$ so that $y\in V$. Then $\pi^{-1}(\{y\})\subseteq \pi^{-1}(V) = U$.
+\\
+$\ifthen{c}{a}$ We need to show that assuming (c) holds, $U = \pi^{-1}(\pi(U))$. But $U\subseteq \pi^{-1}(\pi(U))$ by elementary set theory, so we show the converse to hold. If $x\in \pi^{-1}(\pi(U))$, then $\pi(x)\in \pi(U)$. Then there is a $u\in U$ such that $\pi(x) = \pi(u)$. But then $u\in \pi^{-1}(\{\pi(x)\})\cap U$ and so $x\in \pi^{-1}(\{\pi(x)\})\subseteq U$ by (c).
+\end{proof}
+
+\begin{remark}
+We can restate the condition (c) of Prop. \ref{prop:saturated_sets_equivalent_conditions} as follows:
+$U$ is saturated w.r.t. $\pi$ iff it is a union of fibers.
+\end{remark}
+
+\begin{mydef}\label{def:quotient_map}
+Let $X$ and $Y$ be topological spaces; let $\mapping{\pi}{X}{Y}$ be a surjective map. The map $\pi$ is said to be a \highlight{quotient map} provided a subset $U$ of $Y$ is open in $Y$ iff $\pi^{-1}(U)$ is open in $X$.
+\end{mydef}
+
+\begin{remark}\label{remark:quotient_map_closed_sets}
+An equivalent condition for a quotient map given in Def. \ref{def:quotient_map} is to require that a subset $A$ of $Y$ is closed in $Y$ iff $\pi^{-1}(A)$ is closed in $X$. This follows from the fact that $\pi^{-1}(Y-A) = X - \pi^{-1}(A)$.
+\end{remark}
+
+\begin{prop}\label{prop:quotient_map_equivalent_conditions}
+Let $X$ and $Y$ be topological spaces and suppose that $\mapping{F}{X}{Y}$ is a surjective continuous map. Then the following are equivalent:
+\begin{enumerate}[(a)]
+    \item $F$ is a quotient map.
+    \item $F$ takes saturated open subsets to open subsets.
+    \item $F$ takes saturated closed subsets to closed subsets.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+We prove that $(a) \implies (b)$ and $(b)\implies (a)$.\\
+$\ifthen{a}{b}$ Let $F$ be a quotient map and $U$ is a saturated open subset of $X$ such that $U = F^{-1}(F(U))$. But then $V = F(U)$ is open in $Y$ since $F^{-1}(V)$ is open in $X$.\\
+$\ifthen{b}{a}$ Let $V$ be open an subset of $Y$. Then by continuity of $F$, $F^{-1}(V)$ is open in $X$. Now suppose that $U = F^{-1}(V)$ is an open subset of $X$. Then $U$ saturated by Prop. \ref{prop:saturated_sets_equivalent_conditions}(b) and $F(U) = F(F^{-1}(V)) = V$ since $F$ is surjective. But $F(U)$ is open in $Y$ by assumption.
+
+Similar arguments show that (c) is equivalent to (a) by using the alternate definition of quotient maps in terms of closed set(Remark \ref{remark:quotient_map_closed_sets}). 
+\end{proof}
+
+\begin{prop}\label{prop:quotient_topology_uniqueness}
+If $X$ is a space and $Y$ is a set and if $\mapping{\pi}{X}{Y}$ is a surjective map, then there exists exactly one topology $\mathcal{T}$ on $Y$ relative to which $\pi$ is a quotient map; it is called the \highlight{quotient topology on \bsdnn{Y} induced by \bsdnn{\pi}}.
+\end{prop}
+
+\begin{proof}
+Let $\mathcal{T} = \{V\subseteq Y: \pi^{-1}(V) \text{ is open in } X\}$ be the topology on $Y$. Then the map $\pi$ is a quotient map. We show that it is indeed a topology. Since $\pi^{-1}(\emptyset) = \emptyset$ is open in $X$, $\emptyset\in \mathcal{T}$. By surjectivity of $\pi$, $\pi^{-1}(Y) = X$, which is open in $X$, so that $Y\in \mathcal{T}$. Now suppose $\{V_\alpha\}_{\alpha\in J}$ and $\{U_i\}_{i=1}^n$ be collections of open subsets in $Y$, where $J$ is an arbitrary set. Then $\pi^{-1}(\cup_{\alpha\in J} V_\alpha) = \cup_{\alpha\in J}\pi^{-1}(V_\alpha)$ which is union of a arbitrary collection of open subsets in $X$ and $\pi^{-1}(\cap_{i=1}^n U_i) = \cap_{i=1}^n\pi^{-1}(U_i)$ which is finite intersection of open subsets in $X$. Thus $\cup_{\alpha\in J} V_\alpha,\cap_{i=1}^n U_i\in \mathcal{T}$. This shows the existence of such topology on $Y$.
+
+To prove the unqiueness note that since any additional
+or less open sets in set $Y$ would mean that $\pi$ is not (by definition) a quotient map.
+\end{proof}
+
+A relation $\sim$ on a set $X$ is called an \highlight{equivalence relation} if it is \highlight{reflexive}($x\sim x$ for all $x\in X$), \highlight{symmetric}($x\sim y\implies y\sim x$), and \highlight{transitive}($x\sim y$ and $y\sim z\implies x\sim z$). If $\sim$ is an equivalence relation on $X$, then for each $x\in X$, the \highlight{equivalence class of \bsdnn{x}}, denoted by $[x]$, is the set of all $y\in X$ such that $x\sim y$. The set of all equivalence classes, denoted by $X/\sim$, is a \highlight{partition of \bsdnn{X}}, which is a disjoint non-empty collection of subsets of $X$ whose union is $X$.
+
+\begin{mydef}
+Suppose $X$ is a topological space and $\sim$ is an equivalence relation on $X$. Let $\mapping{\pi}{X}{X/\sim}$ be the natural projection sending each point to its equivalence class. Endowed with the quotient topology determined by $\pi$, the space $X/\sim$ is called the \highlight{quotient space} (or \highlight{identification space}) \highlight{of \bsdnn{X} determined by \bsdnn{\sim}}.
+\end{mydef}
+
+\begin{remark}
+We can describe the topology of $X/\sim$ in another way. A subset $U$ of $X/\sim$ is a collection of equivalence classes, and the set $\pi^{-1}(U)$ is the union of the equivalence classes belonging to $U$. Thus the typical open set of $X/\sim$ is a collection of equivalence classes whose union is an open set of $X$.
+\end{remark}
+
+\begin{prop}[\highlight{Properties of Quotient Maps}] \label{prop:quotient_map_properties}
+Let $\mapping{\pi}{X}{Y}$ be a quotient map.
+\begin{enumerate}[(a)]
+    \item (CHARACTERISTIC PROPERTY). If $B$ is a topological space, a map $\mapping{F}{Y}{B}$ is continuous iff $\mapping{F\circ \pi}{X}{B}$ is continuous.
+    \item The quotient topology is the unique topology on $Y$ for which the characteristic property holds.
+    \item If $\pi$ is injective, then it is a homeomorphism.
+    \item If $U\subseteq X$ is a saturated open or closed subset, then $\mapping{\bigvert{\pi}{U}}{U}{\pi(U)}$ is a quotient map.
+    \item Any composition of $\pi$ with another quotient map is again a quotient map.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(a) Let $U\subseteq B$ be an open subset. Then the result follows immediately by noting that $F^{-1}(U)$ is open in $Y$ iff $\pi^{-1}(F^{-1}(U)) = (F\circ \pi)^{-1}(U)$ is open in $X$.
+
+(b) The results follows from Prop. \ref{prop:quotient_topology_uniqueness}.
+
+(c) If $\pi$ is innjective, then $\pi$ is bijective map such that $V\subseteq Y$ is open iff $\pi^{-1}(V)$ is an open subset of $X$. Thus $\pi$ is a homeomorphism.
+
+(d) Let $V\subseteq U$ be a saturated open subset of w.r.t. $\pi'\equiv \bigvert{\pi}{U}$. Then $V = \pi'^{-1}(\pi'(V)) = \pi^{-1}(\pi(V))$ since $U$ is saturated w.r.t. $\pi$. So $V$ is saturated w.r.t. $\pi$. Then $\pi(V) = \pi'(V)\subseteq \pi(U)$ is open in $Y$. But $\pi(U)$ is open in $Y$ so that $\pi'(V) = \pi(V)\cap \pi(U)$ is open in $\pi(U)$.
+
+(e) Suppose $\mapping{\pi'}{Y}{Z}$ is a quotient map. Then for any subset $V\in Z$, $V$ is open in $Z$ iff $\pi'^{-1}(V)$ is open in $Y$ iff $\pi^{-1}(\pi'^{-1}(V))$ is open in $X$. Then $(\pi'\circ\pi)^{-1}(V)$ is open iff $V$ is open, which shows that $\pi'\circ \pi$ is a quotient map.
+\end{proof}
+
+\begin{prop}[\highlight{Passing to the Quotient}]\label{prop:passing_to_the_quotient}
+Suppose $\mapping{\pi}{X}{Y}$ is a quotient map, $B$ is a topological space, and $\mapping{F}{X}{B}$ is a map that is constant on the fibers of $\pi$ (i.e., $\pi(p) = \pi(q)\implies F(p)=F(q)$). Then $F$ induces a unique map $\mapping{\Tilde{F}}{Y}{B}$ such that $F = \Tilde{F}\circ \pi$. The induced map $\Tilde{F}$ is continuous iff $F$ is continuous.
+\end{prop}
+
+\begin{proof}
+For each $y\in Y$, $F(\pi^{-1}(\{y\}))$ is a singleton set in $B$ since $F$ is constant on the fibers of $\pi$. If we let $\Tilde{F}(y)$ denote this point, then we have defined a map $\mapping{\Tilde{F}}{Y}{B}$ such that for each $x\in X$, $\Tilde{F}(\pi(x)) = F(x)$. If $\Tilde{G}$ is also induced by $F$, then for all $x\in X$, $\Tilde{F}(\pi(x)) = \Tilde{G}(\pi(x)) = F(x)$, but then $\Tilde{G} = \Tilde{F}$. This show that existence and uniqueness of the induced map. The continuity of $\Tilde{F}$ is implied by Prop. \ref{prop:quotient_map_properties}(a).
+\end{proof}
+
+\begin{prop}[\highlight{Uniqueness of Quotient Spaces}]
+If $\mapping{\pi_1}{X}{Y_1}$ and $\mapping{\pi_2}{X}{Y_2}$ are quotient maps that are constant on each other's fibers $($i.e., $\pi_1(p) = \pi_1(q)$ iff $\pi_2(p) = \pi_2(q))$, then there exists a unique homeomorphism $\mapping{\varphi}{Y_1}{Y_2}$ such that $\varphi\circ\pi_1 = \pi_2$.
+\end{prop}
+
+\begin{proof}
+Applying the Prop. \ref{prop:passing_to_the_quotient} to the quotient map $\mapping{\pi_1}{X}{Y_1}$, we see that $\pi_2$ passes to the quotient, yielding a continuous map $\mapping{\Tilde{\pi}_2}{Y_1}{Y_2}$ such that $\Tilde{\pi}_2\circ \pi_1 = \pi_2$. Applying the same argument with roles of $\pi_1$ and $\pi_2$ reversed, there is a continuous map $\mapping{\Tilde{\pi}_1}{Y_2}{Y_1}$ such that $\Tilde{\pi}_1\circ\pi_2 = \pi_1$. Together, these identities imply that $\Tilde{\pi}_2\circ\Tilde{\pi}_1\circ\pi_2 = \pi_2$. Apply the Prop. \ref{prop:passing_to_the_quotient} again with $\pi_2$ playing the roles of both $\pi$ and $F$, we see that both $\Tilde{\pi}_2\circ\Tilde{\pi}_1$ and $Id_{Y_2}$ are obtained from $\pi_2$ by passing to the quotient, so the uniqueness assertion of Prop. \ref{prop:passing_to_the_quotient} implies that $\Tilde{\pi}_2\circ\Tilde{\pi}_1 = Id_{Y_2}$. A similar argument shows that $\Tilde{\pi}_1\circ\Tilde{\pi}_2 = Id_{Y_1}$, so that $\Tilde{\pi}_2$ is the desired homeomorphism.
+\end{proof}
+
+\section{Open and Closed Maps}
+
+\begin{mydef}
+A map $\mapping{F}{X}{Y}$ (continuous or not) is said to be an \highlight{open map} if for every open subset $U\subseteq X$, the image set $F(U)$ is open in $Y$, and a \highlight{closed map} if for every closed subset $K\subseteq X$, the image set $F(K)$ is closed in $Y$. 
+\end{mydef}
+
+\begin{example}
+Let $\mapping{f}{\R}{\R}$ be defined as $f(x) = c$, where $c\in \R$ is a constant. Then for any closed interval $I_1 = [a,b]$ in $\R$, $f(I_1) = \{c\}$ which is closed in $\R$, thus $f$ is closed. But note that for an open interval $I_2 = (a,b)\subseteq \R$, $f(I_2) = \{c\}$, which is closed, so that $f$ is not open. Thus a closed map is not necessarily open.
+\end{example}
+
+\begin{prop}
+Suppose $X_1,\ldots,X_k$ are topological spaces. Then each projection $\mapping{\pi_i}{X_1\times\ldots\times X_k}{X_i}$ is an open map.
+\end{prop}
+
+\begin{proof}
+The result follows immediately by noting that $U = U_1\times\ldots\times U_k$ is open in $X_1\times\ldots\times X_k$ iff $U_i = \pi_i(U)$ is open in $X_i$ for all $i = 1,\ldots,k$.
+\end{proof}
+
+\begin{example}
+Let $\mapping{\pi_1}{\R^2}{\R}$ be the projection onto the first coordinate, i.e., $\pi_1(x_1,x_2) = x_1$. Then the preceding proposition shows that $\pi_1$ is open. We show that $\pi_1$ is not closed. Let $S = \{(x_1,x_2):\,x_1 x_2 = 1\}$ be the hyperbola. Then note that $S$ is closed in $\R^2$ since it is the inverse image of $\{1\}$ under $(x_1,x_2)\mapsto x_1x_2$(which is continuous). Now note that $\pi_1(S) = (0,\infty)$ which not closed, so that $\pi_1$ is not closed. Thus an open map is not necessarily closed.
+\end{example}
+
+\begin{prop}
+Let $\{X_\alpha\}_{\alpha\in J}$ be an indexed family of topological spaces. Then each injection $\mapping{\iota_\alpha}{X_\alpha}{\coprod_{\alpha\in J}X_\alpha}$ is both open and closed.
+\end{prop}
+
+\begin{proof}
+Follows from Def. \ref{def:disjoint_union_topology} and Prop. \ref{prop:disjoint_union_topology}(c).
+\end{proof}
+
+\begin{prop}
+Every local homeomorphism is an open map.
+\end{prop}
+
+\begin{proof}
+Follows from the definition of local homeomorphism(Def. \ref{def:local_homeormorphism}).
+\end{proof}
+
+\begin{prop}
+Every bijective local homeomorphism is a homeomorphism.
+\end{prop}
+
+\begin{proof}
+Local homeomorphism is a continuous map and by the preceding proposition and bijection property, its inverse is also continuous.
+\end{proof}
+
+\begin{prop}
+Suppose $X$ is Hausdorff and that $\mapping{\pi}{X}{Y}$ is an open quotient map. Then $Y$ is Hausdorff iff the set $\mathcal{R} = \{(x_1,x_2):\,\pi(x_1) = \pi(x_2)\}$ is closed in $X\times X$.
+\end{prop}
+
+\begin{proof}
+\forward Define $O = X\times X - \mathcal{R} = \{(x_1, x_2), \pi(x_1) \neq \pi(x_2)\}$. Then for any $(x_1,x_2)\in O$, we have $\pi(x_1) \neq \pi(x_2)$ so that there exist disjoint neighborhoods $U$ and $V$ of $\pi(x_1)$ and $\pi(x_2)$ respectively. By the definition of the quotient map, $\pi^{-1}(U)$ and $\pi^{-1}(V)$ are open disjoint in $X$. Consider the set $W = \pi^{-1}(U) \times \pi^{-1}(V)$. If $(a,b)\in W$, then $\pi(a)\in U$ and $\pi(b)\in V$, so $\pi(a)\neq \pi(b)$, i.e., $(a,b)\in O$ which implies that $W\subseteq O$. Also note that $W$ is an open set. It follows that $O$ is also open in $X\times X$, then $\mathcal{R}$ is closed.
+
+\converse Suppose $x,y\in Y$, such that $x\neq y$. Then there exists $(a,b)\in O$ such that $x = \pi(a)$ and $y = \pi(b)$. Since $O$ is open and $X$ is Hausdorff, there exist disjoint neighborhoods $U$ and $V$ of $a$ and $b$ respectively such that $U \times V \subseteq O$. Since $\pi$ is open, $\pi(U)$ and $\pi(V)$ are open in $Y$ containing $x$ and $y$ respectively. Then note that $\pi(U)\cap \pi(V)=\emptyset$, thus $Y$ is Hausdorff.
+\end{proof}
+
+\begin{prop}
+Let $X$ and $Y$ be topological spaces, and let $\mapping{F}{X}{Y}$ be a map. Then 
+\begin{enumerate}[(a)]
+    \item $F$ is closed iff for every $A\subseteq X$, $F(\bar{A})\supseteq \overline{F(A)}$.
+    \item $F$ is open iff for every $B\subseteq Y$, $F^{-1}(Int\,B)\supseteq Int\, F^{-1}(B)$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(a) \forward Since $\bar{A}$ is closed in $X$, $F(\bar{A})$ is closed in $Y$. But $A\subseteq \bar{A}$, then $F(A)\subseteq F(\bar{A})$. So $F(\bar{A})$ is a closed set in $Y$ containing $F(A)$, then $F(\bar{A})\supseteq \overline{F(A)}$.\\
+\converse Suppose $A\subseteq X$ is a closed set. Then $F(\bar{A}) = F(A)$, but $F(\bar{A}) = F(A) \supseteq \overline{F(A)}$ which implies that $F(A)$ is closed in $Y$.
+
+(b) \forward Let $p\in Int\,F^{-1}(B)$, then $F(p)\in B$ and there exists a neighborhood $U$ of $p$ such that $U\subseteq F^{-1}(B)$. But $F$ is open, then $F(U)$ is a neigborhood of $F(p)$ such that $F(U)\subseteq F(F^{-1}(B))\subseteq B$ which means $F(p)\in Int\,B$. Then $p\in F^{-1}(Int\,B)$.
+\\
+\converse Suppose $U\subseteq X$ is open. Then $F(U)\subseteq Y$ satisfies $F^{-1}(Int\,F(U))\supseteq Int\,F^{-1}(F(U))\supseteq Int\,U = U$, i.e., $F^{-1}(Int\,F(U))\supseteq U$. Then $F(F^{-1}(Int\,F(U)))\supseteq F(U)$. But $Int\,F(U)\supseteq F(F^{-1}(Int\,F(U)))$, so we have $Int\,F(U)\supseteq F(U)$, which means $F(U)$ is open in $Y$. 
+\end{proof}
+
+\begin{prop}\label{prop:lemma_to_closed_map_lemma}
+Suppose $X$ and $Y$ are topological spaces, and $\mapping{F}{X}{Y}$ is a continuous map that is either open or closed.
+\begin{enumerate}[(a)]
+    \item If $F$ is surjective, then it is a quotient map.
+    \item If $F$ is injective, then it is a topological embedding.
+    \item If $F$ is bijective, then it is a homeomorphism.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(a) Suppose $F$ is surjective. If it is open, it certainly takes saturated open subsets to open subsets. Similarly, if it is closed, it takes saturated closed subsets to closed subsets. Thus it is a quotient map.
+
+(b) Now suppose $F$ is open and injective. Then $\mapping{F}{X}{F(X)}$ is bijective, so $\mapping{F^{-1}}{F(X)}{X}$ exists. If $U\subseteq X$ is open, then $(F^{-1})^{-1}(U) = F(U)$ is open in $Y$ by assumption, and therefore is also open in $F(X)$. This proves that $F^{-1}$ is continuous, so that $F$ is a homeomorphism onto its image. If $F$ is closed, the same argument goes through with ``open" replaced by ``closed". 
+
+(c) This immediately follows from (b) by setting $F(X) = Y$.
+\end{proof}
+
+\section{Connectedness}
+
+\begin{mydef}
+A topological space $X$ is said to be \highlight{disconnected} if it has two disjoint nonempty open subsets whose union is $X$ in which case we say a \highlight{separation} of $X$ is a pair $U, V$ of disjoint nonempty open subsets such that $U\cup V = X$. It is \highlight{connected} if there does not exist a separation of $X$.
+\end{mydef}
+
+\begin{prop}
+A topological space $X$ is connected iff the only subsets of $X$ that are both open and closed are $\emptyset, X$.
+\end{prop}
+
+\begin{proof}
+\forward Suppose $X$ is connected and that $U\subseteq X$ which is both open and closed. Then the set $V = X\setminus U$ is both open and closed in $X$ such that $U\cup V = X$ and $U\cap V = \emptyset$. Since $X$ is connected, either $U$ or $V$ must be empty, which gives $X,\emptyset$ are only subsets of $X$ which are both open and closed.\\
+\converse We prove the contrapositive of the statement, i.e., suppose $X$ is disconnected, then there exist a set $U\subseteq X$ not equal to $X,\emptyset$ which is both open and closed. Since $X$ is disconnected, there exists disjoint open set $U, V\subseteq X$ which are nonempty and $U\cup V = X$. Then note that $U, V$ are also closed.
+\end{proof}
+
+\begin{mydef}
+Let $X$ be a topological space. A subset $A$ of $X$ is called a \highlight{connected subset of \bsdnn{X}} if $A$ is a connected space when endowed with the subspace topology.
+\end{mydef}
+
+\begin{prop}
+If $Y$ is a subspace of $X$, a separation of $Y$ is a pair of disjoint nonempty sets $A$ and $B$ whose union is $Y$, neither of which contains a limit point of the other. The space $Y$ is connected if there exists no separation. 
+\end{prop}
+
+\begin{proof}
+\forward Suppose $A$ and $B$ form a separation of $Y$. Then $A$ is both open and closed in $Y$. The closure of $A$ in $Y$ is $\bar{A}\cap Y$, where $\bar{A}$ is closure of $A$ in $X$. But since $A$ is closed in $Y$, we have $A = \bar{A}\cap Y$ or $\bar{A}\cap B=\emptyset$. Then $B$ contains no limit points of $A$. A similar argument show that $A$ contains no limit points of $B$.
+
+\converse Suppose $A$ and $B$ are disjoint nonempty sets whose union is $Y$, neither of which contains a limit point of the other. Then $\bar{A}\cap B = \emptyset$ and $A\cap \bar{B} = \emptyset$; therefore we conclude that $\bar{A}\cap Y = A$ and $\bar{B}\cap Y = B$. Thus both $A$ and $B$ are closed in $Y$, and since $A = Y - B$ and $B = Y - A$, they are open in Y as well.
+\end{proof}
+
+\begin{mydef}
+Let $X$ be a topological space. A \highlight{component of \bsdnn{X}} is a maximal nonempty connected subset of $X$.
+\end{mydef}
+
+\begin{remark}
+By definition empty set contains no components.
+\end{remark}
+
+\begin{prop}[\highlight{Properties of Connected Spaces}]\label{prop:connectedness}
+Let $X$ and $Y$ be topological spaces.
+\begin{enumerate}[(a)]
+    \item If $\mapping{F}{X}{Y}$ is continuous and $X$ is connected, then $F(X)$ is connected.\label{prop:connectedness_a}
+    \item \highlight{(Topological Invariance of Connectedness).} Every space homeomorphic to a connected space is connected.\label{prop:connectedness_b}
+    \item Suppose $X$ is any topological space and $U, V$ are disjoint open subsets of $X$. If $A$ is a connected subset of $X$ contained in $U\cup V$, then either $A\subseteq U$ or $A\subseteq V$.\label{prop:connectedness_c}
+    \item A union of connected subspaces of $X$ with a point in common is connected.\label{prop:connectedness_d}
+    \item If $X$ contains a dense connected subset, then $X$ is connected.\label{prop:connectedness_e}
+    \item Suppose $A\subseteq X$ is connected. Then $\bar{A}$ is connected, as is any subset $B$ such that $A\subseteq B\subseteq \bar{A}$. This can be rephrased as: ``If $B$ is formed by adjoining to the connected subspace $A$ some or all of its limit points, then $B$ is connected".\label{prop:connectedness_f}
+    \item Every product of finitely many connected spaces is connected.\label{prop:connectedness_g}
+    \item Every quotient space of a connected space is connected.\label{prop:connectedness_h}
+    \item The components of $X$ form a partition of $X$.\label{prop:connectedness_i}
+    \item Each component of $X$ is closed in $X$.\label{prop:connectedness_j}
+    \item Every connected subset is contained in a single component of $X$.\label{prop:connectedness_k}
+    \item If $S$ is a subset of $X$ that is both open and closed, then $S$ is a union of components of $X$.\label{prop:connectedness_l}
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\highlight{(\ref{prop:connectedness_a})} By replacing $Y$ with $F(X)$, we may as well assume that $f$ is surjective. We prove the contrapositive, i.e., if $Y$ is disconnected, then $X$ is also disconnected. Since $Y$ is disconnected it is union of two nonempty disjoint open subsets $U, V$. Then $F^{-1}(U), F^{-1}(V)$ must be nonempty, since $F$ is surjective and open in $X$, since $F$ is continuous. They must also be closed as $U, V$ are closed in $Y$. Thus $X$ is disconnected.
+
+\highlight{(\ref{prop:connectedness_b})} If $X$ and $Y$ are homeomorphic, then there exists a homeomorphism between them. Since it is bijective and continuous both sides $X$ and $Y$ are both connected.
+
+\highlight{(\ref{prop:connectedness_c})} Let $A$ contained points in both $U$ and $V$. Consider two open subset of $A$, $U' = A\cap U$ and $V' = A\cap V$. Then $U'\cap V' = (A\cap U)\cap (A\cap V) = A\cap(U\cap V) = \emptyset$ and $U'\cup V' = A$, so that $A$ is disconnected, which is a contradiction.
+
+\highlight{(\ref{prop:connectedness_d})} Let $\{B_\alpha\}_{\alpha\in A}$ be a collection of connected subspaces of $X$ with a point $p$ in commmon. Suppose $U, V$ are disjoint open subsets of $\bigcup_{\alpha\in A}B_\alpha$. WLOG, suppose $p\in U$. By (\ref{prop:connectedness_c}), each of the $B_\alpha$ is entirely contained in $U$ and so is their union. Thus, $\bigcup_{\alpha\in A}B_\alpha$ is connected.
+
+\highlight{(\ref{prop:connectedness_e})} Let $A\subseteq X$ be a dense connected subset, and assume for the sake of contradiction that $X$ is not connnected. Then it is a disjoint union of open subsets $U,V$, which are also closed. Then (\ref{prop:connectedness_c}) shows that $A$ is contained in one of these sets, say $U$. Then it follows that $X = \bar{A}\subseteq \bar{U} = U$, since $U$ is closed. Then $X = U$ and $V=\emptyset$, which is a contradiction. 
+
+\highlight{(\ref{prop:connectedness_f})} Suppose $A$ is connected and $A\subseteq B\subseteq \bar{A}$. Then note that $A$ is dense in $\bar{A}$ and similarly, $A$ is dense in $B$, since $\bar{A}\cap B = B$. Then (\ref{prop:connectedness_e}) shows that $B$ is connected. Applying this with $B = \bar{A}$ then show that $\bar{A}$ is connected.
+
+\highlight{(\ref{prop:connectedness_g})} Since $X_1\times\ldots\times X_n = (X_1\times\ldots\times X_{n-1})\times X_n$, by induction it suffices to consider a product of two spaces. Thus let $X,Y$ be connected spaces and suppose that there are disjoint open subsets $U,V$ whose union is $X\times Y$. Let $(x_0,y_0)$ be a point in $U$. 
+The set $\{x_0\}\times Y$ is connected because it is homeomorphic to $Y$. Since it contains $(x_0,y_0)\in U$, it must be entirely contained in $U$ by (\ref{prop:connectedness_c}). For each $y\in Y$, the set $X\times \{y\}$ is also connected and has the point $(x_0,y_0)\in U$, so it must be contained in $U$. Since $X\times Y$ is the union of the sets $X\times \{y\}$ for $y\in Y$, it follows that $U = X\times Y$ and $V$ is empty.
+
+\highlight{(\ref{prop:connectedness_h})} It follows from (\ref{prop:connectedness_a}) and the fact that quotient maps are surjective.
+
+\highlight{(\ref{prop:connectedness_i})} We need to show that the components are disjoint and their union is $X$. To see that distinct components are disjoint, suppose $U, V$ are components that are not disjoint. Then there is a point in common, and (\ref{prop:connectedness_d}) implies that $U\cup V$ is connected. By maximality, $U\cup V = U = V$, so $U$ and $V$ are not distinct.
+
+To see that union of the components is $X$, let $x\in X$ be arbitrary. There is atleast one connected set containing $x$, namely $\{x\}$. If $U$ is union of all connected sets containing $x$, then $U$ is connected by (\ref{prop:connectedness_d}), and it certainly is maximal, so it is a component containing $x$.
+
+\highlight{(\ref{prop:connectedness_j})} If $B$ is any component of $X$, it follows from (\ref{prop:connectedness_e}) that $\bar{B}$ is a connected set containing $B$. Since components are maximal connected sets, $\bar{B} = B$, so $B$ is closed.
+
+\highlight{(\ref{prop:connectedness_k})} Suppose $A\subseteq X$ is connected. Because the components cover $X$, if $A$ is nonempty, it has a point in common with some component $B$. By (\ref{prop:connectedness_d}), $A\cup B$ is connected, so by maximality of $B$, $A\cup B = B$, which implies that $A\subseteq B$.
+
+\highlight{(\ref{prop:connectedness_l})} If $S\subseteq X$ is both open and closed in $X$. If $X$ is connected, then $S$ is either $\emptyset$ or $X$. In either case it is union of components of $X$. Hence, suppose that $X$ is not connected and there it can be partitioned by it components $C_i$ as $X = \bigcup_i C_i$. Consider $S\cap C_i$ for each $i$. As $S$ is both open and closed, $S\cap C_i$ is also both open and closed in $C_i$; since $C_i$ is connected, $S\cap C_i$ is either $\emptyset$ or $C_i$, thus $C_i\subseteq S$ or $S\cap C_i=\emptyset$. Since distinct components are disjoint, we have $S = \bigcup_i S\cap C_i$, which is union of components of $X$.
+\end{proof}
+
+\begin{remark}
+By Prop. \ref{prop:connectedness}(\ref{prop:connectedness_j}), any component of $X$ is a closed set. If $X$ is union of only finitely many components, then each component $C$ of $X$ is open in $X$, since its complement is union of finite collection of closed sets. But in general the components of $X$ need not be open in $X$.
+\end{remark}
+
+\begin{lemma}
+$\R$ is connected in its standard topology and so are any intervals and rays in $\R$.
+\end{lemma}
+
+\begin{prop}[Intermediate value theorem]
+Let $\mapping{F}{X}{\R}$ be a continuous map, where $X$ is a connected space and $\R$ is adjoined with its standard topology. If $a$ and $b$ are two points of $X$ and if $r\in \R$ such that $F(a)<r<F(b)$, then there exists a point $c\in X$ such that $F(c) = r$.
+\end{prop}
+
+\begin{proof}
+Suppose for the sake of contradiction there is no $c\in X$ such that $F(c) = r$, then $A = F(X)\cap (-\infty,r)$ and $B = F(X)\cap(r,+\infty)$ for a separation of $F(X)$ which contradicts the fact that the image of a connected space under a continuous map is connected.
+\end{proof}
+
+\begin{mydef}
+Let $X$ be a topological space and $p,q\in X$. A \highlight{path in \bsdnn{X} from \bsdnn{p} to \bsdnn{q}} is a continuous map $\mapping{\gamma}{[0,1]}{X}$ such that $\gamma(0) = p$ and $\gamma(1) = q$. We say that $X$ is \highlight{path-connected} if for every $p,q\in X$, there is a path $X$ from $p$ to $q$. The \highlight{path components of \bsdnn{X}} are its maximal path-connected subsets.
+\end{mydef}
+
+\begin{remark}
+The domain of the path can be any closed interval [a,b] of $\R$ such that $a<b$, since $[a,b]$ is homeomorphic to $[0,1]$.
+\end{remark}
+
+\begin{prop}\label{prop:path_connectedness_implies_connectedness}
+Path connectedness implies connectedness.
+\end{prop}
+
+\begin{proof}
+Suppose $X$ is path-connected, and fix $p\in X$. For each $q\in X$, let $B_q$ be the image of a path in $X$ from $p$ to $q$. Since $[0,1]$ is connected and $B_q$ is image set of a continuous map over $[0,1]$, $B_q$ is connected. Thus by Prop. \ref{prop:connectedness}(\ref{prop:connectedness_d}), $X=\bigcup_{q\in X} B_q$ is connected.
+\end{proof}
+
+\begin{prop}\label{prop:path_component_and_component}
+Each path component of $X$ is entirely contained within a component of $X$.
+\end{prop}
+
+\begin{proof}
+If two points $x$ and $y$ in $X$ are path-connected by $\mapping{f}{[0,1]}{X}$, then they are both contained in the connected subspace $f([0,1])\subseteq X$.
+\end{proof}
+
+\begin{prop}[\highlight{Properties of Path-Connected Spaces}] 
+\label{prop:path_connectedness}
+Let $X$ and $Y$ be topological spaces.
+\begin{enumerate}[(a)]
+    \item If $\mapping{F}{X}{Y}$ is continuous and $X$ is path-connected, then $F(X)$ is path-connected.
+    \item \highlight{(Topological Invariance of Path-Connectedness).} Every space homeomorphic to a path-connected space is path-connected.
+    \item A union of path-connected subspaces of $X$ with a point in common is path-connected.
+    \item Every product of finitely many path-connected spaces is path-connected.
+    \item Every quotient space of a path-connected space is path-connected.
+    \item The path-components of $X$ form a partition of $X$.
+    \item Every path-connected subset is contained in a single path-component of $X$.
+    \item If $S\subseteq X$ is both open and closed, then $S$ is a union of path-components of $X$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\highlight{(a)} Consider $x,y\in F(X)$ such that $F(a) = x$ and $F(b) = y$ for some $a,b\in X$. Since $X$ is path-connected, there exists a continuous map $\mapping{\gamma}{[0,1]}{X}$ such that $\gamma(0) = a$ and $\gamma(1) = b$. Then note that $\mapping{\varphi = F\circ\gamma}{[0,1]}{Y}$ is continuous map such that $\varphi(0) = x$ and $\varphi(1) = y$. Thus $F(X)$ is path-connected.
+
+\highlight{(b)} If $X$ and $Y$ are homeomorphic, then there exists a homeomorphism between them. Since it is bijective and continuous both sides $X$ and $Y$ are both path-connected.
+
+\highlight{(c)} Suppose $X = \cup_k C_k$, where each $C_k$ is path-connected subspace of $X$ such that $\cap_k C_k = \{q\}$ and $p_k\in C_k$. Let $i\neq j$. Then there is a path $\mapping{\gamma_i}{I_i = [0,1]}{X}$ such that $\gamma_i(0) = p_i$ and $\gamma_i(1) = q$ and $\gamma_i$ is continuous. Similarly there is a path $\mapping{\gamma_j}{I_j = [1,2]}{X}$ such that $\gamma_j(1) = q$ and $\gamma_i(2) = p_j$ and $\gamma_j$ is continuous. We construct a path between $p_i$ and $p_j$. Define $\mapping{\gamma_{ij}}{I_{ij} = [0,2]}{X}$ such that
+\[
+\gamma_{ij}(c) = 
+\begin{cases}
+\gamma_i(c), \text{ if }c \in I_i  \\
+\gamma_j(c), \text{ if }c \in I_j  
+\end{cases}
+\]
+Then note that $I_{ij} = I_i\cup I_j$, which is union of closed sets in $\R$ and $\gamma_{ij}$ when restricted to $I_i$ is $\gamma_i$ and when restricted to $I_j$ is $\gamma_j$ which are both continuous by assumption. Also note that $I_i\cap I_j = \{1\}$ and $\gamma_i(1) = q = \gamma_j(1)$. Then $\gamma_{ij}$ is continuous by \highlight{Gluing Lemma}(Prop. \ref{prop:gluing_lemma}). Then $\gamma_{ij}$ is a path between $p_i$ to $p_j$ through $q$. 
+
+\highlight{(d)} Suppose $p = (p_1\ldots,p_k), q = (q_1\ldots,q_k)\in X_1\times\ldots\times X_k$. Then there exists a path $\mapping{\gamma_i}{[0,1]}{X_i}$ such that $\gamma_i(0) = p_i$ and $\gamma_i(1) = q_i$. Then construct $\mapping{\gamma}{[0,1]}{X_1\times\ldots\times X_k}$ such that $ \pi_i\circ\gamma = \gamma_i$. Then by Characteristic property of product topology(Prop. \ref{prop:product_topology}(a)), $\gamma$ is a continuous map such that $\gamma(0) = p$ and $\gamma(1) = q$. Thus $X_1\times\ldots\times X_k$ is path-connected.
+
+\highlight{(e)} It follows from (a) and the fact that quotient maps are surjective.
+
+\highlight{(f)} We need to show that the path-components are disjoint and their union is $X$. To see that distinct path-components are disjoint, suppose $U, V$ are path-components that are not disjoint. Then there is a point in common, and (c) implies that $U\cup V$ is connected. By maximality, $U\cup V = U = V$, so $U$ and $V$ are not distinct.
+
+To see that union of the components is $X$, let $x\in X$ be arbitrary. There is a trivial path containing $x$, namely $\mapping{\gamma}{[0,1]}{X}$ such that $\gamma(c) = x$ for all $c\in [0,1]$. Note that this path is continuous and surjective since its a constant function. Then $\{x\}$ is path-connected. If $U$ is union of all path-connected sets containing $x$, then $U$ is path-connected by (c), and it certainly is maximal, so it is a path-component containing $x$.
+
+\highlight{(g)} Follows directly from (f).
+
+\highlight{(h)} Follows from Prop. \ref{prop:connectedness}(\ref{prop:connectedness_l}) and Prop. \ref{prop:path_component_and_component}.
+\end{proof}
+
+\begin{remark}\label{remark:commponent_path_component}
+Prop. \ref{prop:path_component_and_component} can rephrased as:
+``Each component is a disjoint union of path-components", since path-components are disjoint sets by Prop. \ref{prop:path_connectedness}(f).
+\end{remark}
+
+\begin{example}
+Some examples of path connected spaces in $\R^n$.
+\begin{enumerate}
+    \item The \highlight{unit closed ball} $\bar{\bb}_{0}(1)\subseteq \R^n$ is path-connected. For any two points $x,y\in \bar{\bb}_{0}(1)$, the straight-line path $\mapping{\gamma}{[0,1]}{\R^n}$ defined by $\gamma(t) = (1-t)x+ty$ lies in $\bar{\bb}_{0}(1)$ since $\|\gamma(t)\|\le (1-t)\|x\|+t\|y\|\le 1$. A similar argument shows that every open ball $\bb_{x}(r)$ and every closed ball $\bar{\bb}_{x}(r)$ in $\R^n$ is path-connected.
+    \item Define \highlight{punctured euclidean space} to be the space $\R^n-\{0\}$. If $n>1$, this space is path-connected: Given $x,y$ different from $0$, we can join $x$ and $y$ by straight-line path between them if that path does not go through the origin. Otherwise, we can choose a point $x$ not on the line joining $x$ and $y$, and take the broken-line path from $x$ to $z$, and then from $z$ to $y$.
+    \item The \highlight{unit sphere} $\mathbb{S}^{n-1}\subseteq \R^n$ is path-connected for $n>1$. The map $\mapping{g}{\R^n-\{0\}}{\mathbb{S}^{n-1}}$ defined by $g(x) = x/\|x\|$ is continuous and surjective, then by Prop. \ref{prop:path_connectedness}(a), $\mathbb{S}^{n-1}$ is path-connected.
+\end{enumerate}
+\end{example}
+
+\begin{example}[\highlight{Topologist's Sine curve}]
+Let $S = \{x\times \sin{(1/x)}:\,0<x\le 1\}$. Because $S$ is the image of $(0,1]$ under a continuous map, $S$ is connected. Therefore its closure $\bar{S}\in \R^2$ is also connected by Prop. \ref{prop:connectedness}(\ref{prop:connectedness_f}). The set $\bar{S}$ is called the \highlight{topologist's sine curve}. Note that $\bar{S} = S\cup \{0\times [-1,1]\}$. We show that $\bar{S}$ is not path-connected. 
+
+Suppose there is a path $\mapping{\gamma}{[c,d]}{\bar{S}}$ beginning at the origin and ending at a point of $S$. The set of those $t$ for which $\gamma(t)\in 0\times[-1,1]$ is closed, so is has a largest element $b$. Then $\mapping{\gamma}{[b,c]}{\bar{S}}$ is a path that maps $b$ into the vertical interval $0\times [-1,1]$ and the set $(b,c]$ to points of $S$. Replace $[b,c]$ by $[0,1]$ for convenience; let $\gamma(t) = (x(t),y(t))$. Then $x(0) = 0$, while $x(t)>0$ and $y(t) = sin(1/x(t))$ for $t>0$. We show that there is a sequence of points $t_n\rightarrow 0$ such that $y(t_n) = (-1)^n$. Then the sequence $y(t_n)$ does not converge, contradicting continuity of $\gamma$. To find $t_n$, we proceed as follows: Given $n$, choose $u$ with $0<u<x(1/n)$ such that $\sin{(1/u)}=(-1)^n$. Then use the intermediate value theorem to find $t_n$ with $0<t_n<1/n$ such that $x(t_n) = u$.
+\end{example}
+
+\begin{mydef}\label{def:local_connectedness}
+A topological space is said to be \highlight{locally (path-)connected} if it admits a basis of (path-)connected open subsets. To be more precise, this means that for any $p\in X$ and any neighborhood $U$ of $p$, there is a (path-)connected neighborhood of $p$ contained in $U$.
+\end{mydef}
+
+\begin{prop}[\highlight{Properties of Locally Connected Spaces}]
+Let $X$ be a locally connected topological space.
+\begin{enumerate}[(a)]
+    \item The components of $X$ are open in $X$.
+    \item Every open subset of $X$ is locally connected.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\highlight{(a)} Let $A\subseteq X$ be a component of $X$, i.e., $A$ is a maximal connected subset of $X$. Then for any $p\in A$, there exists a connected neighborhood $U$ of $p$, and $U\subseteq A$ by Prop. \ref{prop:connectedness}(\ref{prop:connectedness_c}). Thus every point of $A$ has a neighborhood in $A$, so $A$ is open.
+
+\highlight{(b)} Since $X$ has a basis of connected open subsets, any open subset $U$ will also admit a basis of connected open subsets of $U$ by subspace topology, then by Def. \ref{def:local_connectedness}, $U$ is locally connected.
+\end{proof}
+
+\begin{prop}[\highlight{Properties of Locally Path-Connected Spaces}]
+Let $X$ be a locally path-connected topological space.
+\begin{enumerate}[(a)]
+    \item $X$ is locally connected.
+    \item Every open subset of $X$ is locally path-connected.
+    \item The path-components of $X$ are open in $X$.
+    \item The path components of $X$ are equal to its components.
+    \item $X$ is connected iff it is path-connected.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\highlight{(a)} Every locally path-connected space admits a basis of path-connected open subsets, which are also connected open subsets by Prop. \ref{prop:path_connectedness_implies_connectedness}.
+
+\highlight{(b)} Since $X$ has a basis of path-connected open subsets, any open subset $U$ will also admit a basis of path-connected open subsets of $U$ by subspace topology, then by Def. \ref{def:local_connectedness}, $U$ is locally path-connected.
+
+\highlight{(c)} Let $A\subseteq X$ be a path-component of $X$, i.e., $A$ is a maximal path-connected subset of $X$. Then for any $p\in A$, there exists a  path-connected neighborhood $U$ of $p$, and $U\subseteq A$ by Prop. \ref{prop:path_connectedness_implies_connectedness} and \ref{prop:connectedness}(\ref{prop:connectedness_c}). Thus every point of $A$ has a neighborhood in $A$, so $A$ is open.
+
+\highlight{(d)} Let $p\in X$, and $A$ and $B$ be component and path-components containing $p$, respectively. By Remark. \ref{remark:commponent_path_component}, $B\subseteq A$ and $A$ can be written as disjoint union of path-components, each of which is open in $X$, by (c), thus in $A$. If $A-B\neq \emptyset$, then the sets $B$ and $A-B$ form a separation of $A$ which contradicts the fact that $A$ is a component. Thus $A = B$.
+
+\highlight{(e)} $X$ is connected iff it has exactly one component, which by (d) is the same as having exactly one path component, which in turn is equivalent to being path-connected.
+\end{proof}
+
+\section{Compactness}
+
+\begin{mydef}
+A topological space $X$ is said to be \highlight{compact} if every open cover of $X$ has a finite subcover. A \highlight{compact subset} of a topological space is one that is a compact space in the subspace topology.
+\end{mydef}
+
+\begin{prop}[\highlight{Properties of Compact Spaces}] \label{prop:compact_spaces}
+Let $X$ and $Y$ be topological spaces.
+\begin{enumerate}[(a)]
+    \item If $\mapping{F}{X}{Y}$ is continuous and $X$ is compact, then $F(X)$ is compact.
+    \item (\highlight{Topological Invariance of Compactness}). Every space homeomorphic to a compact space is compact.
+    \item Let $U$ be a subspace of $X$. Then $U$ is compact iff every covering of $U$ by sets open in $X$ contains a finite subcollection covering $U$.
+    \item Every closed subspace of a compact subspace is compact.
+    \item If $Z$ is compact subspace of a Hausdorff space $X$ and $x_0$ is not in $Z$, then there exist disjoint open sets $U,V$ of $X$ containing $x_0$ and $Z$ respectively.
+    \item Every compact subspace of a Hausdorff space is closed.
+    \item Any union of finitely many compact subspaces of $X$ is compact.
+    \item Let $\mapping{F}{X}{Y}$ be bijective continuous map. If $X$ is compact and $Y$ is Hausdorff, then $F$ is a homeomorphism.
+    \item \highlight{(The tube lemma).} Consider the product space $X\times Y$, where $Y$ is compact. If $N$ is open set of $X\times Y$ containing the slice $x_0\times Y$ of $X\times Y$, then $N$ contains some tube $W\times Y$ about $x_0\times Y$, where $W$ is a neighborhood of $x_0$ in $X$.
+    \item The product of finitely many compact spaces is compact.
+    \item Every quotient of a compact space is compact.
+    \item If $X$ is Hausdorff and $K$ and $L$ are disjoint compact subsets of $X$, then there exist disjoint open subsets $U,V\subseteq X$ such that $K\subseteq U$ and $L\subseteq V$.
+    \item Every compact subset of a metric space is bounded.
+    % \item Let $X$ be a topological space. Then $X$ is compact iff for every collection $\mathcal{C}$ of closed sets in $X$ having the finite intersection property, the intersection $\bigcap_{C\in \mathcal{C}}C$ of all elements of $\mathcal{C}$ is nonempty.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\highlight{(a)} Let $\mathcal{A}$ be an open cover of $F(X)$. Then each of $F^{-1}(A)$, $A\in \mathcal{A}$ is open in $X$ by continuity of $F$ and the collection of such sets form an open covering of $X$. But $X$ is compact, so $F^{-1}(A_1),\ldots,F^{-1}(A_m)$, for some  $A_1\ldots,A_m\in \mathcal{A}$ cover $X$, so that $A_1,\ldots,A_m$ cover $F(X)$. 
+
+\highlight{(b)} If $X$ and $Y$ are homeomorphic, the there exists a homeomorphism between. Since it is bijective and continuous both sides $X$ and $Y$ are both compact if one of them is.
+
+\highlight{(c)} \forward Let $\mathcal{A} = \{A_\alpha\}_{\alpha\in J}$ is a covering of $U$ by open set in $X$. Then the collection $\{A_\alpha\cap U:\,\alpha\in J\}$ is a covering of $U$ by sets open in $U$; hence a finite subcollection $\{A_{\alpha_1}\cap U,\ldots,A_{\alpha_n}\cap U\}$ covers $U$. Then $\{A_{\alpha_1},\ldots,A_{\alpha_n}\}$ is a finite subcollection of $\mathcal{A}$(open set in $X$) that covers $U$.
+\\
+\converse Let $\mathcal{A}' = \{A_\alpha'\}$ be a covering of $U$ by open sets in $U$. For each $\alpha$, choose a set $A_\alpha$ open in $X$ such that $A_\alpha' = A_\alpha\cap U$. The collection $\mathcal{A} = \{A_\alpha\}$ is a covering of $U$ by open sets in $X$. By assumption, some finite subcollection $\{A_{\alpha_1},\ldots,A_{\alpha_n}\}$ covers $U$. Then $\{A_{\alpha_1}',\ldots,A_{\alpha_n}'\}$ is a finite subcollection of $\mathcal{A}'$ that covers $U$.
+
+\highlight{(d)} Let $U$ be a closed subspace of the compact space $X$. Given a covering $\mathcal{A}$ of $U$ by set open in $X$, the collection $\mathcal{B} = \mathcal{A}\cup \{X-U\}$ is an open covering of $X$. Some finite subcollection of $\mathcal{B}$ covers X. If this subcollection contains the set $X-U$, discard $X-U$; otherwise, leave the subcollection alone. The resulting collection is a finite subcollection of $\mathcal{A}$ that covers $U$.
+
+\highlight{(e)} Given that $x_0\notin Z$, then $x_0\in X-Z$. For each point $z\in Z$ consider the disjoint neighborhoods $U_z,V_z$ of $x_0$ and $y$ respectively(using the Hausdorff condition). Then the collection $\{V_z:\,z\in Z\}$ is an open covering of $Z$ with open sets in $X$; therefore, finitely many $V_{z_1},\ldots,V_{z_n}$ cover $Z$. The open set $V = V_{z_1}\cup \ldots \cup V_{z_n}$ contains $Z$, and it is disjoint from the open set $U = U_{z_1}\cap\ldots\cap U_{z_n}$ which is neighborhood of $x_0$.
+
+\highlight{(f)} By (e) every point not in the compact subspace $Z$ of a Hausdorff space $X$ has a disjoint neighborhood $U$, so that $X-Z$ is open.
+
+\highlight{(g)} Let $U_1,\ldots,U_n\subseteq X$ be compact subspaces of $X$. Let $\mathcal{A}$ be covering of $U = \bigcup_{i=1}^n U_i$ by sets open in $X$. But $U_i\subseteq U$, so $\mathcal{A}$ also covers each $U_i$. Then a finite subcollection $\mathcal{A}_i$ of $\mathcal{A}$ covers $U_i$. It follows that the finite subcollection $\mathcal{A}' = \bigcup_{i=1}^n \mathcal{A}_i$ covers $U$.
+
+\highlight{(h)} We will prove that images of closed sets of $X$ under $F$ are closed in $Y$; this will prove the continuity of the map $F^{-1}$. If $A$ is closed in $X$, then $A$ is compact by (d). Therefore, by (a), $F(A)$ is compact. Since $Y$ is Hausdorff, $F(A)$ is closed in $Y$, by (f).
+
+\highlight{(i)} Consider the collection $\mathcal{A}$ of basis elements $U\times V\subseteq N$ such that $x_0\in U$. Then $\mathcal{A}$ is an open cover of the slice $S = x_0\times Y$ which is compact, since it is homeomorphic to $Y$. Then there are finitely many such basis elements $\mathcal{A}' = \{U_1\times V_1,\ldots,U_n\times V_n\}$ that cover the slice $S$. Define $W = \cap_{i=1}^n U_i$. The set $W$ is open, and it contains $x_0$. We assert that $\mathcal{A}'$ which were chosen to cover the slice $S$ actually cover the tube $W\times Y$. Let $x\times y\in W\times Y$. Consider a point $x_0\times y$ of the slice $S$ having the same $y-$coordinate as this point. Now $x_0\times y$ belongs to $U_i\times V_i$ for some $i$, so that $y\in V_i$. But $x\in U_j$ for every $j$(because $x\in W$). Therefore, we have $x\times y\in U_i\times V_i$. Since all the sets $U_i\times V_i$ lie in $N$ and since they cover $W\times Y$, the tube $W\times Y$ lies in $N$ also. 
+
+\highlight{(j)} We shall prove that the product of two compact spaces is compact; the result follows by induction for any finite product. Let $X$ and $Y$ be compact spaces. Let $\mathcal{A}$ is an open covering of $X\times Y$. Given $x_0\in X$, the slice $x_0\times Y$ is compact and may therefore be covered by finitely many elements $A_1,\ldots,A_m$ of $\mathcal{A}$. Their union $N = \cup_{i=1}^m A_i$ is an open set containing $x_0\times Y$, then by the tube lemma(i), the open set $N$ contains a tube $W\times Y$ about $x_0\times Y$, where $W$ is open in $X$. Then $W\times Y$ is covered by finitely many elements $A_1,\ldots,A_m$ of $\mathcal{A}$. Thus, for each $x\in X$, we can choose a neighborhood $W_x$ of $x$ such that $W_x\times Y$ can be covered by finitely many elements of $\mathcal{A}$. The collection of all the neighborhoods $W_x$ is an open covering of $X$; therefore by compactness of $X$ there exists a finite subcollection $\{W_1,\ldots,W_n\}$ covering $X$. The union of the tubes $W_1\times Y,\ldots, W_n\times Y$ is all of $X\times Y$; since each may be covered by finitely many elements of $\mathcal{A}$, so may $X\times Y$ be covered.
+
+\highlight{(k)} It follows from (a) and the fact that quotient maps are surjective.
+
+\highlight{(l)} Let $x\in L$, then by (e) there exist disjoint open sets $U_x, V_x\subseteq X$ containing $x$ and $K$ respectively. Then the collection $\mathcal{U} = \{U_x:\,x\in L\}$ is an open cover of $L$, so there exists a finite subcollection of $U_1,\ldots,U_n$ that covers $L$. Then the set $V = \cap_{i=1}^n V_i$ is an open set containing $K$ which is disjoint from each $U_i$. Thus the result follows by taking $U = \cup_{i=1}^n U_i$ and $V = \cap_{i=1}^n V_i$.
+
+\highlight{(m)} Suppose $X$ is a metric space and $A\subseteq X$ is compact. Let $x$ be any point of $X$, and consider the collection of open ball $\{\bb_{x}(n):\,n\in\mathbb{N}\}$ as an open cover of $A$. By compactness, $A$ is covered by finitely many of these balls. This means that the largest ball $\bb_{x}(n_{\text{max}})$ contains all of $A$, so $A$ is bounded.
+\end{proof}
+
+\begin{lemma}\label{lemma:compact_spaces_in_real_line}
+Every closed, bounded interval in $\R$ is compact.
+\end{lemma}
+
+\begin{prop}[\highlight{Heine-Borel}]
+The compact subsets of $\R^n$ are exactly the closed and bounded ones.
+\end{prop}
+
+\begin{proof}
+If $K\subseteq \R^n$ is compact, it follows from (f) and (m) of Prop. \ref{prop:compact_spaces} that it is closed and bounded. Conversely, suppose $K\subseteq \R^n$ is closed and bounded. Then there is some $R>0$ such that $K$ is contained in the cube $[-R,R]^n$. Now, $[-R,R]$ is compact by Lemma \ref{lemma:compact_spaces_in_real_line}, and thus $[-R,R]^n$ is compact by Prop. \ref{prop:compact_spaces}(j). Because $K$ is a closed subset of a compact set, it is compact by Prop. \ref{prop:compact_spaces}(d).
+\end{proof}
+
+\begin{prop}[\highlight{Extreme value theorem}]
+If $X$ is a compact space and $\mapping{F}{X}{\R}$ is continuous, then $F(X)$ is bounded and attains its maximum and minimum values on $X$.
+\end{prop}
+
+\begin{proof}
+By Prop. \ref{prop:compact_spaces}(a), $F(X)$ is compact subset of $\R$, so by (f) and (m) of Prop. \ref{prop:compact_spaces} it is closed and bounded. In particular, it is contains its supremum and infimum.
+\end{proof}
+
+\begin{mydef}\label{def:different_continuity_notions}
+Suppose $(M_1,d_1)$ and $(M_2,d_2)$ are metric spaces, and $\mapping{F}{M_1}{M_2}$ is a map. Then $F$ is said to be \highlight{uniformly continuous} if for every $\epsilon>0$, there exists $\delta>0$ such that for all $x,y\in M_1,d_1(x,y)<\delta$ implies $d_2(F(x),F(y))<\epsilon$. It is said to be \highlight{Lipschitz continuous} if there is a constant $C\ge 0$ such that $d_2(F(x),F(y))\le Cd_1(x,y)$ for all $x,y\in M_1$. Any such $C$ is called a \highlight{Lipschitz constant for \bsdnn{F}}. We say that $F$ is \highlight{locally Lipschitz continuous} if every point $x\in M_1$ has a neighborhood on which $F$ is Lipschitz continuous.
+\end{mydef}
+
+\begin{prop}
+For maps between metric spaces, we have the following:
+\begin{enumerate}[(a)]
+    \item Lipschitz continuous $\implies$ uniformly continuous $\implies$ continuous.
+    \item Lipschitz continuous $\implies$ locally Lipschitz continuous $\implies$ continuous.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+Suppose $(M_1,d_1)$ and $(M_2,d_2)$ are metric spaces, and $\mapping{F}{M_1}{M_2}$ is a map.
+
+\highlight{(a)} (Lipschitz continuous $\implies$ uniformly continuous). For a given $\epsilon>0$, choose $\delta = \epsilon/C$. Then for any $x,y\in M_1$ and $d_1(x,y)<\delta$, we have $d_2(F(x),F(y))\le Cd_1(x,y)<C\delta = \epsilon$. 
+
+(Uniformly continuous $\implies$ continuous). Follows from Def. \ref{def:different_continuity_notions} and Prop. \ref{prop:epsilon_delta_continuity}.
+
+\highlight{(b)} (Lipschitz continuous $\implies$ locally Lipschitz continuous). For any point $p\in M_1$, $M_1$ is the neighborhood of $p$ on which $F$ is Lipschitz continuous.
+
+(Locally Lipschitz continuous $\implies$ continuous). For any point $p\in M_1$, there is a neighborhood $U$ of $p$ on which $F$ is Lipschitz continuous. Then it follows from (a) that $F$ is continuous on $U$.
+\end{proof}
+
+\begin{prop}
+Suppose $(M_1,d_1)$ and $(M_2,d_2)$ are metric spaces and $\mapping{F}{M_1}{M_2}$ is a map. Let $K$ be any compact subset of $M_1$.
+\begin{enumerate}[(a)]
+    \item If $F$ is continuous, then $\bigvert{F}{K}$ is uniformly continuous.
+    \item If $F$ is locally Lipschitz continuous, then $\bigvert{F}{K}$ is  Lipschitz continuous.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\highlight{(a)} Assume $F$ is continuous and let $\epsilon>0$ be given. For each $x\in K$, by continuity there is a positive number $\delta(x)$ such that $d_1(x,y)<2\delta\implies d_2(F(x),F(y))<\epsilon/2$. Because the open balls $\{\bb_{x}(\delta(x)):\,x\in K\}$ cover $K$, by compactness there are finitely many points $x_1,\ldots,x_n\in K$ such that $K\subseteq \bb_{x_1}(\delta(x_1))\cup\ldots\cup \bb_{x_n}(\delta(x_n))$. Let $\delta=\text{min}\{\delta(x_1),\ldots,\delta(x_n)\}$. Suppose $x,y\in K$ satisfy $d_1(x,y)<\delta$. There is some $i$ such that $x\in \bb_{x_i}(\delta(x_i))$, and then $d_1(y,x_i)\le d_1(y,x)+d_1(x,x_i)<2\delta(x_i)$. Thus both $x,y\in \bb_{x_i}(2\delta(x_i))$. Then by assumption $d_2(F(x),F(y))\le d_2(F(x),F(x_i)) + d_2(F(x_i),F(y)) < \epsilon$.
+
+\highlight{(b)} Assume $F$ is locally Lipschitz continuous. Because $F$ is continuous, Prop. \ref{prop:compact_spaces}(a) and (m) show that $F(K)$ is compact and therefore bounded. Let $D = \text{diam}\,F(K)$. For each $x\in K$, there is a positive number $\delta(x)$ such that $F$ is Lipschitz continuous on $\bb_{x}(2\delta(x))$, with Lipschitz constant $C(x)$. By compactness, there are points $x_1,\ldots,x_n\in K$ such that $K\subseteq \bb_{x_1}(\delta(x_1))\cup\ldots\cup \bb_{x_n}(\delta(x_n))$. Let $C = \text{max}\{C(x_1),\ldots,C(x_n)\}$ and $\delta = \text{min}\{\delta(x_1),\ldots,\delta(x_n)\}$, and let $x,y\in K$ be arbitrary. On the one hand, if $d_1(x,y)<\delta$, then by the same argument as in (a), $x$ and $y$ lie in of the balls on which $F$ is Lipschitz continuous, so $d_2(F(x),F(y))\le Cd_1(x,y)$. On the other hand, if $d_1(x,y)\ge \delta$, then $d_2(F(x),F(y))\le D\le (D/\delta)d_1(x,y)$. Therefore, $\text{max}\{C,D/\delta\}$ is a Lipschitz constant for $F$ on $K$.
+\end{proof}
+
+\begin{mydef}
+A sequence of point $(x_i)_{i=1}^\infty$ in metric space M is a \highlight{Cauchy sequence} if for every $\epsilon>0$, there exists an integer N such that $m,n\ge N$ implies $d(x_m,x_n)<\epsilon$. A metric space M is said to be \highlight{complete} if every Cauchy sequence in M converges to a point of M.
+\end{mydef}
+
+\begin{remark}
+Every convergent sequence is a Cauchy sequence. Suppose $x_n\rightarrow x$, then for a given $\epsilon>0$, there exists an integer $N>0$, such that $n>N$ implies $d(x_n,x)<\epsilon/2$. Then for $m,n>N$, we have $d(x_n,d_m)\le d(x_n,x)+d(x,x_m)<\epsilon$.
+\end{remark}
+
+\begin{mydef}
+A space $X$ is said to be \highlight{limit point compact} if every infinite subset of $X$ has a limit point in $X$, and \highlight{sequentially compact} if every sequence of points in $X$ has a subsequence that converges to a point in $X$.
+\end{mydef}
+
+\begin{prop}
+Compactness implies limit point compactness.
+\end{prop}
+
+\begin{proof}
+Suppose $X$ is compact and let $S\subseteq X$ be an infinite subset. If $S$ has no limit point in $X$, then every point $x\in X$ has a neighborhood $U$ such that $U\cap S$ is either empty or $\{x\}$. Finitely many of these neighborhoods cover $X$. But since each such neighborhood contains at most one point of $S$, this implies that $S$ is finite, which is a contradiction.
+\end{proof}
+
+\begin{prop}
+For first countable Hausdorff spaces, limit point compactness implies sequential compactness.
+\end{prop}
+
+\begin{proof}
+Suppose $X$ is first countable, Hausdorff, and limit point compact, and let $(p_n)_{n\in \mathbb{N}}$ be any sequence of points in $X$. If the sequence takes on only finitely many values, the it has a constant subsequence, which is certainly convergent. So we may suppose it takes on infinitely many values. By hypothesis the set of values has a limit point $p\in X$. If $p$ is equal to $p_n$ for infinitely many values of $n$, again there is a constant subsequence and we are done; so by discarding finitely many terms at the beginning of the sequence if necessary we may assume that $p_n\neq p$ for all $n$. Because $X$ is first countable, Remark \ref{remark:descending_neighborhood_basis} shows that there is a descending neighborhood basis at $p$, say $(B_n)_{n\in \mathbb{N}}$. For such a neighborhood basis, it is easy to see than any subsequence $(p_{n_i})$ such that $p_{n_i}\in B_i$ converges to $p$. Since $p$ is a limit point, we can choose $n_1$ such that $p_1\in B_1$. Suppose by induction that we have chosen $n_1<n_2<\ldots<n_k$ with $p_{n_i}\in B_i$. By Prop. \ref{prop:limit_point_infinite_intersection}, the sequence takes infinitely many values in $B_{k+1}$, so we can choose some $n_{k+1}>n_k$ such that $p_{n_{k+1}}\in B_{k+1}$. This completes the induction, and prove that there is a subsequence $(p_{n_i})$ converging to $p$.
+\end{proof}
+
+\begin{prop}
+For metric spaces and second-countable topological spaces, sequential compactness implies compactness.
+\end{prop}
+
+\begin{proof}
+Suppose first that $X$ is second countable and sequentially compact, and let $\mathcal{U}$ be an open cover of $X$. By Prop. \ref{prop:countable_subcover}, $\mathcal{U}$ has a countable subcover $\mathcal{U}' = \{U_i\}_{i\in \mathbb{N}}$. Assume no finite subcollection of $\mathcal{U}'$ covers $X$. Then for each $i$ there exists $q_i\in X$ such that $q_i\notin U_1\cup\ldots\cup U_i$. By hypothesis, the sequence $(q_i)$ has a convergent subsequence $(q_{i_k})\rightarrow q\in X$. Now, $q\in U_m\in \mathcal{U}'$, since $\mathcal{U}'$ covers $X$, and then convergence of the subsequence means that $q_{i_k}\notin U_m$ as soon as $i_k\ge m$, which is a contradiction. This proves that second countable sequentially compact spaces are compact. 
+
+Let $M$ be a sequentially compact metric space. We will show that $M$ is second countable, which by the above argument implies that $M$ is compact. From Prop. \ref{prop:metric_space_separable_second_countable}, it suffices to show that $M$ is separable. The key idea is to show first that sequential compactness implies the following weak form of compactness for metric spaces: \textit{for each} $\epsilon>0$\textit{, the open cover of }$M$\textit{consisting of all }$\epsilon$\textit{-balls has a finite subcover.} 
+
+Suppose this is not true for some $\epsilon$. Construct a sequence as follows. Let $q_1\in M$ be arbitrary. Since $\bb_{q_1}(\epsilon)\neq M$, there is a point $q_2\notin \bb_{q_1}(\epsilon)$. Similarly, since $\bb_{q_1}(\epsilon)\cup \bb_{q_1}(\epsilon) \neq M$, there is a point $q_3$ in neither of two preceding $\epsilon$-balls. Proceeding by induction, we construct a sequence $(q_n)$ such that for each $n$, $$q_{n+1}\notin \cup_{i=1}^n \bb_{q_i}(\epsilon).\qquad{(\dagger)}$$ 
+Replacing this sequence by a convergent sequence (which still satisfies ($\dagger$)), we can assume $q_n\rightarrow q\in M$. Since convergent sequences are Cauchy, as soon as $n$ is large enough we have $d(q_{n+1},q_n)<\epsilon$, which contradicts ($\dagger$). 
+
+Now, for each $n$, let $F_n$ be a finite set of points in $M$ such that the balls of radius $1/n$ around these points cover $M$. The set $\cup_n F_n$ is countable, and dense in $M$. This shows that $M$ is separable and completes the proof.
+\end{proof}
+
+\begin{corollary}[\highlight{Equivalent Formulations of Compactness}]
+For metric spaces and second-countable Hausdorff spaces, limit point compactness, sequential compactness, and compactness are all equivalent properties.
+\end{corollary}
+
+\begin{prop}[\highlight{Bolzano-Weierstrass Theorem}]
+Every bounded sequence in $\R^n$ has a convergent subsequence.
+\end{prop}
+
+\begin{proof}
+Every bounded sequence is contained in some compact cube in $\R^n$. Then by the preceding corollary it has a convergent subsequence.
+\end{proof}
+
+\begin{prop}
+Let $(M,d)$ be a metric space and $(x_n)$ is a Cauchy sequence in $M$. Then $(x_n)$ is convergent iff it has a convergent subsequence.
+\end{prop}
+
+\begin{proof}
+\forward Immediately follows from the fact that for a convergent sequence any subsequence is convergent.
+\\
+\converse Suppose $(x_{n_k})$ is a subsequence of Cauchy $(x_n)$ such that $x_{n_k}\rightarrow x\in M$. Let $\epsilon>0$ be given. Then there exists an integer $N$ such that $d(x_{n_k},x)<\epsilon/2$ and $d(x_n,x_m)<\epsilon/2$ for $n_k,n,m>N$. Then for $n_k>n>N$, we have $d(x_{n},x)\le d(x_n,x_{n_k})+d(x_{n_k},x)<\epsilon$, i.e., $x_n\rightarrow x$.
+\end{proof}
+
+\begin{prop}
+Endowed with the Euclidean metric, a subset of $\R^n$ is a complete metric space iff it is closed in $\R^n$. In particular, $\R^n$ is complete.
+\end{prop}
+
+\begin{prop}
+Every compact metric space is complete.
+\end{prop}
+
+\begin{prop}[\highlight{Closed Map Lemma}]
+Suppose $X$ is a compact space, $Y$ is a Hausdorff space, and $\mapping{F}{X}{Y}$ is a continuous map.
+\begin{enumerate}[(a)]
+    \item $F$ is a closed map.
+    \item If $F$ is surjective, it is a quotient map.
+    \item If $F$ is injective, it is a topological embedding.
+    \item If $F$ is bijective, it is a homeomorphism.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\highlight{(a)} Let $C\subseteq X$ be closed. Then by Prop. \ref{prop:compact_spaces}(d) $C$ is compact in $X$. By continuity of $F$, we note that $F(C)$ is compact in $Y$. Then by Prop. \ref{prop:compact_spaces}(f) it is closed in $Y$. 
+
+\highlight{(b)}, \highlight{(c)}, \highlight{(d)} follow immediately from Prop. \ref{prop:lemma_to_closed_map_lemma} and noting that $F$ is a closed map.
+\end{proof}
+
+\begin{mydef}
+If $X$ and $Y$ are topological spaces, a map $\mapping{F}{X}{Y}$(continuous or not) is said to be \highlight{proper} if for every compact set $K\subseteq Y$, the preimage $F^{-1}(K)$ is compact.
+\end{mydef}
+
+\begin{prop}[\highlight{Sufficient Conditions for Properness}]
+Suppose $X$ and $Y$ are topological spaces, and $\mapping{F}{X}{Y}$ is a continuous map.
+\begin{enumerate}[(a)]
+    \item If $X$ is compact and $Y$ is Hausdorff, then $F$ is proper.
+    \item If $F$ is a closed map with compact fibers, then $F$ is proper.
+    \item If $F$ is a topological embedding with closed image, then $F$ is proper.
+    \item If $Y$ is Hausdorff and $F$ has a continuous left inverse (i.e., a continuous map $\mapping{G}{Y}{X}$ such that $G\circ F = Id_X$), then $F$ is proper.
+    \item If $F$ is proper and $A\subseteq X$ is a subset that is saturated w.r.t. $F$, then $\mapping{\bigvert{F}{A}}{A}{F(A)}$ is proper.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\highlight{(a)} Let $K\subseteq Y$ be compact. Since $X$ is Hausdorff then by Prop. \ref{prop:compact_spaces}(f) it is closed in $Y$. Then by continuity of $F$, $F^{-1}(K)$ is closed in $X$. Since $F^{-1}(K)$ is a closed subset of a compact space $X$, by Prop. \ref{prop:compact_spaces}(d), it is compact.
+
+\highlight{(b)} Let $K\subseteq Y$ be compact, and let $\mathcal{U}$ be a cover of $F^{-1}(K)$ by open subsets of $X$. If $y\in K$ is arbitrary, the fiber $F^{-1}(y)$ is covered by finitely many of the sets in $\mathcal{U}$, say $U_1,\ldots,U_k$. The set $A_y = X-(\bigcup_{i=1}^n U_i)$ is closed in $X$ disjoint from $F^{-1}(y)$, so $V_y = Y-F(A_y)$ is open in $Y$ and contains $y$. Then $F^{-1}(V_y) = X - F^{-1}(F(A_y))\subseteq X-A_y = \bigcup_{i=1}^n U_i$ by elementary set theory. Because $K$ is compact, it is covered by finitely many of the sets $V_y$. Thus $F^{-1}(K)$ is covered by finitely many sets of the form $F^{-1}(V_y)$, each of which is covered by finitely many of the sets in $\mathcal{U}$, so it follows that $F^{-1}(K)$ is compact.
+
+\highlight{(c)} Follows from (b) because a topological embedding with closed image is a closed map, and its fibers are singletons, which are certainly compact.
+
+\highlight{(d)} Suppose $K\subseteq Y$ is compact. Any point $x\in F^{-1}(K)$ satisfies $x = G(F(x))\in G(K)$, i.e., $F^{-1}(K)\subseteq G(K)$. Since $K$ is closed in $Y$ (because $Y$ is Hausdorff), it follows that $F^{-1}(K)$ is a closed subset of the compact set $G(K)$(by continuity of $G$), so it is compact.
+
+\highlight{(e)} Let $K\subseteq F(A)$ be compact. The fact that $A$ is saturated means that $A = F^{-1}(F(A))$. But $F(A)\supseteq K$ implies $A = F^{-1}(F(A))\supseteq F^{-1}(K)$, i.e., $F^{-1}(K)\subseteq A$. Then we have $(\bigvert{F}{A})^{-1}(K) = F^{-1}(K)$, which is compact because $F$ is proper.
+\end{proof}
+
+\begin{mydef}
+A topological space $X$ is said to be \highlight{locally compact} if every point has a neighborhood contained in a compact subset of $X$. A subset of $X$ is said to be \highlight{precompact in \bsdnn{X}} if its closure in $X$ is compact.
+\end{mydef}
+
+\begin{prop}
+For a Hausdorff space $X$, the following are equivalent:
+\begin{enumerate}[(a)]
+    \item $X$ is locally compact.
+    \item Each point of $X$ has a precompact neighborhood.
+    \item $X$ has a basis of precompact open subsets.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+Note that \highlight{(c)}$\implies$ \highlight{(b)} $\implies$ \highlight{(a)}, so all we have to prove is \highlight{(a)} $\implies$ \highlight{(c)}. It suffices to show that if $X$ is locally compact Hausdorff space, then each point $x\in X$ has a \highlight{neighborhood basis} (Def. \ref{def:first_countable_space}) of precompact open subsets. 
+
+Let $K\subseteq X$ be compact set containing a neighborhood $U$ of $x$. The collection $\mathcal{V}$ of all neighborhoods of $x$ contained in $U$ is clearly a neighborhood basis at $x$. Because $X$ is Hausdorff, $K$ is closed in $X$. If $V\in \mathcal{V}$, then $\bar{V}\subseteq K$, since $V\subseteq K = \bar{K}$. Therefore $\bar{V}$ is compact because a closed subset of a compact set is compact. Thus $\mathcal{V}$ is the required neighborhood basis.
+\end{proof}
+
+\begin{prop}
+Every open or closed subspace of a locally compact Hausdorff space is itself a locally compact Hausdorff space.
+\end{prop}
+
+\begin{proof}
+Let $X$ be a locally compact Hausdorff space. Note that every subspace of $X$ is Hausdorff, so only local compactness needs to be proved.
+
+Suppose $U\subseteq X$ is open in $X$. Let $x\in U$, then $U$ is a neighborhood of $X$. If $W$ is any precompact neighborhood of $x$, then $\bar{W}-U = \bar{W}\cap (X - U)$ is closed in $\bar{W}$ and therefore compact. Because compact subsets can be separated by open subsets in a Hausdorff space by Prop. \ref{prop:compact_spaces}(e), there are disjoint open subsets $Y$ containing $x$ and $Y'$ containing $\bar{W}-U$. Let $V = Y\cap W$. We show that $V$ is a precompact neighborhood of $X$ in $U$, i.e., $\bar{V}$ is compact and $\bar{V}\subseteq U$. Because $\bar{V}\subseteq \bar{W}$, $\bar{V}$ is compact. Since $V\subseteq Y\subseteq X-Y'$, we have $\bar{V}\subseteq \bar{Y}\subseteq \overline{X-Y'} = X - Y'$, and thus $\bar{V} = \bar{V}\cap \bar{W}\subseteq \bar{W}\cap (X-Y') = \bar{W}-Y'$. Now the fact that $\bar{W}-U\subseteq Y'$ means that $\bar{W}-Y'\subseteq U$, so $\bar{V}\subseteq U$.
+
+Suppose $Z\subseteq X$ is closed. Any $x\in Z$ has a precompact neighborhood $U$ in $X$. Since $\overline{U\cap Z}$ is closed subset of the compact set $\bar{U}$, it is compact. Since $\overline{U\cap Z}\subseteq \bar Z = Z$ it follows that $U\cap Z$ is a precompact neighborhood of $x\in Z$. Thus $Z$ is locally compact.
+\end{proof}
+
+\begin{prop}[\highlight{Proper Continuous Maps are Closed}]
+Suppose $X$ is a topological space and $Y$ is a locally compact Hausdorff space. Then every proper continuous map $\mapping{F}{X}{Y}$ is closed.
+\end{prop}
+
+\begin{proof}
+Let $K\subseteq X$ be closed. To show that $F(K)$ is closed in $Y$, we show that it contains all of its limit points. Let $y$ be a limit point of $F(K)$, and let $U$ be a precompact neighborhood of $y$. Then $y$ is also a limit point of $F(K)\cap \bar{U}$. Because $F$ is proper, $F^{-1}(\bar{U})$ is compact, which implies that $F^{-1}(\bar{U})\cap K$ is compact, since it is a closed subset of the compact set $F^{-1}(\bar{U})$. Because $F$ is continuous, then $F(K\cap F^{-1}(K)) = F(K)\cap \bar{U}$ is compact and therefore closed in $Y$. In particular, $y\in F(K)\cap\bar{U}\subseteq F(K)$, so $F(K)$ is closed.
+\end{proof}
+
+\begin{prop}[\highlight{Baire Category Theorem}]
+In a locally compact Hausdorff space or a complete metric space, every countable union of nowhere dense sets has empty interior.
+\end{prop}
+
+\begin{prop}
+In a locally compact Hausdorff space or a complete metric space, every nonempty countable closed subset contains at least one isolated point.
+\end{prop}
+
+\begin{mydef}
+A sequence $(K_i)_{i=1}^\infty$ of compact subsets of a topological space $X$ is called an \highlight{exhaustion of \bsdnn{X} by compact sets} if $X = \bigcup_i K_i$ and $K_{i}\subseteq Int\,K_{i+1}$ for each $i$.
+\end{mydef}
+
+\begin{prop}
+A second-countable, locally compact Hausdorff space admits an exhaustion by compact sets.
+\end{prop}
+
+% \newpage
+
+\begin{thebibliography}{9}
+\bibitem{JohnLee}
+John M. Lee, Introduction to Smooth Manifolds.
+
+% \bibitem{Prop 1}
+% [Prop 1(b)]Closure and continuity - \href{https://math.stackexchange.com/questions/114462/}{math.SE}
+
+% \bibitem{Seq Lemma (b)}
+% [Sequence Lemma (b)] \href{https://math.stackexchange.com/questions/1876224/}{math.SE}
+
+\end{thebibliography}
+
+
+\end{document}
