@@ -1,3 +1,3 @@
 # Tex-Notes
 
-- [Differential Calculus](../../raw/build/'Differential Calculus.pdf')
+- [Differential Calculus](../../raw/build/Differential%20Calculus.pdf)
