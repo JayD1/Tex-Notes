@@ -9,4 +9,4 @@
 - [Statistical Learning Theory](../../raw/build/Statistical%20Learning%20Theory.pdf)
 - [Topology](../../raw/build/Topology.pdf)
 - [Number Theory Lecture Notes](../../raw/build/lecnotesNT.pdf)
-- [Iterative Methods](../raw/build/notesSaad.pdf)
+- [Iterative Methods](../../raw/build/notesSaad.pdf)
