@@ -1,0 +1,1223 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cancel}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Notes on Riemannian Preconditioning},
+    pdfpagemode=FullScreen,
+}
+
+
+\author{Jayadev Naram}
+\title{Convex Analysis} 
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+% \newpage
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{assume}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\h}{\mathcal{H}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Dist}{\mathcal{D}}
+\newcommand{\perpProj}{\mathcal{P}^\perp}
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\Sprod}{\mathbb{S}_{xy}}
+\newcommand{\highlight}[1]{\underline{\textit{\textbf{#1}}}}
+\newcommand{\mapping}[3]{#1:#2\rightarrow #3}
+\newcommand{\doubt}{\highlight{[??]}}
+% \newcommand{\bigvert}[2]{#1{\raisebox{-.5ex}{$|$}_{#2}}}
+\newcommand{\bigvert}[2]{\left.#1\right|_{#2}}
+\newcommand{\sdnn}[1]{${#1}$}
+\newcommand{\bsdnn}[1]{$\boldsymbol{#1}$}
+\newcommand{\ifthen}[2]{\textbf{(#1)}\boldsymbol{\implies}\textbf{(#2)}}
+\newcommand{\bsdn}[1]{\boldsymbol{#1}}
+\newcommand{\forward}{$(\implies)$\ }
+\newcommand{\converse}{$(\impliedby)$\ }
+\newcommand{\Lt}[1]{\underset{#1\rightarrow 0}{Lt}}
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\dparder}[2]{\dfrac{\partial #1}{\partial x_{#2}}}
+\newcommand{\fparder}[2]{\frac{\partial #1}{\partial x_{#2}}}
+\newcommand{\parder}[2]{\partial #1/\partial x_{#2}}
+\newcommand{\parop}[1]{\dfrac{\partial}{\partial x_{#1}}}
+\newcommand{\innerproduct}[2]{\langle #1, #2 \rangle}
+\newcommand{\metric}[2]{[#1, #2]}
+\newcommand{\genst}{St_B(n,p)}
+\newcommand{\igenst}[1]{St_{B_{#1}}(n_{#1},p)}
+\newcommand{\realmat}[2]{\R^{#1\times #2}}
+\newcommand{\Skew}{\mathcal{S}_{skew}(p)}
+\newcommand{\Sym}{\mathcal{S}_{sym}(p)}
+\newcommand{\XperpB}{X_{B^\perp}}
+\newcommand{\polarRetr}{R^{polar}_X}
+\newcommand{\qrRetr}{R^{QR}_X}
+\newcommand{\vectransport}{\mathcal{T}}
+\newcommand{\grad}{\text{grad}\,}
+\newcommand{\hess}{\text{Hess}\,}
+
+\section{Affine Sets}
+
+Let $\R^n$ denote the $n$-dimensional Euclidean real vector space with the inner product defined for any $x,y\in \R^n$ as $\innerproduct{x}{y} = x^Ty = \sum_{i=1}^n x_i y_i$, where $x = [x_1,\ldots, x_n]^T$ and $y = [y_1,\ldots, y_n]^T$ are the coordinates of $x$ and $y$ respectively. Let the norm and the metric on $\R^n$ be defined as $\|x\| = \sqrt{\innerproduct{x}{x}}$ and $d(x,y) = \|x-y\|$, respectively.
+
+\begin{definition}
+    If $x$ and $y$ are different points in $\R^n$, the set of points of the form 
+    \begin{equation*}
+        (1-\lambda) x + \lambda y = x + \lambda (y-x), \qquad \lambda \in \R,
+    \end{equation*}
+    is called the \highlight{line} through $x$ and $y$. A subset $M$ of $\R^n$ is called an \highlight{affine set} if $(1 - \lambda) x + \lambda y \in M$ for every $x,y\in M$ and $\lambda \in \R$.
+\end{definition}
+
+The formal geometry of affine sets may be developed from the theorems of linear algebra about subspaces of $\R^n$.
+
+\begin{theorem}\label{thm:subspace_affine}
+    $M$ is a subspace of $\R^n$ iff $M$ is an affine set containing origin.
+\end{theorem}
+
+\begin{proof}
+    \forward Every subspace contains $0$, and being closed under addition and scalar multiplication, a subspace is in particular an affine set.
+
+    \noindent\converse Suppose $M$ is an affine set containing $0$. For every $x\in M$ and $\lambda\in \R$, we have
+    \begin{equation*}
+        \lambda x = (1-\lambda) 0 + \lambda x \in M,
+    \end{equation*} 
+    so $M$ is closed under scalar multiplication. Now, if $x, y\in M$, we have
+    \begin{equation*}
+        \tfrac{1}{2}(x+y) = \tfrac{1}{2} x + (1-\tfrac{1}{2}) y \in M,
+    \end{equation*}
+    and hence 
+    \begin{equation*}
+        x+y = 2(\tfrac{1}{2}(x+y)) \in M.
+    \end{equation*}
+    Thus $M$ is also closed under addition and is a subspace.
+\end{proof}
+
+\begin{definition}
+    For $M\subseteq \R^n$ and $a\in \R^n$, the \highlight{translate} of $M$ by $a$ is defined to be the set
+    \begin{equation*}
+        M + a = \{x+a\;:\;x\in M\}.
+    \end{equation*}
+    An affine set $M$ is said to be \highlight{parallel} to an affine set $L$ if $M = L + a$ for some $a$.
+\end{definition}
+
+\begin{proposition}\label{prop:affine_translate}
+    A translate of an affine set is another affine set.
+\end{proposition}
+
+\begin{proof}
+    Suppose $M$ is an affine set and consider $L = M + a$, for some $a\in R^n$. For any points $x,y\in M$, $x+a,y+a\in L$, then we have
+    \begin{equation*}
+        \lambda (x+a) + (1-\lambda) (y+a) = \underbrace{\lambda x + (1-\lambda) y}_{\in\ M} + a \in L.
+    \end{equation*}
+\end{proof}
+
+\begin{proposition}
+    The relation ``$M$ parallel to $L$'' between two affine subsets $M, L\subseteq \R^n$ is an equivalence relation on the collection of affine subsets of $\R^n$.
+\end{proposition}
+
+\begin{proof}
+    Consider affine sets $M,L,N\subseteq R^n$ and $a,b\in R^n$.
+    \begin{enumerate}[i]
+        \item Reflexive: $M = M+0$, so $M$ is parallel to $M$.
+        \item Symmetric: Suppose $M = L+a = \{x+a\;:\; x\in L \}$. Then it is easy to see that $L = M + (-a)$, i.e., $L$ is parallel to $M$.
+        \item Transistive: Suppose $M = L + a$ and $L = N + b$. Then $M = N + (a+b)$, thus $M$ is parallel to $N$.
+    \end{enumerate}
+\end{proof}
+
+\begin{remark}
+    From the equivalence relation developed in the previous proposition, if $L_1$ and $L_2$ both are parallel to $M$, then $L_1$ is parallel to $L_2$.
+\end{remark}
+
+% \begin{remark}
+%     Note that this definition of parallelism is more restrictive than the everyday one, in that it does not include the idea of a line being parallel to a plane. One has to speak of a line which is parallel to another line within a given plane, and so forth.
+% \end{remark}
+
+\begin{theorem}\label{thm:unique_subspace_parallel_to_affine}
+    Every non-empty affine set $M$ is parallel to a unique subspace $L$. This $L$ is given by
+    \begin{equation*}
+        L = M - M = \{x - y\;:\; x,y\in M\}.
+    \end{equation*}
+\end{theorem}
+
+\begin{proof}
+    Let us show first that $M$ cannot be parallel to two different subspaces. Subspaces $L_1$ and $L_2$ parallel to $M$ would be parallel to each other, so that $L_2 = L_1 + a$ for some $a$. Since $0\in L_2$, we would then have $-a\in L_1$, and hence $a\in L_1$. But then $L_1 \supseteq L_1 + a = L_2$. By similar argument $L_2\supseteq L_1$, so $L_1 = L_2$. This establishes the uniqueness. 
+    
+    Now observe that, for any $y\in M$, $M-y = M+(-y)$ is a translate of $M$ containing $0$. We considered $M$ to be an affine set and from Prop. \ref{prop:affine_translate} its translate is also an affine set, in this case containing $0$. Then, by Theorem \ref{thm:subspace_affine} and what we have just proved, this affine set must be the unique subspace parallel to $M$. Since $L = M-y$ no matter which $y\in M$ is chosen, we actually have $L = M - M$.  
+\end{proof}
+
+\begin{definition}
+    The \highlight{dimension} of a non-empty affine set is defined as the dimension of the subspace parallel to it.
+\end{definition}
+
+By convention, the dimension of $\emptyset$ is $-1$, and affine sets of dimension $0, 1$ and $2$ are points, lines and planes respectively. An $(n-1)$-dimensional affine set in $\R^n$ is called a \highlight{hyperplane}.
+
+\begin{theorem}\label{thm:affine_set_representation}
+    Given $b\in\R^n$ and an $m\times n$ real matrix $B$, the set
+    \begin{equation*}
+        M = \{x\in \R^n\;:\; Bx = b\}
+    \end{equation*}
+    is an affine set in $\R^n$. Moreover, every affine set may be represented in this way.
+\end{theorem}
+
+\begin{proof}
+    \forward If $x,y\in M$ and $\lambda\in \R$, then we have
+    \begin{equation*}
+        B((1-\lambda) x + \lambda y) = (1-\lambda) Bx + \lambda By = (1-\lambda) b + \lambda b = b,
+    \end{equation*}
+    so $(1-\lambda) x + \lambda y\in M$. Thus the given $M$ is affine.
+
+    \noindent\converse Starting with an arbitrary non-empty affine set $M$ other than $\R^n$ itself, let $L$ be the subspace parallel to $M$. Let $b_1,\ldots, b_m$ be a basis for $L^{\perp}$, the orthogonal complement of $L$. Then
+    \begin{equation*}
+        L = \{x\;:\; \innerproduct{x}{b_i} = 0,\ i = 1,\ldots, m\} = \{x\;:\; Bx = 0\},
+    \end{equation*}
+    where $B$ is the $m\times n$ matrix whose rows are $b_1,\ldots, b_m$. Since $M$ is parallel to $L$, there exists an $a\in \R^n$ such that
+    \begin{equation*}
+        M = L+a = \{x\;:\; B(x-a) = 0\} = \{x\;:\; Bx = b\},
+    \end{equation*}
+    where $b = Ba$.
+\end{proof}
+
+\begin{corollary}
+    Given $\beta\in \R$ and a non-zero $b\in \R^n$, the set
+    \begin{equation*}
+        H = \{ x\in \R^n \;:\; \innerproduct{x}{b} = \beta \}
+    \end{equation*}
+    is a hyperplane in $\R^n$. Moreover, every hyperplane may be represented in this way, with $b$ and $\beta$ unique up to a common non-zero multiple. The vector $b$ is called a \highlight{normal} to the hyperplane $H$. Every other normal to $H$ is either a positive or a negative scalar multiple of $b$.
+\end{corollary}
+
+% \begin{proof}
+%     An $n-1$ dimensional subspace $L$ can be represented as $L = \{x\;:\; \innerproduct{x}{b} = 0\}$, where $b\in \R^n$ is the basis vector of the orthogonal complement of $L$. Since hyperplanes are translates of $n-1$ dimensional subspaces of $\R^n$, for some $a\in \R^n$, consider the hyperplane $H$ defined as
+%     \begin{equation*}
+%         H = L + a = \{x+a\;:\; \innerproduct{x}{b} = 0\} = \{y\;:\; \innerproduct{y-a}{b} = 0\} = \{y\;:\; \innerproduct{y}{b} = \beta\},
+%     \end{equation*}  
+%     where $\beta = \innerproduct{a}{b}$. This establishes the existence of such representation for a hyperplane. The uniqueness of this representation follows the uniqueness of the subspace parallel to the hyperplane and the vector $a$ from Theorem \ref{thm:unique_subspace_parallel_to_affine} and the unique orthogonal complement of this subspace, unique up to a scalar multiple of $b$ and consequently, $\beta$ with the same multiple.
+% \end{proof}
+
+
+% \begin{corollary}
+%     Every affine subset of $\R^n$ is an intersection of a finite collection of hyperplanes.
+% \end{corollary}
+
+\begin{lemma}\label{lem:intersection_affine_sets}
+    The intersection of an arbitrary collection of affine sets is affine.
+\end{lemma}
+
+\begin{proof}
+    Consider an arbitrary collection of affine set $\{M_i\}$ and define $M = \cap_i M_i$. Let $x,y\in M$ and $\lambda \in \R$, then we have $(1-\lambda)x + \lambda y\in M_i$ for each $i$ and $(1-\lambda)x + \lambda y\in M$, thus $M$ is affine.
+\end{proof}
+
+\begin{definition}
+    Given any $S\subseteq \R^n$, the \highlight{affine hull} of $S$, denoted by aff $S$, is the intersection of the collection of affine sets containing $S$.
+\end{definition}
+
+\begin{proposition}\label{prop:affine_hull_affine_comb}
+    For any $S\subseteq \R^n$, we have 
+    \begin{equation*}
+        \text{aff}\ S = \{ \lambda_1 x_1 + \cdots + \lambda_m x_m \;:\; x_i\in S \ \text{and}\ \lambda_1+\cdots+\lambda_m = 1 \}\equiv C.
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    \forward For any $x\in S$, we have the trivial combination $x = 1x\in C$ so that $S\subseteq C$. Suppose $x_1,x_2\in C$ so that $x = \sum_{i=1}^m \mu_i x_i$ and $y = \sum_{i=m+1}^n \mu_i x_i$ with $\sum_{i = 1}^m\mu_i = 1$, $\sum_{i=m+1}^n \mu_i = 1$ and $x_i\in S$ for $i = 1,\ldots,n$. Then for any $\lambda\in\R$, we have
+    \begin{equation*}
+        (1-\lambda) x + \lambda y = (1-\lambda) \sum_{i=1}^m \mu_i x_i + \lambda \sum_{i=m+1}^n \mu_i x_i,
+    \end{equation*}
+    such that the sum of the coefficients is
+    \begin{equation*}
+        (1-\lambda) \sum_{i=1}^m \mu_i + \lambda \sum_{i=m+1}^n \mu_i = (1-\lambda) (1) + \lambda (1) = 1.
+    \end{equation*}
+    This shows that $(1-\lambda)x + \lambda y\in C$ so that $C$ is an affine set containing $S$, thus, aff $S\subseteq C$.
+
+    \noindent \converse Suppose $x\in C$, so that 
+    \begin{equation*}
+        x = \lambda_1 x_1+\cdots +\lambda_m x_m\ \text{where}\ \lambda_1+\cdots +\lambda_m = 1.
+    \end{equation*}
+    We show that $x\in$ aff $S$ by induction. The base case $m = 2$ holds from the definition of affine set. Assume that for $m>2$, $x$ belongs to aff $S$. Then consider the case of $m$-point combination in $x$. There is some index $j$ such that $\lambda_j\neq 1$, otherwise $\lambda_1+\cdots+\lambda_m = m\neq 1$ which is a contradiction. We can assume WLOG $j=1$, then we have
+    \begin{equation*}
+        x = \sum_{i=1}^m \lambda_i x_i = \lambda_1 x_1 + (1-\lambda_1)\sum_{i=2}^m\dfrac{\lambda_i}{1-\lambda_1} x_i\ \text{with}\ \sum_{i=2}^m\dfrac{\lambda_i}{1-\lambda_1} = 1.
+    \end{equation*}
+    This shows that $y = \sum_{i=2}^m\dfrac{\lambda_i}{1-\lambda_1}x_i\in$ aff $S$ by the induction hypothesis and similarly $x = \lambda_1 x_1 + (1-\lambda_1) y\in$ aff $S$.
+\end{proof}
+
+\begin{definition}
+    A set of $m+1$ points $b_0,b_1,\ldots, b_m$ is said to be \highlight{affinely independent} if aff$\ \{b_0,b_1,\ldots, b_m\}$ is $m$-dimensional.
+\end{definition}
+
+\begin{proposition}
+    The points $b_0,b_1,\ldots, b_m$ are affinely independent iff $b_1-b_0, \ldots, b_m-b_0$ are linearly independent. 
+\end{proposition}
+
+\begin{proof}
+    By definition, the points $b_0,b_1,\ldots, b_m$ are affinely independent iff $M = $ aff$\ \{b_0,b_1,\ldots,$ $b_m\}$ is $m$-dimensional. But then
+    \begin{equation*}
+        M = \text{aff}\ \{b_0,b_1,\ldots, b_m\} = L + b_0, 
+    \end{equation*}
+    where $L = \text{aff}\{0,b_1-b_0,\ldots, b_m-b_0\}$ is the smallest subspace parallel to $M$, by Theorem \ref{thm:subspace_affine} and \ref{thm:unique_subspace_parallel_to_affine}. The dimension of $L$ is $m$ iff these vectors are linearly independent. 
+\end{proof}
+
+% \begin{remark}[Barycentric coordinate system on affine sets]
+%     When the points $b_0,b_1,\ldots,b_m$ are affinely independent, any point $x$ in $M = $ aff$\ \{b_0,b_1,\ldots,b_m\}$ can be uniquely written in the form given in \eqref{eqn:affine_combination}. Then the scalars $\lambda_0,\lambda_1,\ldots,\lambda_m$ are called the \highlight{coordinates} of $x$ and this system is called the \highlight{barycentric coordinate system} for the affine set $M$. 
+% \end{remark}
+
+\begin{definition}
+    A map $\mapping{T}{\R^n}{\R^m}$ is called an \highlight{affine transformation} if
+    \begin{equation*}
+        T((1-\lambda)x + \lambda y) = (1-\lambda) Tx + \lambda Ty,
+    \end{equation*}
+    for every $x,y\in\R^n$ and $\lambda\in\R$.
+\end{definition}
+
+\begin{theorem}\label{thm:affine_linear_relationship}
+    The affine transformations from $\R^n$ to $\R^m$ are the mappings $T$ of the form $Tx = Ax+a$, where $A$ is a linear transformation and $a\in \R^n$.
+\end{theorem}
+
+\begin{proof}
+    \forward Suppose $T$ is affine and define the map $Ax = Tx - T0$, where $0\in\R^n$ is the origin. We show that $A$ is linear. Note that
+    \begin{align*}
+        A((1-\lambda)x + \lambda y) &= T((1-\lambda)x + \lambda y) - T0 \\
+        &= (1-\lambda) Tx + \lambda Ty - T0 \\
+        &= (1-\lambda) Tx + \lambda Ty - (1-\lambda)T0 - \lambda T0 \\
+        &= (1-\lambda) (Tx-T0) + \lambda (Ty-T0) \\
+        &= (1-\lambda) Ax + \lambda Ay.
+    \end{align*}
+    This shows that $A$ is affine. Also note that $A0 = T0 - T0 = 0$. Now, we proceed to show the linearity of $A$ using these two facts.
+    \begin{equation}\label{eqn:linear_1}
+        A(\lambda x) = A((1-\lambda)0 + \lambda x) = (1-\lambda)A0 + \lambda Ax = \lambda Ax,
+    \end{equation} 
+    and
+    \begin{align}\label{eqn:linear_2}
+        A(\tfrac{1}{2}(x+&y)) = A(\tfrac{1}{2}x + (1-\tfrac{1}{2})y) = \tfrac{1}{2}Ax + \tfrac{1}{2}Ay,\nonumber \\
+        A(x+y) &= A(2(\tfrac{1}{2}(x+y))) = 2 A(\tfrac{1}{2}(x+y)) = Ax + Ay.
+    \end{align}
+    From \eqref{eqn:linear_1} and \eqref{eqn:linear_2}, we have proved that $A$ is linear.
+
+    \noindent\converse If $Tx = Ax+a$, where $A$ is linear, one has
+    \begin{equation*}
+        T((1-\lambda)x+\lambda y) = (1-\lambda)Ax + \lambda Ay + a = (1-\lambda) Tx + \lambda Ty,
+    \end{equation*}
+    thus $T$ is affine.
+\end{proof}
+
+\begin{proposition}
+    Consider an affine transformation $T$ on $\R^n$ defined as $Tx = Ax+a$, where $A$ is a linear transformation on $\R^n$ and $a\in\R^n$. If $A^{-1}$ exists, then $T^{-1}$ exists and it is affine on $\R^n$ which is given by
+    \begin{equation*}
+        T^{-1}(x) = A^{-1}(x-a).
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    First we verify that $T^{-1}$ defined above is the inverse of $T$. For any $x\in\R^n$, we have
+    \begin{align*}
+        T^{-1}(T(x)) &= T^{-1}(Ax+a) = A^{-1}(Ax+a-a) = x \\
+        T(T^{-1}(x)) &= T(A^{-1}(x-a)) = A(A^{-1}(x-a)) + a = x.
+    \end{align*}
+% 
+    Now we show that $T^{-1}$ is affine. For any $x,y\in \R^n$, we have
+    \begin{align*}
+        T^{-1}((1-\lambda)x + \lambda y) &= A^{-1}((1-\lambda)x + \lambda y - a)\\
+        &= (1-\lambda)A^{-1}x + \lambda A^{-1} y - A^{-1} a \\
+        &= (1-\lambda)A^{-1}(x-a) + \lambda A^{-1} (y-a) \\
+        &= (1-\lambda)T^{-1}x + \lambda T^{-1} y.
+    \end{align*}
+\end{proof}
+
+\begin{proposition}
+    If a mapping $\mapping{T}{\R^n}{\R^m}$ is affine, then the image set $TM = \{Tx\;:\;x\in M\}$ is affine in $\R^n$ for every affine set $M$ in $\R^n$. In particular, then, affine transformations preserve affine hulls:
+    \begin{equation*}
+        T(\text{aff}\ S) = \text{aff}\ (TS).
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    Let $M\subseteq \R^n$ be an affine set. Then for any $x,y\in M$ and $\lambda\in\R$, we have $T(x),T(y)\in TM$ and since $T$ is affine, we get 
+    \begin{equation*}
+        (1-\lambda)T(x) + \lambda T(y) = T((1-\lambda)x + \lambda y).
+    \end{equation*}
+    But $(1-\lambda)x + \lambda y\in M$, so that $(1-\lambda)T(x) + \lambda T(y)\in TM$. Thus, $TM$ is affine.
+\end{proof}
+
+\begin{theorem}
+    Let $\{b_0,b_1,\ldots,b_m\}$ and $\{b_0^\prime,b_1^\prime,\ldots, b_m^\prime\}$ be affinely independent sets in $\R^n$. Then there exists a one-to-one affine transformation $T$ on $\R^n$, such that $Tb_i = b_i^\prime$ for $i = 0,\ldots,m$. If $m = n$, $T$ is unique.
+\end{theorem}
+
+\begin{proof}
+    Enlarging the given affinely independent sets if necessary, we can reduce the question to the case when $m=n$. Then, there exists a unique one-to-one linear transformation $A$ on $\R^n$ carrying the basis $b_1-b_0,\ldots,b_n-b_0$ of $\R^n$ onto the basis $b_1^\prime-b_0^\prime,\ldots,b_n^\prime-b_0^\prime$. The desired affine transformation is then given by $Tx = Ax + a$, where $a = b_0^\prime - Ab_0$.
+\end{proof}
+
+\begin{corollary}
+    Let $M_1$ and $M_2$ be any two affine sets in $\R^n$ of the same dimension. Then there exists a one-to-one affine transformation $T$ on $\R^n$ such that $TM_1 = M_2$.
+\end{corollary}
+
+\begin{proof}
+    Any $m$-dimensional affine set can be expressed as the affine hull of an affinely independent set of $m+1$ points, and affine hulls are preserved by affine transformations.
+\end{proof}
+
+\begin{proposition}
+    The graph of an affine transformation $\mapping{T}{\R^n}{\R^m}$ is an affine subset of $\R^{m+n}$.
+\end{proposition}
+
+\begin{proof}
+    Let $G = \{z\in\R^{m+n}\;:\; z = (x,y),\ Tx = y\}$ denote the graph of $T$. From Theorem \ref{thm:affine_linear_relationship}, we know that $Tx = Ax + a$ for some linear transformation $A$ and $a\in\R^n$. Then consider a linear map $Bz = Ax - y$, for $z = (x,y)\in\R^{m+n}$. Then for all $z\in G$, we have $Bz = b$ with $b = -a$, i.e., $G = \{z\in\R^{m+n}\;:\; Bz = b\}$. Then by Theorem \ref{thm:affine_set_representation}, $G$ is affine subset of $\R^{m+n}$. 
+\end{proof}
+
+
+\section{Convex Sets and Cones}
+
+\begin{definition}
+    If $x$ and $y$ are different points in $\R^n$, the set of points of the form 
+    \begin{equation*}
+        (1-\lambda)x + \lambda y, \quad 0\le \lambda\le 1,
+    \end{equation*}
+    is called the \highlight{(closed) line segment} between $x$ and $y$. A subset $C$ of $\R^n$ is called a \highlight{convex set} if $(1-\lambda)x + \lambda y\in C$ for every $x,y\in C$ and $0\le \lambda \le 1$.  
+\end{definition}
+
+\begin{remark}
+    Affine sets are convex sets but not all convex sets are affine sets. For example consider solid cubes in $\R^3$. 
+\end{remark}
+
+\begin{example}[Half-spaces]
+    For any non-zero $b\in\R^n$ and any $\beta\in\R$, the sets 
+    \begin{equation*}
+        \{x\;:\; \innerproduct{x}{b}\le \beta\}, \qquad \{x\;:\; \innerproduct{x}{b}\ge \beta\},
+    \end{equation*} 
+    are called \highlight{closed half-spaces}. The sets
+    \begin{equation*}
+        \{x\;:\; \innerproduct{x}{b}< \beta\}, \qquad \{x\;:\; \innerproduct{x}{b}> \beta\},
+    \end{equation*}
+    are called \highlight{open half-spaces}. All four sets are convex and correspond to the same hyperplane $H = \{x\;:\; \innerproduct{x}{b} = \beta\}$.
+\end{example}
+
+\begin{lemma}\label{lem:intersection_convex_sets}
+    The intersection of an arbitrary collection of convex sets is convex.
+\end{lemma}
+
+Proof similar to that of Lemma \ref{lem:intersection_affine_sets}.
+
+\begin{corollary}\label{cor:intersection_convex_sets_affine_map}
+    Let $b_i\in\R^n$ and $\beta_i\in\R$ for $i\in I$, where $I$ is an arbitrary index set. Then the set 
+    \begin{equation*}
+        C = \{x\in\R^n\;:\; \innerproduct{x}{b_i}\le \beta_i,\ \forall\ i\in I\}
+    \end{equation*}
+    is convex.
+\end{corollary}
+
+Corollary \ref{cor:intersection_convex_sets_affine_map} will be generalized by Corollary \ref{cor:intersection_convex_sets_convex_map}.
+
+\begin{remark}\label{rem:all_sym}
+    The conclusion of the corollary would still be valid if some of the inequalities $\le$ were replaced by $\ge,<,>$ or $=$. Thus, given any system of simultaneous linear inequalities and equations in $n$ variables, the set $C$ of solutions is a convex set $\R^n$.
+\end{remark}
+
+\begin{definition}
+    A set which can be expressed as the intersection of finitely many closed half spaces of $\R^n$ is called a \highlight{polyhedral} convex set.
+\end{definition}
+
+\begin{definition}
+    A vector sum
+    \begin{equation*}
+        \lambda_1 x_1+\cdots + \lambda_m x_m
+    \end{equation*}
+    is called a \highlight{convex combination} of $x_1,\ldots,x_m$ if the coefficients $\lambda_i$ are all nonnegative and $\lambda_1+\cdots+\lambda_m = 1$.
+\end{definition}
+
+\begin{definition}
+    The intersection of all the convex sets containing a given subset $S$ of $\R^n$ is called the \highlight{convex hull} of $S$ and is denoted by conv $C$. 
+\end{definition}
+
+\begin{remark}
+    The convex hull of $S$ is a convex set by Lemma \ref{lem:intersection_convex_sets}, the unique smallest one containing $S$.
+\end{remark}
+
+\begin{theorem}\label{thm:convex_hull_convex_combinations}
+    For any $S\subseteq \R^n$, conv $S$ consists of all the convex combinations of the elements of $S$.
+\end{theorem}
+
+The proof is same as that of Prop. \ref{prop:affine_hull_affine_comb} with the additional nonnegativity constraint added throughout.
+
+\begin{corollary}
+    A subset $C$ of $\R^n$ is convex iff $C$ contains all the convex combinations of its elements.
+\end{corollary}
+
+\begin{corollary}
+    The convex hull of a finite subset $\{b_0,\ldots, b_m\}$ of $\R^n$ consists of all the vectors of the form $\lambda_0 b_0 + \cdots +\lambda_m b_m$ with $\lambda_i \ge 0$, $i = 0,\ldots, m$, $\lambda_0+\cdots + \lambda_m = 1$.
+\end{corollary}
+
+\begin{definition}
+    A set which is the convex hull of finitely many points is called a \highlight{polytope}. If $\{b_0,\ldots,b_m\}$ is affinely independent, its convex hull is called an \highlight{m-dimensional simplex}, and $b_0,\ldots,b_m$ are called the \highlight{vertices} of the simplex.
+\end{definition}
+
+% In terms of barycentric coordinates on aff $\{b_0,\ldots,b_m\}$, each point of simplex is uniquely expressible as a convex combination of the vertices. 
+
+\begin{definition}
+    The \highlight{dimension of a convex set} $C$ is defined to be the dimension of the affine hull of $C$.
+\end{definition}
+
+\begin{remark}
+    The dimension of an affine hull or simplex as already defined agrees with its dimension as a convex set.
+\end{remark}
+
+\begin{theorem}
+    The dimension of a convex set $C$ is the maximum of the dimensions of the various simplices included in $C$.
+\end{theorem}
+
+\begin{proof}
+    The convex hull of any subset of $C$ is included in $C$ by the convexity of $C$. The maximum dimension of the various simplices included in $C$ is thus the largest $m$ such that $C$ contains an affinely independent set of $m+1$ elements. Let $\{b_0,\ldots,b_m\}$ be such a set with $m$ maximal, and let $M$ be its affine hull. Then dim $M = m$ and $M\subseteq \text{aff}\ C$. Furthermore, $C\subseteq M$, for if $C-M$ contained an element $b$, the set of $m+2$ elements $b_0,\ldots,b_m,b$ in $C$ would be affinely independent, contrary to the maximality of $m$. Since aff $C$ is the smallest affine set which includes $C$, it follows that aff $C\subseteq M$, or equivalently aff $C = M$ and hence dim $C = m$.
+\end{proof}
+
+\begin{definition}
+    A subset $K$ of $\R^n$ is called a \highlight{cone} if it closed under positive scalar multiplication, i.e., $\lambda x\in K$ when $x\in K$ and $\lambda > 0$. A \highlight{convex cone} is a cone which is a convex set.
+\end{definition}
+
+\begin{example}[Convex cone]\label{eg:nonneg_notation}
+    Subspaces of $\R^n$; open and closed half-spaces corresponding to a hyperplane passing through the origin, i.e., $\beta = 0$; the \highlight{nonnegative orthant} of $\R^n$
+    \begin{equation*}
+        \{x = (\xi_1,\ldots,\xi_n)\;:\; \xi_1\ge 0,\ldots, \xi_n\ge 0\},
+    \end{equation*}
+    and the \highlight{positive orthant}
+    \begin{equation*}
+        \{x = (\xi_1,\ldots,\xi_n)\;:\; \xi_1> 0,\ldots, \xi_n > 0\}.
+    \end{equation*}
+    It is customary to write $x\ge x^\prime$ for $x,x^\prime\in\R^n$, if $x-x^\prime$ belongs to the nonnegative orthant, i.e., 
+    \begin{equation*}
+        \xi_i\ge \xi_i^\prime\quad \text{ for }\quad i = 1,\ldots,n.
+    \end{equation*}
+    In this notation, the nonnegative orthant consits of the vectors $x$ such that $x\ge 0.$
+\end{example}
+
+\begin{lemma}\label{lem:intersection_convex_cones}
+    The intersection of an arbitrary collection of convex cones is a convex cone.
+\end{lemma}
+
+\begin{corollary}
+    Let $b_i\in\R^n$ for $i\in I$, where $I$ is an arbitrary index set. Then 
+    \begin{equation*}
+        K = \{x\in\R^n\;:\; \innerproduct{x}{b_i}\le 0,\ i\in I\}
+    \end{equation*}
+    is a convex cone.
+\end{corollary}
+
+Similar remarks to Remark \ref{rem:all_sym} hold for the above corollary.
+% 
+The following characterization of convex cones highlights an analogy between convex cones and subspaces.
+
+\begin{theorem}\label{thm:convex_cone_conic_combinations}
+    A subset of $\R^n$ is a convex cone iff it is closed under addition and positive scalar multiplication.
+\end{theorem}
+
+\begin{proof}
+    \forward Let $K$ be a convex cone. By definition it is closed under positive scalar multiplication, so we need to show that it is closed under addition. Let $x,y\in K$, then by the convexity of $K$, $z = (1/2)(x+y)\in K$, and $x+y = 2z \in K$ since $K$ is a cone.
+    
+    \noindent\converse Suppose $K$ is closed under addition and positive scalar multiplication, and let $0<\lambda<1$. Then, the vectors $(1-\lambda)x$ and $\lambda y$ belong $K$ for $x,y\in K$, and hence $(1-\lambda)x+\lambda y\in K$. 
+\end{proof}
+
+\begin{corollary}\label{cor:convex_cone_conic_combinations}
+    A subset of $\R^n$ is a convex cone iff it contains all the positive linear combinations of its elements.
+\end{corollary}
+
+\begin{corollary}\label{cor:convex_cone_conic_combinations_2}
+    Let $S$ be an arbitrary subset of $\R^n$, and let $K$ be the set of all positive linear combinations of $S$. Then $K$ is the smallest convex cone which includes $S$.
+\end{corollary}
+
+\begin{corollary}\label{cor:convex_cone_conic_combinations_3}
+    Let $C$ be a convex set, and let 
+    \begin{equation*}
+        K = \{\lambda x\;:\; \lambda > 0, x\in C\}.
+    \end{equation*}
+    Then $K$ is the smallest convex cone which includes $C$.
+\end{corollary}
+
+\begin{theorem}\label{thm:convex_cones_subspaces}
+    Let $K$ be a convex cone containing $0$. Then there is the smallest subspace containing $K$, namely
+    \begin{equation*}
+        K - K = \{x-y\;:\;x\in K, y\in K\} = \text{aff}\ K,
+    \end{equation*}
+    and there is the largest subspace contained within $K$, namely $(-K)\cap K$.
+\end{theorem}
+
+\begin{proof}
+    To show that each of these sets are subspaces, we first show that they are convex cones. Then by Theorem \ref{thm:convex_cone_conic_combinations}, it suffices to show that they contain $0$ and are closed under multiplication by $-1$. 
+    
+    Consider the set $K-K = \{x-y\;:\; x,y\in K\}$. For any $z_1,z_2\in K-K$ and $\lambda_1,\lambda_2>0$, we have $z_1 = x_1-y_1$ and $z_2 = x_2-y_2$ for some $x_1,x_2,y_1.y_2\in K$. Then we have
+    \begin{equation*}
+        \lambda_1 z_1+\lambda_2 z_2 = (\lambda_1 x_1 + \lambda_2 x_2) - (\lambda_1 y_1 + \lambda_2 y_2).
+    \end{equation*}
+    But $\lambda_1 x_1 + \lambda_2 x_2, \lambda_1 y_1 + \lambda_2 y_2\in K$ as $K$ is a convex cone, thus $\lambda z_1 +\lambda_2 z_2\in K-K$. By Cor. \ref{cor:convex_cone_conic_combinations}, $K-K$ is also a convex cone. For every $x\in K$, $x-x = 0 \in K-K$. For every $z\in K-K$, there are $x,y\in K$ such that $z = x-y$, but then we also have $-z = y-x\in K-K$, showing that $K-K$ is a subspace. Since $0\in K-K$, $K-0\subseteq K-K$, i.e., $K-K$ contains $K$. Let $L$ be a subspace containing $K$, then for any $z = x-y\in K-K$, $x,y\in K$, we have $x-y\in L$ or equivalently $z\in L$ showing that $K-K\subseteq L$, i.e., $K-K$ is the smallest subspace containing $K$. Since $K$ is a set containing $0$, its affine hull aff $K$ must also contain $0$, which by Theorem \ref{thm:subspace_affine} is a subspace. But we have proved that $K-K$ is the smallest subspace containing $K$, hence $K-K = \text{aff}\ K$.
+
+    Now consider the set $(-K)\cap K$. By Lemma \ref{lem:intersection_convex_cones} $(-K)\cap K$ is also a convex cone containing $0$, since $0\in K$ and $0\in (-K)$. For any $x\in (-K)\cap K$, we have $x\in K$ and $x\in (-K)$, i.e., $-x\in K$, which shows that $-x\in K$ and $-x\in (-K)$ or $-x\in (-K)\cap K$. This shows that $(-K)\cap K$ is a subspace. Since $K\subseteq K$ and $K\cap (-K)\subseteq K$, $(-K)\cap K$ is a subspace contained in $K$. Suppose $M$ is a subspace contained in $K$ and let $x\in M$. Since $M$ is a subspace $-x\in M$, i.e., $x\in (-K)\cap K$ as $M\subseteq K$. Thus $(-K)\cap K$ is the largest subspace contained in $K$.  
+\end{proof}
+
+\begin{definition}
+    Let $S$ be an arbitrary subset of $\R^n$. The convex cone obtained by adjoining the origin to the set of all positive linear combinations of $S$ is called as the \highlight{convex cone} \highlight{generated by \bsdnn{S}} and is denoted by cone $S$.
+\end{definition}
+
+\begin{remark}
+    The convex cone generated by $S$ is not, under our terminology, the same as the smallest convex cone containing $S$ unless the latter cone happens to contain the origin. If $S\neq\emptyset$, cone $S$ consists of all non-negative (rather than positive) linear combinations of elements of $S$. Clearly, cone $S$ = conv $($ray $S)$, where ray $S$ is the union of the origin and the various rays (half-lines of the form $\{\lambda y \;:\; \lambda\ge 0\}$) generated by the non-zero vectors $y\in S$.
+\end{remark}
+
+\begin{definition}
+    A vector $x^*$ is said to be \highlight{normal} to a convex set $C$ at a point $a$, where $a\in C$, if $x^*$ does not make an acute angle with any line segment in $C$ with $a$ as endpoint, i.e., if $\innerproduct{x-a}{x^*}\le 0$ for every $x\in C$. The set of all vectors $x^*$ normal to $C$ at $a$ is called the \highlight{normal cone} to $C$ at $a$. The \highlight{normal cone map} associated with the convex set $C$ is a set-valued map $N_C:\R^n\rightrightarrows \R^n$ which is defined as
+    \begin{equation*}
+        N_C(a) = 
+        \begin{cases}
+			\{x^*\in\R^n\;:\; \innerproduct{x-a}{x^*}\le 0\ \forall\ x\in C\}, & \text{if }a\in C\\
+            \emptyset, & \text{if } a\notin C.
+		 \end{cases}
+    \end{equation*}
+\end{definition}
+
+At this point, the normal cone map definition only helps in simplfying notation in the following proposition. But it will be used more than that in context of Variational Analysis.
+
+\begin{proposition}
+    For a convex set $C$ and $a\in C$, $N_C(a)$ is a convex cone.
+\end{proposition}
+
+\begin{proof}
+    Suppose that $x^*,y^*\in N_C(a)$ and $\lambda,\mu >0$. Then $\innerproduct{x-a}{x^*}\le 0$ and $\innerproduct{x-a}{y^*}\le 0$, which implies that
+    \begin{equation*}
+        \innerproduct{x-a}{\lambda x^*+\mu y^*} \le 0,\ \text{i.e.,}\ \lambda x^* +\mu y^* \in N_C(a), 
+    \end{equation*}
+    where we have used Theorem \ref{thm:convex_cone_conic_combinations}.
+\end{proof}
+
+\begin{definition}
+    The \highlight{barrier cone} of a convex set $C$ is defined as the set of all vectors $x^*$ such that, for some $\beta\in\R$, $\innerproduct{x}{x^*}\le \beta$ for every $x\in C$.
+\end{definition}
+
+\begin{proposition}
+    The barrier cone of a convex set is a convex cone.
+\end{proposition}
+
+\begin{proof}
+    Suppose $C$ is a convex set and $x^*,y^*$ belong to the barrier cone of $C$ and $\lambda,\mu>0$. Then there are some $\beta,\gamma\in \R$ such that $\innerproduct{x}{x^*}\le \beta$ and $\innerproduct{x}{y^*}\le \gamma$ for every $x\in C$. Using this, we see that for all $x\in C$
+    \begin{equation*}
+        \innerproduct{x}{\lambda x^*+\mu y^*}\le \lambda \beta + \mu \gamma \in \R,
+    \end{equation*}
+    which shows that $\lambda x^*+\mu y^*$ also belongs to the barrier cone of $C$.
+\end{proof}
+
+\section{The Algebra of Convex Sets}
+
+\begin{theorem}
+    Let $C$ be a convex set in $\R^n$. Then so is every translate $C+a$ and every \highlight{scalar multiple} $\lambda C = \{\lambda x\;:\; x\in C\}$, where $a\in \R^n$ and $\lambda \in \R$.
+\end{theorem}
+
+\begin{proof}
+    Let $x+a,y+a\in C+a$ and $0\le \mu\le 1$. Then using convexity of $C$, we get
+    \begin{equation*}
+        (1-\mu) (x+a) + \mu (y+a) = ((1-\mu) x + \mu y) + a\in C+a.
+    \end{equation*}
+    Similarly, let $\lambda x,\lambda y\in \lambda C$ and $0\le \mu\le 1$. Then using convexity of $C$, we get
+    \begin{equation*}
+        (1-\mu) \lambda x + \mu \lambda y = \lambda ((1-\mu) x + \mu y) \in \lambda C.
+    \end{equation*}
+\end{proof}
+
+\begin{remark}[Symmetric Convex Set]
+    The \highlight{symmetric reflection} of $C$ across origin is $-C = (-1)C.$ A convex set if said to be \highlight{symmetric} if $-C = C$. Such a set (if non-empty) must contain the origin, since it must contain along with each vector $x$, not only $-x$, but the entire line segment between $x$ and $-x$. The non-empty convex cones which are symmetric are the subspaces (Theorem \ref{thm:convex_cones_subspaces}).
+\end{remark}
+
+\begin{theorem}\label{thm:convex_sets_sum}
+    If $C_1$ and $C_2$ are convex sets in $\R^n$, then so is their sum $C_1+C_2$, where 
+    \begin{equation*}
+        C_1+C_2 = \{x_1+x_2\;:\;x_1\in C_1,x_2\in C_2\}.
+    \end{equation*}
+\end{theorem}
+
+\begin{proof}
+    Let $x_1+x_2,x_1^\prime +x_2^\prime \in C_1+C_2$ and $0\le \lambda\le 1$. Then using convexity of $C_1$ and $C_2$, we obtain
+    \begin{equation*}
+        (1-\lambda) (x_1+x_2) + \lambda (x_1^\prime +x_2^\prime) = ((1-\lambda)x_1 + \lambda x_1^\prime) + ((1-\lambda)x_2 + \lambda x_2^\prime) \in C_1+C_2.
+    \end{equation*}
+\end{proof}
+
+\begin{example}
+    If $C_1$ is any convex set and $C_2$ is the nonnegative orthant (see Example \ref{eg:nonneg_notation}), then 
+    \begin{equation*}
+        C_1+C_2 = \{x_1+x_2\;:\; x_1\in C_1,x_2\ge 0\} = \{x\;:\;\exists x_1\in C_1,x_1\le x\}.
+    \end{equation*}
+    Thus, $C_1+C_2$ is convex by Theorem \ref{thm:convex_sets_sum} when $C_1$ is convex.
+\end{example}
+
+\begin{theorem}\label{thm:convex_set_eq_def_1}
+    A set $C$ is a convex set iff $(1-\lambda) C+ \lambda C\subseteq C$, where $0\le\lambda\le 1$.
+\end{theorem}
+
+\begin{proposition}
+    Let $C_1,\ldots,C_m$ be convex sets, then so is the linear combination
+    \begin{equation*}
+        C = \lambda_1 C_1 + \cdots + \lambda_m C_m,
+    \end{equation*}
+    where $\lambda_1,\ldots, \lambda_m\in \R$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $x = \lambda_1 x_1+\cdots +\lambda_m x_m, x^\prime = \lambda_1 x_1^\prime+\cdots +\lambda_m x_m^\prime$ with $x_i,x_i^\prime\in C_i$ so that $x,x^\prime \in C$ and assume $0\le \lambda\le 1$. Then
+    \begin{equation*}
+        (1-\lambda) x + \lambda x^\prime = \lambda_1 ((1-\lambda) x_1 + \lambda x_1^\prime) + \cdots + \lambda_m ((1-\lambda) x_m + \lambda x_m^\prime) \in C.
+    \end{equation*}
+\end{proof}
+
+\begin{remark}[Set Algebra]
+    The following algebraic laws are valid for the addition and scalar multiplication of sets even without convexity being involved:
+    \begin{align}
+        C_1+ C_2 &= C_2+C_1,\nonumber\\
+        (C_1+C_2)+C_3 &= C_1+(C_2+C_3),\nonumber\\
+        \lambda_1(\lambda_2 C) &= (\lambda_1\lambda_2) C,\nonumber\\
+        \lambda(C_1+C_2) &= \lambda C_1 +\lambda C_2,\nonumber\\
+        (\lambda_1 +\lambda_2)C &\subseteq \lambda_1 C + \lambda_2 C,\label{eqn:partial_scalar_addition}
+    \end{align}
+    where $\lambda,\lambda_1,\lambda_2\in \R$. The set $\{0\}$ is the identity element for the addition operation. Additive inverses do not exist for sets containing more than one point; the best one can say in general is that $0\in [C+(-C)]$ when $C\neq \emptyset$. As can be noted from \eqref{eqn:partial_scalar_addition}, to see that the reverse inclusion is not true in general, consider $C = \{1,2\}\subseteq \R$ and $\lambda_1 = 1,\lambda_2 = 2$. Then $3C = \{3,6\}\neq C + 2C = \{3,4,5,6\}$. However, under the convexity assumption along with $\lambda_1,\lambda_2\ge 0$, the next theorem shows that we can retain the reverse inclusion.
+\end{remark}
+
+\begin{theorem}
+    A set $C$ is a convex set iff $(\lambda_1+\lambda_2)C = \lambda_1 C + \lambda_2 C$, where $\lambda_1,\lambda_2\ge 0$.
+\end{theorem}
+
+\begin{proof}
+    \forward The inclusion $(\lambda_1 +\lambda_2)C \subseteq \lambda_1 C + \lambda_2 C$ is true whether $C$ were convex or not. Now consider the reverse inclusion. Assume that $\lambda_1+\lambda_2>0$ and define the set 
+    \begin{equation*}
+        D\equiv \tfrac{\lambda_1}{\lambda_1+\lambda_2} C + \tfrac{\lambda_2}{\lambda_1+\lambda_2}C.
+    \end{equation*}
+    Let $x\in D$, so that there exists $x_1,x_2\in C$ such that 
+    \begin{equation*}
+        x = \tfrac{\lambda_1}{\lambda_1+\lambda_2}x_1 + \tfrac{\lambda_2}{\lambda_1+\lambda_2}x_2 = \tfrac{\lambda_1}{\lambda_1+\lambda_2}x_1 + \Big(1-\tfrac{\lambda_1}{\lambda_1+\lambda_2}\Big)x_2 \in C,
+    \end{equation*}
+    hence $D \subseteq C$. On multiplying through by $\lambda_1+\lambda_2$, we get $\lambda_1 C +\lambda_2 C \subseteq (\lambda_1+\lambda_2)C$.
+
+    \noindent\converse The distributive law implies that $\lambda C + (1-\lambda) C \subseteq C$ when $0\le \lambda\le 1$. Then by Theorem \ref{thm:convex_set_eq_def_1}, this implies that $C$ is a convex set. 
+\end{proof}
+
+\begin{remark}
+    It follows from this theorem, for instance, that $C+C = 2C$, $C+C+C = 3C$, and so forth, when $C$ is convex.
+\end{remark}
+
+\begin{proposition}
+    Given an arbitrary family of non-empty convex sets $\{C_i\;:\;i\in I\}$ in $\R^n$, there is a unique largest convex set included in all of them, namely $\bigcap_{i\in I}C_i$, and a unique smallest convex set including all of them, namely conv $(\bigcup_{i\in I} C_i)$.
+\end{proposition}
+
+\begin{remark}
+    From the above proposition, the collection of convex subsets in $\R^n$ is a \highlight{complete} \highlight{lattice} under the natural partial order corresponding to inclusion.
+\end{remark}
+
+\begin{theorem}\label{thm:convex_hull_finite_convex_combinations}
+    Let $\{C_i\;:\;i\in I\}$ be an arbitrary collection of non-empty convex sets of $\R^n$, and let $C$ be the convex hull of the union of the collection, i.e., $C =$ conv $(\bigcup_{i\in I}C_i)$. Then
+    \begin{equation*}
+        C = \bigcup\Big\{\sum_{i\in I}\lambda_i C_i\Big\},
+    \end{equation*}
+    where the sum is taken over all finite convex combinations (i.e., over all nonnegative choices of the coefficients $\lambda_i$ such that only finitely many are non-zero and these add up to $1$.)
+\end{theorem}
+
+\begin{proof}
+    By Theorem \ref{thm:convex_hull_convex_combinations}, $C$ is the set of all convex combinations 
+    \begin{equation*}
+        x = \mu_1 y_1+\cdots + \mu_m y_m,
+    \end{equation*}
+    where $y_1,\ldots,y_m\in \bigcup_{i\in I} C_i, \sum_{i=1}^m \mu_i = 1$, and $m<\infty$ as $x\in\R^n$. Actually, we can get $C$ just by taking those combinations in which the coefficients are non-zero and vectors are taken from different sets $C_i$. Indeed, vectors with zero coefficients can be omitted from the combination, and if two of the vectors with positive coefficients belong to the same set $C_i$, say $y_1$ and $y_2$, then the term $\mu_1 y_1+\mu_2 y_2$ in $x$ can be replaced by $\mu y$, where $\mu = \mu_1+\mu_2$ and $y = (\mu_1/\mu)y_1 + (\mu_2/\mu)y_2\in C_i$ so that we have
+    \begin{equation*}
+        x = \mu y + \sum_{i=3}^m \mu_i x_i,\quad \mu+\sum_{i=3}^m \mu_i = \sum_{i=1}^m \mu_i = 1. 
+    \end{equation*}
+    Thus by Theorem \ref{thm:convex_hull_convex_combinations}, $C$ is the union of the finite convex combinations of the form 
+    \begin{equation*}
+        \mu_1 C_{i_1} + \cdots + \mu_m C_{i_m},
+    \end{equation*} 
+    where the indices $i_1,\ldots,i_m$ are all different. 
+\end{proof}
+
+\begin{theorem}\label{thm:convex_set_under_linear_transformation}
+    Let $\mapping{A}{\R^n}{\R^m}$ be a linear transformation. Then $AC$, image of $C$ under $A$, is a convex set in $\R^m$ for every convex set $C$ in $\R^n$, and $A^{-1}D$, the inverse image of $D$ under $A$, is a convex set in $\R^n$ for every convex set $D$ in $\R^m$.
+\end{theorem}
+
+\begin{proof}
+    Let $C$ be a convex subset of $\R^n$ and let $x,y\in C$ so that $Ax,Ay\in AC$. Then for $0\le \lambda \le 1$, we have 
+    \begin{equation*}
+        \lambda Ax + (1-\lambda) A y = A(\lambda x+(1-\lambda)y) \in AC.
+    \end{equation*}
+
+    \noindent Now, suppose that $D$ is a convex subset of $\R^m$ and let $A^{-1}x,A^{-1}y\in A^{-1}D$. Then for $0\le \lambda\le 1$, we have
+    \begin{equation*}
+        \lambda A^{-1}x + (1-\lambda)A^{-1}y = A^{-1}(\lambda x + (1-\lambda) y) \in A^{-1}D.
+    \end{equation*}
+\end{proof}
+
+\begin{corollary}
+    The orthogonal projection of a convex set $C$ on a subspace $L$ is convex.
+\end{corollary}
+
+% \begin{proof}
+%     The orthogonal projector map onto $L$ is a linear transformation.
+% \end{proof}
+
+\begin{theorem}\label{thm:direct_sum_convex}
+    Let $C$ and $D$ be convex sets in $\R^m$ and $\R^p$, respectively. Then, the direct sum
+    \begin{equation*}
+        C\oplus D = \{x = (y,z)\;:\; y\in C, z\in D\}
+    \end{equation*}
+    is a convex set in $\R^{m+p}$.
+\end{theorem}
+
+\begin{remark}
+    When dealing with finite collection of sets, the direct sum and the cartesian product of the collection coincide. So the previous result also applies for cartesian product of $C$ and $D$.
+\end{remark}
+
+\begin{remark}\label{remark:direct_sum_cartesian_product}
+    Suppose $C,D\subseteq\R^n$. Then the direct sum $C\oplus D$ coincides with the ordinary sum $C+D$, if each $x\in C+D$ can be expressed uniquely in the form $x = y+z$, $y\in C$ and $z\in D$. This happens iff the symmetric convex sets $C-C$ and $D-D$ have only the zero vector of $\R^n$ in common. (It can be shown that then $\R^n$ may be expressed as a direct sum of two subspaces, one containing $C$ and the other containing $D$.)
+\end{remark}
+
+% \begin{theorem}
+%     Let $C_1$ and $C_2$ be convex sets in $\R^{m+p}$, and let $C$ be the set of vectors $x = (y,z)$ (where $y\in\R^m$ and $z\in \R^p$) such that there exists vectors $z_1$ and $z_2$ with $(y,z_1)\in C_1$ and $(y,z_2)\in C_2$ and $z_1+z_2 = z$. Then $C$ is a convex set in $\R^{m+p}$.
+% \end{theorem}
+
+\begin{remark}[Algebra of Convex cones]
+    The sets $K_1+K_2$, conv $(K_1\cup K_2)$, $K_1\oplus K_2$, $AK$, $A^{-1}K$ and $\lambda K$ are convex cones when $K_1$, $K_2$ and $K$ are convex cones. Positive scalar multiplication is a trivial operation for cones: one has $\lambda K = K$ for every $\lambda >0$.
+\end{remark}
+
+\begin{theorem}
+    If $K_1$ and $K_2$ are convex cones containing origin, then
+    \begin{equation*}
+        K_1+K_2 = \text{conv}\ (K_1\cup K_2).
+    \end{equation*} 
+\end{theorem}
+
+\begin{proof}
+    By Theorem \ref{thm:convex_hull_finite_convex_combinations}, conv $(K_1\cup K_2)$ is the union over $\lambda\in [0,1]$ of $(1-\lambda)K_1 + \lambda K_2$, i.e.,
+    \begin{equation*}
+        \text{conv}\ (K_1\cup K_2) = \bigcup_{\lambda\in [0,1]} (1-\lambda)K_1 + \lambda K_2.
+    \end{equation*}
+    The latter set is $K_1+K_2$ when $0<\lambda<1$ (since $\lambda K = K$ for a cone with $\lambda>0$), $K_1$ when $\lambda = 0$, $K_2$ when $\lambda = 1$. Since $0\in K_1$ and $0\in K_2$, $K_1+K_2$ includes both $K_1$ and $K_2$. Thus conv $(K_1\cup K_2)$ coincides with $K_1+K_2$.
+\end{proof}
+
+\section{Convex Functions}
+
+\begin{definition}
+    Let $\mapping{f}{S\subseteq \R^n}{\R\cup \{\pm \infty\}}$ be a function. The set 
+    \begin{equation*}
+        \{(x,\mu)\;:\; x\in S,\mu\in \R,\mu\ge f(x)\}
+    \end{equation*}
+    is called the \highlight{epigraph} of $f$ and is denoted by epi $f$. We define $f$ to be a \highlight{convex function} on $S$ if epi $f$ is convex as a subset of $\R^{n+1}$. A \highlight{concave function} on $S$ is a function whose negative is convex. An \highlight{affine function} on $S$ is a function which is finite, convex and concave.
+\end{definition}
+
+\begin{remark}
+    % The \highlight{effective domain} of a convex function $f$ on $S$, which we denote by dom $f$, is the projection on $\R^n$ of the epigraph of $f$:
+    % \begin{equation*}
+    %     \text{dom}\ f = \{x\;:\;\exists \mu,(x,\mu)\in\text{epi}\ f\} = \{x\;:\;f(x)<+\infty\}.
+    % \end{equation*}
+    % This is a convex set in $\R^n$, since it is the image of the the convex set epi $f$ under a linear transformation. Its dimension is called the \highlight{dimension} of $f$ (Theorem \ref{thm:convex_set_under_linear_transformation}).
+% 
+    Since a convex function $f$ on $S$ can always be extended to a convex function on all of $\R^n$ by setting $f(x) = +\infty$ for $x\notin S$, we shall henceforth refer by a ``convex function'' a  ``convex function with possibly infinte values which is defined throughout the space of $\R^n$.'' This leads to extened arithmetic rules involving $\pm \infty$ where the only forbidden calculations are $\infty -\infty$ and $-\infty + \infty$.
+\end{remark}
+
+\begin{definition}
+    A convex function $f$ is said to be \highlight{proper} if its epigraph is non-empty and contains no vertical lines, i.e., $f(x)<+\infty$ for at least one $x$ and $f(x)>-\infty$ for every $x$. A convex function which is not proper is \highlight{improper}.
+\end{definition}
+
+% \begin{remark}
+%     Thus $f$ is proper iff the convex set $C = $ dom $f$ is non-empty and the restriction of $f$ to $C$ is finite.
+% \end{remark}
+
+\begin{theorem}\label{thm:convex_function_def}
+    Let $f$ be a function from $C$ to $(-\infty,+\infty]$, where $C$ is a convex set. Then $f$ is convex on $C$ iff 
+    \begin{equation*}
+        f((1-\lambda)x+\lambda y) \le (1-\lambda) f(x) + \lambda f(y), \quad 0<\lambda < 1,
+    \end{equation*}
+    for every $x,y\in C$.
+\end{theorem}
+
+\begin{proof}
+    By definition, $f$ is convex on $C$ iff 
+    \begin{equation*}
+        (1-\lambda)(x,\mu) + \lambda (y,\nu) = ((1-\lambda)x+\lambda y,(1-\lambda)\mu+\lambda \nu) \in \text{epi}\ f
+    \end{equation*}
+    whenever $(x,\mu)$ and $(y,\nu)$ belong to epi $f$ and $0\le\lambda\le 1$. By setting $\mu = f(x)$ and $\nu = f(y)$, we get the required result.
+\end{proof}
+
+\begin{corollary}\label{cor:convex_function_def_1}
+    Let $f$ be a function from $\R^n$ to $[-\infty,+\infty]$. Then $f$ is convex on $C$ iff 
+    \begin{equation*}
+        f((1-\lambda)x+\lambda y) < (1-\lambda) \alpha + \lambda \beta, \quad 0<\lambda < 1,
+    \end{equation*}
+    whenever $f(x)<\alpha$ and $f(y)<\beta$.
+\end{corollary}
+
+\begin{corollary}[Jensen's Inequality]\label{cor:convex_function_def_2}
+    Let $f$ be a function from $\R^n$ to $(-\infty,+\infty]$. Then $f$ is convex iff 
+    \begin{equation*}
+        f(\lambda_1 x_1 + \cdots + \lambda_m x_m)\le \lambda_1 f(x_1) + \cdots + \lambda_m f(x_m)
+    \end{equation*}
+    whenever $\lambda_1\ge 0,\ldots,\lambda_m\ge 0$, $\lambda_1 + \cdots + \lambda_m = 1$.
+\end{corollary}
+
+\begin{remark}
+    The inequality in Theorem \ref{thm:convex_function_def} is often taken as the definition of the convexity of a function $f$ from a convex set $C$ to $(-\infty,+\infty]$. This approach causes difficulties, however, when $f$ can have both $+\infty$ and $-\infty$ among its values, since the expression $\infty -\infty$ could arise. One could instead use the condition in Corollary \ref{cor:convex_function_def_1} as the definition of convexity in the general case, but the definition given at the beginning of this section seems preferable because it emphasizes the geometry which is fundamental to the theory of convex functions.
+\end{remark}
+
+\begin{theorem}\label{thm:convex_function_second_order}
+    Let $f$ be a twice continuously differentiable real-valued function on an open interval $(\alpha,\beta)$. Then $f$ is convex iff its second derivative $f^{\prime\prime}$ is nonnegative throughout $(\alpha,\beta)$.
+\end{theorem}
+
+\begin{proof}
+    \converse Suppose first that $f^{\prime\prime}$ is nonnegative on $(\alpha,\beta)$. Then $f^\prime$ is non-decreasing on $(\alpha,\beta)$. For $\alpha<x<y<\beta$, $0<\lambda<1$ and $z = (1-\lambda)x+\lambda y$, we have $f^\prime(x)\le f^\prime (z)\le f^\prime(y)$ and
+    \begin{equation*}
+        f(z) - f(x) = \int_x^z f^\prime (t)dt \le f^\prime(z)(z-x), 
+    \end{equation*}
+    \begin{equation*}
+        f(y) - f(z) = \int_z^y f^\prime (t)dt \ge f^\prime(z)(y-z). 
+    \end{equation*}
+    Since $z-x = \lambda(y-x)$ and $y-z = (1-\lambda)(y-x)$, we have
+    \begin{align*}
+        f(z)&\le f(x) + \lambda f^\prime(z)(y-x),\\
+        f(z)&\le f(y) - (1-\lambda) f^\prime(z)(y-x).
+    \end{align*}
+    Multiplying the two inequalities by $(1-\lambda)$ and $\lambda$ respectively and adding them together, we get
+    \begin{equation*}
+        f(z) = f((1-\lambda)x + \lambda y) \le (1-\lambda)f(x) + \lambda f(y).
+    \end{equation*}
+    \\
+    \forward Suppose that $f^{\prime\prime}$ were not nonnegative on $(\alpha,\beta)$. Then $f^{\prime\prime}$ would be negative on a certain subinterval $(\alpha^\prime,\beta^\prime)$ by continuity. Then by similar arguments as above, we would have
+    \begin{equation*}
+        f(z) - f(x) > f^\prime (z)(z-x),
+    \end{equation*} 
+    \begin{equation*}
+        f(y) - f(z) < f^\prime (z)(y-z),
+    \end{equation*} 
+    and hence 
+    \begin{equation*}
+        f((1-\lambda)x + \lambda y) > (1-\lambda)f(x) + \lambda f(y).
+    \end{equation*}
+    Thus, $f$ would not be convex on $(\alpha,\beta)$.
+\end{proof}
+
+\begin{example}
+    Here are some functions on $\R$ convexity is a consequence of Theorem \ref{thm:convex_function_second_order}.
+    \begin{enumerate}
+        \item $f(x) = e^{\alpha x}$, where $-\infty < \alpha < +\infty$.
+        \item $f(x) = x^p$ if $x\ge 0$ and $f(x) = \infty$ if $x<0$, where $1\le p< \infty$.
+        \item $f(x) = -x^p$ if $x\ge 0$, $f(x) = \infty$ if $x\le 0$, where $0\le p\le 1$.
+        \item $f(x) = x^p$ if $x> 0$ and $f(x) = \infty$ if $x\le 0$, where $p\in (-\infty,0]\cup [1,\infty)$.
+        \item $f(x) = (\alpha^2-x^2)^{-1/2}$ if $|x|<\alpha$, $f(x) = \infty$ if $|x|\ge\alpha$, where $\alpha>0$.
+        \item $f(x) = -\log{x}$ if $x>0$, $f(x) = \infty$ if $x\le 0$.
+    \end{enumerate}
+\end{example}
+
+\begin{theorem}
+    Let $f$ be a twice continuously differentiable real-valued function on an open convex set $C$ in $\R^n$. Then $f$ is convex iff its Hessian matix Hess $f(x)$ is positive semi-definite for every $x\in C$.
+\end{theorem}
+
+\begin{proof}
+    The convexity of $f$ on $C$ is equivalent to the convexity of the restriction of $f$ to each line segment in $C$. This is the same as the convexity of the function $g(\lambda) = f(y+\lambda z)$ on the open real interval $\{\lambda\;:\;y+\lambda z\in C\}$ for each $y\in C$ and $z\in \R^n$. Note that 
+    \begin{equation*}
+        g^{\prime\prime}(\lambda) = \innerproduct{z}{\text{Hess}\ f(y+\lambda z)z}.
+    \end{equation*}
+    Thus, by Theorem \ref{thm:convex_function_second_order}, $g$ is convex for each $y\in C$ and $z\in \R^n$ iff $\innerproduct{z}{\text{Hess}\ f(y+\lambda z)z}\ge 0$ for every $z\in \R^n$ and $y\in C$.
+\end{proof}
+
+\begin{definition}
+    For a set $C$ in $\R^n$ the \highlight{indicator function} $\delta_C(x)$ of $C$ is defined as 
+    \begin{equation*}
+        \delta_C(x) = 
+        \begin{cases}
+			0, & \text{if }x\in C\\
+            +\infty, & \text{if } x\notin C.
+        \end{cases}
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    The epigraph of the indicator function is $C\times [0,\infty)$ which is a ``half-cylinder with cross-section $C$''. 
+\end{remark}
+
+\begin{proposition}
+    A set $C$ in $\R^n$ is a convex set iff $\delta_C$ is a convex function in $\R^n$. 
+\end{proposition}
+
+\begin{proof}
+    The set $C\subseteq\R^n$ is convex iff $C\times [0,\infty)\subseteq\R^{n+1}$ is convex by Theorem \ref{thm:direct_sum_convex} and Remark \ref{remark:direct_sum_cartesian_product}. But then epi $\delta_C$ is convex which means that $\delta_C$ is convex.
+\end{proof}
+
+\begin{definition}\label{def:support_function}
+    The \highlight{support function} $\delta_C^*$ of a convex set $C$ in $\R^n$ is defined by
+    \begin{equation*}
+        \delta_C^*(x) = \sup\{\innerproduct{x}{y}\;:\;y\in C\}.
+    \end{equation*}
+\end{definition}
+
+\begin{definition}\label{def:gauge_function}
+    The \highlight{gauge function} $\gamma_C$ of a convex set $C$ in $\R^n$ is defined by 
+    \begin{equation*}
+        \gamma_C(x) = \inf\{\lambda\ge 0\;:\; x\in \lambda C\},\quad C\neq \emptyset.
+    \end{equation*}
+\end{definition}
+
+\begin{definition}\label{def:distance_function}
+    The (Euclidean) \highlight{distance function} $d_C$ is defined by
+    \begin{equation*}
+        d_C(x) = \inf\{\|x-y\|\;:\;y\in C\}.
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    The convexity of these functions (in Def. \ref{def:support_function}, \ref{def:gauge_function} and \ref{def:distance_function}) on $\R^n$ could be verified now directly, but we shall wait until the next section, where the convexity can be shown to follow from general principles.
+\end{remark}
+
+\begin{theorem}
+    For any convex function $f$ and any $\alpha\in [-\infty,+\infty]$, the level sets $\{x\;:\;f(x)<\alpha\}$ and $\{x\;:\;f(x)\le\alpha\}$ are convex.
+\end{theorem}
+
+\begin{proof}
+    In the case of strict inequality the result is immediate from Corollary \ref{cor:convex_function_def_1}, with $x = y$ and $\beta = \alpha$. The convexity of $\{x\;:\;f(x)\le \alpha\}$ then follows from the fact that it is the intersection of the convex sets $\{x\;:\;f(x)\le \mu\}$ for $\mu>\alpha$, i.e.,
+    \begin{equation*}
+        \{x\;:\;f(x)\le \alpha\} = \bigcap_{\mu>\alpha} \{x\;:\;f(x)< \mu\}.
+    \end{equation*}
+    A more geometric way of seeing this convexity is to observe that $\{x\;:\;f(x)\le \alpha\}$ is the projection on $\R^n$ of the intersection of epi $f$ and the horizontal hyperplane $\{(x,\mu)\;:\;\mu=\alpha\}$ in $\R^{n+1}$, so that $\{x\;:\;f(x)\le \alpha\}$ can be regarded as a horizontal cross-section of epi $f$.
+\end{proof}
+
+\begin{corollary}\label{cor:intersection_convex_sets_convex_map}
+    Let $f_i$ be a convex function on $\R^n$ and $\alpha_i$ be a real number for each $i\in I$, where $I$ is an arbitrary index set. Then
+    \begin{equation*}
+        C = \{x\;:\;f_i(x)\le \alpha,\ \forall i\in I\}
+    \end{equation*}
+    is a convex set.
+\end{corollary}
+
+\begin{proof}
+    Like Corollary \ref{cor:intersection_convex_sets_affine_map}.
+\end{proof}
+
+\begin{definition}
+    A function $f$ on $\R^n$ is said to be \highlight{positively homogeneous} (of degree $1$) if for every $x$ one has
+    \begin{equation*}
+        f(\lambda x) = \lambda f(x), \quad 0<\lambda<\infty.
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    Positive homogeneity is equivalent to the epigraph being a cone in $\R^{n+1}$. 
+\end{remark}
+
+\begin{theorem}
+    A positively homogeneous function $f$ from $\R^n$ to $(-\infty,+\infty]$ is convex iff
+    \begin{equation}\label{eqn:subadditivity}
+        f(x+y) \le f(x) + f(y)
+    \end{equation}
+    for every $x,y\in\R^n$.
+\end{theorem}
+
+\begin{proof}
+    This is implied by Theorem \ref{thm:convex_cone_conic_combinations}, because the subadditivity condition of $f$ in \eqref{eqn:subadditivity} is equivalent to epi $f$ being closed under addition.
+\end{proof}
+
+\begin{corollary}
+    If $f$ is a positively homogeneous proper convex function, then
+    \begin{equation*}
+        f(\lambda_1 x_1+\cdots+\lambda_m x_m) \le \lambda_1 f(x_1) + \cdots + \lambda_m f(x_m)
+    \end{equation*}
+    whenever $\lambda_1>0,\ldots,\lambda_m>0$.
+\end{corollary}
+
+\begin{corollary}
+    If $f$ is a positively homogeneous proper convex function, then $f(-x) \ge -f(x)$ for every $x$.
+\end{corollary}
+
+\begin{proof}
+    We have $f(x)+f(-x) \ge f(x-x) = f(0) \ge 0$.
+\end{proof}
+
+\begin{theorem}
+    A positively homogeneous proper convex function $f$ is linear on a subspace $L$ iff $f(-x) = -f(x)$ for every $x\in L$. The converse is true if merely $f(-b_i) = -f(b_i)$ for all the vectors in some basis $b_1,\ldots,b_m$ for $L$.
+\end{theorem}
+
+\begin{proof}
+    \forward Linearity of $f$ implies $f(-x)=-f(x)$ for every $x\in L$. 
+    
+    \noindent\converse Assume that $f$ is positively homogeneous proper convex function and that $f(-b_i) = -f(b_i)$ for all the vectors in some basis $b_1,\ldots,b_m$ for $L$. Then $f(\lambda_i b_i) = \lambda_i f(b_i)$ for every $\lambda_i \in \R$, not just for $\lambda_i>0$. For any $x = \lambda_1 b_1+\cdots+\lambda_m b_m\in L$ we have
+    \begin{align*}
+        f(\lambda_1 b_1) + \cdots + f(\lambda_m b_m) \ge f(x) \ge -f(-x) &\ge -(f(-\lambda_1 b_1) + \cdots + f(-\lambda_m b_m)) \\
+        &= f(\lambda_1 b_1) + \cdots + f(\lambda_m b_m),
+    \end{align*}
+    and hence 
+    \begin{equation*}
+        f(x) = f(\lambda_1 b_1)+ \cdots + f(\lambda_m b_m) = \lambda_1 f(b_1) + \cdots + \lambda_m f(b_m).
+    \end{equation*}
+    Thus $f$ is linear on $L$.
+\end{proof}
+
+\section{Functional Operations}
+
+\begin{theorem}
+    Let $f$ be a convex function from $\R^n$ to $(-\infty,+\infty]$, and let $\varphi$ be a convex function from $\R$ to $(-\infty,+\infty]$ which is non-decreasing. Then $h(x) = \varphi(f(x))$ is convex on $\R^n$ (where one sets $\varphi(+\infty) = +\infty$).
+\end{theorem}
+
+\begin{proof}
+    For any $x,y\in \R^n$ and $0<\lambda<1$, from Theorem \ref{thm:convex_function_def} we have
+    \begin{equation*}
+        f((1-\lambda)x+\lambda y)\le (1-\lambda)f(x)+\lambda f(y).
+    \end{equation*}
+    Applying $\varphi$ to both sides of this inequality, we retain the inequality sign due to the non-decreasing property of $\varphi$ to get
+    \begin{equation*}
+        h((1-\lambda)x+\lambda y)\le \varphi((1-\lambda)f(x)+\lambda f(y)) \le (1-\lambda)h(x)+\lambda h(y).
+    \end{equation*}
+\end{proof}
+
+
+
+\section{Convex Cones - Fenchel Notes}
+
+\subsection{Cones}
+
+% Let $\R^n$ be an $n$-dimensional Euclidean real vector space with the inner product defined for any $x,y\in \R^n$ as $\innerproduct{x}{y} = x^Ty = \sum_{i=1}^n x_i y_i$, where $x = [x_1,\ldots, x_n]^T$ and $y = [y_1,\ldots, y_n]^T$ are the coordinates of $x$ and $y$ respectively. Let the norm and the metric on $\R^n$ be defined as $\|x\| = \sqrt{\innerproduct{x}{x}}$ and $d(x,y) = \|x-y\|$, respectively.
+
+\begin{definition}
+    A subset $M$ of $\R^n$ is called a \highlight{cone} if $0$ is in $M$ and $x\in M$ implies $\lambda x\in M$ for every non-negative real scalar $\lambda$. The particular cones consisting of a non-zero vector $x$ and all its multiples $\lambda x$ ($\lambda \ge 0$) is a \highlight{ray}, denoted by $(x)$. 
+\end{definition}
+
+\begin{remark}
+    A cone which contains atleast one non-zero vector is therefore just the union of the rays it contains.
+\end{remark}
+
+Since all non-trivial cones may be thought of as set of rays, it is desirable to introduce a metric-topology on the set of all rays from the metric-topology of $\R^n$ induced from the canonical metric $d(\cdot,\cdot)$.
+
+\begin{remark}
+    Let $S^n = \{x\in \R^n\ : \|x\| = 1\}$ be the unit sphere in $\R^n$. Then for any $x\in \R^n$, we have
+    \begin{equation*}
+        (x) \text{ is a ray in } \R^n \Leftrightarrow \frac{x}{\|x\|} \text{ is in } S^n.
+    \end{equation*}
+    Thus, from here on we will represent $S^n$ to be the set of all rays in $\R^n$.
+\end{remark}
+
+
+\begin{proposition}
+    Suppose for any $x,y\in S^n$, we define the map $\mapping{\metric{\cdot}{\cdot}}{S^n\times S^n}{\R}$ as
+    \begin{equation*}
+        \metric{x}{y} = \sqrt{2(1 - x^Ty)},
+    \end{equation*}
+    which is the chord distance between $x$ and $y$. Then, $\metric{\cdot}{\cdot}$ is a metric on $S^n$ and consequently, $(S^n, \metric{\cdot}{\cdot})$ is a metric space.
+\end{proposition}
+
+\begin{proof}
+    Note that 
+    \begin{align*}
+        \metric{x}{y} &= \sqrt{2(1 - x^Ty)} \\
+        &= \sqrt{1 + 1 - 2x^Ty} \\
+        &= \sqrt{\|x\|^2 + \|y\|^2 - 2x^Ty} \\
+        &= \|x-y\| = d(x,y).
+    \end{align*}
+    Then, $\metric{\cdot}{\cdot}$ is a restriction of $d(\cdot,\cdot)$ on $S^n$, in other words, $\metric{\cdot}{\cdot} = \bigvert{d(\cdot,\cdot)}{S^n}$. 
+\end{proof}
+
+
+\begin{definition}\label{def:cone_topology}
+    We review definitions regarding the metric topology induced by $\metric{\cdot}{\cdot}$ on $S^n$.
+    \begin{enumerate}[(a)]
+        \item A \highlight{sequence of rays} $(x^\nu)$ is said to \highlight{converge} to a ray $(x)$ if $\metric{x^\nu}{x}\rightarrow 0$. 
+        \item A ray $(x)$ is called a \highlight{limit ray} of a cone $M$ if there is a sequence of rays of the cone which are different from $(x)$ and which converges to $(x)$. 
+        \item A \highlight{closed cone} or a closed set of rays is a cone which contains all its limit points. 
+        \item For any $\varepsilon>0$, the \highlight{$\varepsilon$-neighborhood} of $(x)$ $\B_\varepsilon(x)$ is the set of all rays $(y)$ with $\metric{x}{y} < \varepsilon$.
+        \item $M$ is \highlight{open} if for every $(x)\in M$, there is an $\varepsilon>0$, such that $\B_\varepsilon(x)\subseteq M$.
+        \item A ray $(x)$ is called an \highlight{interior ray} of a cone $M$ if $M$ contains an $\varepsilon$-neighborhood of $(x)$ for some $\varepsilon>0$.
+        \item A ray $(x)$ such that the complementary cone to the cone $M$ contains a neighborhood of $(x)$ is called an \highlight{exterior ray} of $M$.
+        \item A \highlight{boundary ray} of a cone $M$ is a limit ray of $M$ which is not an interior ray of $M$.
+    \end{enumerate}
+\end{definition}
+
+\begin{lemma}\label{lem:closed_sets_sphere}
+    A set $M\subseteq S^n$ is closed in $S^n\subseteq \R^n$ iff $M$ is closed in $\R^n$.
+\end{lemma}
+
+\begin{proof}
+    \converse If $M$ is closed in $\R^n$, then it is closed in $S^n$ by subspace topology. 
+    
+    \forward First we show that $S^n$ itself is closed in $\R^n$. Consider the norm $\mapping{F}{\R^n}{\R}$ defined as $F(x) = \|x\|$. Since $F$ is continuous and $S^n = F^{-1}(\{1\})$, i.e., $S^n$ is the preimage of the closed set $\{1\}$ under $F$, $S^n$ is closed in $\R^n$. Suppose if $M$ is closed in $S^n$, then there exists a closed set $M^\prime$ in $\R^n$ such that $M = S^n \cap M^\prime$, which is intersection of two closed sets in $\R^n$. Hence $M$ is closed in $\R^n$ as well.
+\end{proof}
+
+\begin{proposition}
+    An alternate definition of open and closed cones are given below.
+    \begin{enumerate}[(a)]
+        \item A cone is {closed} in the sense of Def.~\ref{def:cone_topology}(c) iff it is closed in $\R^n$.
+        \item A cone is {open} in the sense of Def.~\ref{def:cone_topology}(e) iff it is open in $\R^n$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    (a) It follows from Lemma \ref{lem:closed_sets_sphere} and the fact that we identified the set of all rays in $\R^n$ with $S^n$. 
+
+    (b)
+\end{proof}
+
+With any cone $M$ there is associated a smallest linear subspace of $\R^n$ which contains $M$.
+
+\begin{definition}
+    The intersection of all subspaces containing the cone $M$ is denoted by $S(M)$. The dimension $d(M)$ of the space $S(M)$ is called \highlight{linear dimension} of the cone $M$.
+\end{definition}
+
+For the results on cones in later sections, open or closed relative to $S(M)$, and interior, exterior, and boundary rays relative to $S(M)$ will be considered rather than their counterparts in the topology of the full space $\R^n$. They will be called for simplicity relative interior, relative exterior, relative boundary rays.
+
+\subsection{Convex Cones}
+
+\begin{definition}
+    A cone $C$ is \highlight{convex} if the ray $(x+y)$ is in $C$ whenever $(x)$ and $(y)$ are rays in $C$. The largest subspace $s(C)$ contained in a convex cone $C$ is called the \highlight{lineality space} of $C$ and the dimension $l(C)$ of $s(C)$ is called the lineality of $C$.
+\end{definition}
+
+\begin{remark}
+    A set $C$ of vectors is a convex cone iff it contains all vectors
+    \begin{equation*}
+    \lambda x + \mu y\ (\lambda, \mu \ge 0; x,y\in C).
+    \end{equation*}
+\end{remark}
+
+\begin{lemma}
+    If $(x)$ is an interior ray of a convex cone $C$ relative to $S(C)$ and $(y)$ is a boundary or interior ray of $C$ relative to $S(C)$, then every ray $(\lambda x+\mu y)$, where $\lambda$ and $\mu$ are positive real numbers, is an interior ray of $C$ relative to $S(C)$. 
+\end{lemma}
+
+
+% \newpage
+
+% \begin{thebibliography}{9}
+% \bibitem{ShaiBenDavid}
+% Shalev-Shwartz S., Ben-David S. (2014) Understanding Machine Learning: From Theory to Algorithms, Cambridge University Press
+
+% \bibitem{Seq Lemma (b)}
+% [Sequence Lemma (b)] \href{https://math.stackexchange.com/questions/1876224/}{math.SE}
+
+% \end{thebibliography}
+
+\begin{thebibliography}{9}
+\bibitem{Rockafellar} 
+    Rockafellar, R.T. Convex Analysis. Princeton University Press, 1972.
+    
+\bibitem{Fenchel}
+    Fenchel, W. Convex Cones, Sets, and Functions. Princeton University, 1953.
+    
+    
+\end{thebibliography}
+    
+
+\end{document}

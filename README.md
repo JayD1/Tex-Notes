@@ -1,5 +1,6 @@
 # Tex-Notes
 
+- [Convex Analysis](../raw/build/Convex%20Analysis.pdf)
 - [Differential Calculus](../../raw/build/Differential%20Calculus.pdf)
 - [Differential Geometry](../../raw/build/Differential%20Geometry.pdf)
 - [Functional Analysis Project Report](../../raw/build/FA%20Project%20Report.pdf)
