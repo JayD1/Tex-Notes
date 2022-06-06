@@ -1,0 +1,661 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cancel}
+
+\author{Jayadev Naram}
+\title{Differential Calculus} 
+
+\begin{document}
+
+\date{}
+\maketitle
+\tableofcontents
+% \newpage
+
+\newtheorem{theorem}{Theorem}
+\newtheorem*{corollary}{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newtheorem{proposition}{Proposition}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\highlight}[1]{\textsl{\textbf{#1}}}
+\newcommand{\mapping}[3]{#1:#2\rightarrow #3}
+\newcommand{\doubt}{\highlight{[??]}}
+\newcommand{\bigvert}[2]{\left.#1\right|_{#2}}
+\newcommand{\sdnn}[1]{${#1}$}
+\newcommand{\bsdnn}[1]{$\boldsymbol{#1}$}
+\newcommand{\ifthen}[2]{\textbf{(#1)}\boldsymbol{\implies}\textbf{(#2)}}
+\newcommand{\bsdn}[1]{\boldsymbol{#1}}
+\newcommand{\forward}{$(\implies)$}
+\newcommand{\converse}{$(\impliedby)$}
+\newcommand{\Lt}[1]{\underset{#1\rightarrow 0}{Lt}}
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\dparder}[2]{\dfrac{\partial #1}{\partial x^{#2}}}
+\newcommand{\fparder}[2]{\frac{\partial #1}{\partial x^{#2}}}
+\newcommand{\parder}[2]{\partial #1/\partial x^{#2}}
+\newcommand{\parop}[1]{\dfrac{\partial}{\partial x^{#1}}}
+
+\section{Total Derivatives in Finite-Dimensional Vector spaces}
+
+\begin{definition}
+Let $V,W$ be finite-dimensional vector spaces, which we may assume to be endowed with norms. If $U\subseteq V$ is an open subset $a\in U$, a map $\mapping{F}{U}{W}$ is said to be \highlight{differentiable at \bsdnn{a}} if there exists a linear map $\mapping{L}{V}{W}$ such that 
+\begin{equation}\label{eqn:differentiable_at_a}
+\Lt{v} \dfrac{\|F(a+v)-F(a)-Lv\|}{\|v\|} = 0.
+\end{equation}
+\end{definition}
+
+\begin{remark}\label{remark:differentiable_at_a}
+It can be easily seen that 
+\begin{equation}
+\Lt{v} \dfrac{\|F(a+v)-F(a)-Lv\|}{\|v\|} = 0 \Leftrightarrow \Lt{v} \dfrac{F(a+v)-F(a)-Lv}{\|v\|} = 0.
+\end{equation}
+\end{remark}
+
+\begin{proposition}
+Suppose $\mapping{F}{U}{W}$ is differentiable at $a\in U$. Then the linear map $L$ satisfying \eqref{eqn:differentiable_at_a} is unique.
+\end{proposition}
+
+\begin{proof}
+Let $\mapping{L_1}{V}{W}$ and $\mapping{L_2}{V}{W}$ satisfy \eqref{eqn:differentiable_at_a}. Define $A = L_1-L_2$, then we have
+\begin{eqnarray*}
+\|Av\| 
+=& \|(F(a+v)-F(a)-L_2v) - (F(a+v)-F(a)-L_1v)\| \\
+\le& \|F(a+v)-F(a)-L_2v\| + \|F(a+v)-F(a)-L_1v\|
+\end{eqnarray*}
+Dividing by $\|v\|$ and taking limit we get
+\begin{eqnarray*}
+\implies 
+\Lt{v} \dfrac{\|Av\|}{\|v\|} 
+\le \Lt{v} \bigg( \dfrac{\|F(a+v)-F(a)-L_1v\|}{\|v\|} + \dfrac{\|F(a+v)-F(a)-L_2v\|}{\|v\|} \bigg) = 0 
+\end{eqnarray*}
+Therefore we have $Av = 0\; \forall\; v\in V$ which implies that $A = 0$, i.e., $L_1 = L_2$.
+\end{proof}
+
+\begin{definition}
+If $F$ is differentiable at $a$, the linear map $L$ satisfying \eqref{eqn:differentiable_at_a} is denoted by $DF(a)$ and is called the \highlight{total derivative of \bsdnn{F} at \bsdnn{a}}. 
+\end{definition}
+
+\begin{remark}\label{remark:remainder_form}
+Condition \eqref{eqn:differentiable_at_a} can also be written as 
+\begin{equation}\label{eqn:remainder_form}
+    F(a+v)-F(a) = DF(a)v+R(v),
+\end{equation}
+where the remainder term $R(v)$ satisfies $\|R(v)\|/\|v\|\rightarrow 0$ as $v\rightarrow 0$. Thus the total derivative represents the ``best linear approximation" to $F(a+v)-F(a)$ near $a$. Note that $\|R(v)\|/\|v\|\rightarrow 0$ implies that eventually $\|R(v)\|/\|v\|\le 1$, i.e., $\|R(v)\|\le \|v\|$.
+\end{remark}
+
+\begin{proposition}
+Suppose $V,W$ are finite-dimensional vector spaces, $U\subseteq V$ is an open subset, $a\in U$, and $\mapping{F}{U}{W}$ is a map. If $F$ is differentiable at $a$, then it is continuous at $a$.
+\end{proposition}
+
+\begin{proof}
+In \eqref{eqn:remainder_form} take norm and apply limit $v\rightarrow 0$ on both sides 
+\begin{align*}
+0\le\Lt{v} \|F(a+v) - F(a)\| = \Lt{v} \|DF(a)v+R(v)\| 
+\le& \Lt{v} \|DF(a)v\| + \|R(v)\| \\
+\le& \Lt{v} (\|DF(a)\|+1)\|v\| = 0,
+\end{align*}
+where $\|DF(a)\|$ is the operator norm. Thus $F$ is continuous at $a$.
+\end{proof}
+
+\begin{proposition}
+Suppose $V,W,X$ are finite-dimensional vector spaces. Then 
+\begin{enumerate}[(a)]
+    \item If $\mapping{T}{V}{W}$ is a linear map, then $T$ is differentiable at every point $v\in V$, with total derivative equal to $T$ itself: $DT(v) = T$.
+    \item If $\mapping{B}{V\times W}{X}$ is a bilinear map, then $B$ is differentiable at every point $(v,w)\in V\times W$, and $DB(v,w)(x,y) = B(v,y)+B(x,w)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\highlight{(a)} Setting $L = T$ in \eqref{eqn:differentiable_at_a} and using the linearity of $T$, we see that T is differentiable everywhere with the total derivative equal to $T$ itself.
+
+\highlight{(b)} We use \eqref{eqn:remainder_form} to show that bilinear map is differentiable. Note that 
+\begin{equation*}
+    B(v+x,w+y) = B(v,w) + B(v,y) + B(x,w) + B(x,y).
+\end{equation*}
+But $B(x,y)\le \|B\|\|x\|\|y\|$ where $\|B\|$ is operator norm which is finite by continuity of $B$. Then comparing with \eqref{eqn:remainder_form}
+\begin{equation*}
+    B(v+x,w+y) - B(v,w) = DB(v,w)(x,y) + R(x,y),
+\end{equation*}
+where $DB(v,w)(x,y) = B(v,y) + B(x,w)$ and $R(x,y) \le \|B\|\|x\|\|y\|\rightarrow 0$ as $(x,y)\rightarrow 0$.
+\end{proof}
+
+\begin{proposition}[\highlight{The Chain Rule for Total Derivatives}] \label{prop:chain_rule_total_derivatives}
+Suppose $V,W,X$ are finite-dimensional vector spaces, $U\subseteq V$ and $\Tilde{U}\subseteq W$ are open subsets, and $\mapping{F}{U}{\Tilde{U}}$ and $\mapping{G}{\Tilde{U}}{X}$ are maps. If $F$ is differentiable at $a\in U$ and $G$ is differentiable at $F(a)\in \Tilde{U}$, then $G\circ F$ is differentiable at $a$ and $D(G\circ F)(a) = DG(F(a))\circ DF(a)$.
+\end{proposition}
+
+\begin{proof}
+Let $A = DF(a)$ and $B = DG(F(a))$. We need to show that 
+\begin{equation}\label{eqn:chain_rule_aux}
+    \Lt{v} \dfrac{\|G(F(a+v))-G(F(a))-BAv\|}{\|v\|} = 0.
+\end{equation}
+Let us write $b = F(a)$ and $w = F(a+v)-F(a)$. With these substitutions, we can rewrite the quotient in \eqref{eqn:chain_rule_aux} as 
+\begin{align*}
+\dfrac{\|G(b+w)-G(b)-BAv\|}{\|v\|} =& 
+\dfrac{\|G(b+w)-G(b)-Bw+Bw-BAv\|}{\|v\|} \\
+\le& \dfrac{\|G(b+w)-G(b)-Bw\|}{\|v\|} + \dfrac{\|B(w-Av)\|}{\|v\|}\qquad{(\dagger)}
+\end{align*}
+The differentiability of $F$ at $a$ means that for any $\epsilon>0$, we can ensure that 
+\begin{equation*}
+\|w-Av\| = \|F(a+v)-F(a)-Av\| \le \epsilon \|v\|
+\end{equation*}
+as long as $v$ lies in a small enough neighborhood of $0$. Moreover, as $v\rightarrow 0$, $\norm{v} = \norm{F(a+v)-F(v)}\rightarrow 0$ by continuity of $F$. Therefore by differentiability of $G$ at $b$ means that by making $\norm{v}$ even smaller if necessary, we can also achieve 
+\begin{equation*}
+    \norm{G(b+w)-G(b)-Bw} \le \epsilon\norm{w}.
+\end{equation*}
+Also note that $\norm{B(w-Av)}\le \norm{B}\norm{w-Av}$. Putting all of these estimates together, we see that for $\norm{v}$ sufficiently small, $(\dagger)$ is bounded by
+\begin{align*}
+\epsilon \dfrac{\norm{w}}{\norm{v}} + \norm{B}\dfrac{\norm{w-Av}}{\norm{v}}
+=& \epsilon \dfrac{\norm{w-Av+Av}}{\norm{v}} + \norm{B}\dfrac{\norm{w-Av}}{\norm{v}} \\
+\le& \epsilon \dfrac{\norm{w-Av}}{\norm{v}} + \dfrac{\norm{Av}}{\norm{v}} + \norm{B}\dfrac{\norm{w-Av}}{\norm{v}} \\
+\le& \epsilon^2+\epsilon\norm{A}+\epsilon\norm{B},
+\end{align*}
+which can be made as small as desired.
+\end{proof}
+
+\begin{lemma}
+The addition operation $\mapping{+}{\R^2}{\R}$ defined as $(+)(x,y) = x+y$ is differentiable and $D(+)(a,b) = +$. The multiplication operation $\mapping{\times}{\R^2}{\R}$ defined as $(\times)(x,y) = xy$ is differentiable and $D(\times)(a,b)(x,y) = bx+ay$. The reciprocal operation $\mapping{h}{\R}{\R}$ defined as $h(x) = 1/x$ is differentiable and $Dh(x) = -\frac{1}{x^2}$.
+\end{lemma}
+
+\begin{proposition}
+Suppose $V,W$ are finite-dimensional vector spaces, $U\subseteq V$ is an open subset, $a$ is a point in $U$, and $\mapping{F,G}{U}{W}$ and $\mapping{f,g}{U}{\R}$ are maps. Then 
+\begin{enumerate}[(a)]
+    \item If $F$ is a constant map, then $F$ is differentiable at $a$ and $DF(a) = 0$.
+    \item If $F$ and $G$ are differentiable at $a$, then $F+G$ is also, and \begin{equation*}
+        D(F+G)(a) = DF(a)+DG(a).
+    \end{equation*}
+    \item If $f$ and $g$ are differentiable at $a$, then $fg$ is also, and \begin{equation*}
+        D(fg)(a) = f(a)Dg(a)+g(a)Df(a).
+    \end{equation*}
+    \item If $f$ and $g$ are differentiable at $a$ and $g(a)\neq 0$, then $f/g$ is differentiable at $a$, and 
+    \begin{equation*}
+        D(f/g)(a) = \dfrac{g(a)Df(a)-f(a)Dg(a)}{g(a)^2}.
+    \end{equation*}
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\highlight{(a)} Let $F(v) = c\in W$ for all $v\in V$. Then setting $L = 0$ in \eqref{eqn:differentiable_at_a} satifies the equation showing that $F$ is differentiable at $a$ and $DF(a) = 0$.
+
+\highlight{(b)} Note that $F+G = (+)\circ (F,G)$, then using chain rule
+\begin{align*}
+D(F+G)(a) = D((+)\circ (F,G))(a) =& D(+)(F(a),G(a))\circ D(F,G)(a) \\
+=& D((+)(F(a),G(a)))\circ (DF(a),DG(a)) \\ 
+=& (+)(DF(a),DG(a)) = DF(a)+DG(a).
+\end{align*}
+% \begin{align*}
+% \Lt{v}& \dfrac{\|F(a+v)+G(a+v) - F(a)-G(a) - (DF(a)+DG(a))v\|}{\|v\|} \\
+% \le \Lt{v}&\bigg( \dfrac{\|F(a+v) - F(a) - DF(a)v\|}{\|v\|} + \dfrac{\|G(a+v) - G(a) - DG(a)v\|}{\|v\|} \bigg) = 0,
+% \end{align*}
+% which shows that $F+G$ is differentiable at $a$ and $D(F+G)(a) = DF(a)+DG(a)$.
+
+\highlight{(c)} Note that $fg = (\times)\circ (f,g)$, then using chain rule
+\begin{align*}
+D(fg)(a) = D((\times)\circ (f,g))(a) =& D((\times)(f(a),g(a)) \circ D(f,g)(a) \\
+=& D(\times)(f(a),g(a))(Df(a),Dg(a)) \\
+=& g(a)Df(a)+f(a)Dg(a)
+\end{align*}
+
+% Consider the following
+% \begin{align*}
+% \Lt{v}&\dfrac{\|f(a+v)g(a+v)-f(a)g(a)-(g(a)Df(a)+f(a)Dg(a))v\|}{\|v\|} \\
+% = \Lt{v}&\dfrac{\|f(a+v)g(a+v)-f(a+v)g(a)+f(a+v)g(a)-f(a)g(a)-(g(a)Df(a)+f(a)Dg(a))v\|}{\|v\|} \\
+% = \Lt{v}&\dfrac{\|[f(a+v)g(a+v)-f(a+v)g(a)-\boldsymbol{f(a)}Dg(a)v]+g(a)[f(a+v)-f(a)-Df(a)v]\|}{\|v\|} \\
+% \overset{*}{\le} \Lt{v}&\dfrac{\|f(a+v)g(a+v)-f(a+v)g(a)-\boldsymbol{f(a+v)}Dg(a)v\|}{\|v\|}\;+\\
+% &\hspace{5cm}g(a)\bigg(\Lt{v}\dfrac{\|f(a+v)-f(a)-Df(a)v\|}{\|v\|}\bigg)\\
+% = f(a&+v)\Lt{v}\dfrac{\|(g(a+v)-g(a)-Dg(a)v\|}{\|v\|} = 0,
+% \end{align*}
+% where the second term of (*) is zero by differentiability of $f$ at $a$ and in the first term the bold term is replaced from $f(a)$ to $f(a+v)$ by continuity of $f$ at $a$. Thus $fg$ is differentiable at $a$ with the total derivative $ D(fg)(a) = f(a)Dg(a)+g(a)Df(a).$
+
+\highlight{(d)} Note that $f/g = (\times)\circ (f,1/g)$ and $1/g = h\circ g$, so by chain rule 
+\begin{equation*}
+D(1/g)(a) = -\frac{1}{g(a)^2}Dg(a).    
+\end{equation*}
+
+Then 
+\begin{align*}
+D(f/g)(a) = D((\times)\circ (f,1/g))(a) =& D(\times)(f(a),1/g(a))\circ D(f,1/g)(a) \\
+=& D(\times)(f(a),1/g(a))(Df(a),D(1/g)(a)) \\
+=& \dfrac{1}{g(a)}Df(a)-f(a)\dfrac{1}{g(a)^2}Dg(a) \\
+=& \dfrac{g(a)Df(a)-f(a)Dg(a)}{g(a)^2}.
+\end{align*}
+\end{proof}
+
+\section{Total and Partial Derivatives in \texorpdfstring{$\R^n$}{Euclidean Spaces}}
+
+\begin{definition}
+Suppose $U\subseteq \R^n$ is open and $\mapping{f}{U}{\R}$ is a real-valued function. For any $a = (a^1,\ldots,a^n)\in U$ and any $j\in\{1,\ldots,n\}$, the \highlight{j-th partial derivative of \bsdnn{f} at \bsdnn{a}} is defined to be the ordinary derivative of $f$ w.r.t. $x^j$ while holding the other variables fixed:
+\begin{equation*}
+\dparder{f}{j}(a) = \Lt{h} \dfrac{f(a+he_j)-f(a)}{h}
+\end{equation*}
+if the limit exists.
+\end{definition}
+
+\begin{definition}
+For a vector-valued function $\mapping{F}{U}{\R^m}$, we can write the coordinates of $F(x)$ as $F(x) = (F^1(x),\ldots,F^m(x))$. This defines $m$ functions $\mapping{F^1,\ldots,F^m}{U}{\R}$ called the \highlight{component functions of \bsdnn{F}}. The partial derivatives of $F$ are defined simply to be the partial derivatives $\parder{F^i}{j}$ of its component functions. The matrix $(\parder{F^i}{j})$ of partial derivatives is called the \highlight{Jacobian matrix of \bsdnn{F}}, and its determinant is called the \highlight{Jacobian determinant of \bsdnn{F}}.
+\end{definition}
+
+\begin{definition}
+If $\mapping{F}{U}{\R^m}$ is a function for which each partial derivative exists at each point in $U$ and the functions $\mapping{\parder{F^i}{j}}{U}{\R}$ so defined are all continuous, then $F$ is said to be of class \highlight{\bsdnn{C^1}} or \highlight{continuously differentiable}. If this is the case, we can differentiate the functions $\parder{F^i}{j}$ to obtain \highlight{second-order partial derivatives}
+\begin{equation*}
+\dfrac{\partial^2 F^i}{\partial x^k \partial x^j} = \parop{k}\bigg(\dparder{F^i}{j}\bigg),
+\end{equation*}
+if they exist. Continuing this way leads to higher-order partial derivatives: the \highlight{partial derivatives of \bsdnn{F} of order \bsdnn{k}} are the (first) partial derivatives of those of order $k-1$, when they exist.
+\end{definition}
+
+\begin{definition}
+If $U\subseteq \R^n$ is an open subset and $k\ge 0$, a function $\mapping{F}{U}{\R^m}$ is said to be of \highlight{class \bsdnn{C^k}} or \highlight{k times continuously differentiable} if all the partial derivatives of $F$ of order less than or equal to $k$ exist and are continuous functions on $U$.
+\end{definition}
+
+\begin{remark}
+Thus a function of class $C^0$ is just a continuous function. Because existence and continuity of derivatives are local properties, clearly $F$ is $C^k$ iff it has the property in a neighborhood of each point in $U$.
+\end{remark}
+
+\begin{definition}
+A function that is of class $C^k$ for every $k\ge 0$ is said to be of \highlight{class \bsdnn{C^\infty}}, or \highlight{smooth}, or \highlight{infinitely differentiable}. If $U$ and $V$ are open subsets of Euclidean spaces, a function $\mapping{F}{U}{V}$ is called a \highlight{diffeomorphism} if it is smooth and bijective and its inverse function is also smooth.
+\end{definition}
+
+\begin{proposition}\label{prop:total_derivative_of_inverse}
+Suppose $U\subseteq \R^n$ and $V\subseteq \R^m$ are open subsets and $\mapping{F}{U}{V}$ is a diffeomorphism. Then $m = n$, and for each $a\in U$, the total derivative is invertible, with $DF(a)^{-1} = D(F^{-1})(F(a))$.
+\end{proposition}
+
+\begin{proof}
+Because $F^{-1}\circ F = Id_U$, the chain rule implies that for each $a\in U$, 
+\begin{equation*}
+Id_{\R^n} = D(Id_U)(a) = D(F^{-1}\circ F)(a) = D(F^{-1})(F(a))\circ DF(a).
+\end{equation*}
+Similarly, $F\circ F^{-1} = Id_V$ implies that for each $F(a)\in V$, we have 
+\begin{equation*}
+DF(F^{-1}(F(a)))\circ D(F^{-1})(F(a)) = DF(a)\circ D(F^{-1})(F(a)) = Id_{\R^m}.    
+\end{equation*}
+This implies that $DF(a)$ is invertible with inverse $D(F^{-1})(F(a))$, and therefore $m = n$.
+\end{proof}
+
+\begin{definition}[\highlight{Smoothness on Arbitrary Domains}] \label{def:smoothness_on_arbitrary_domains}
+If $A\subseteq \R^n$ is an arbitrary subset, a function $\mapping{F}{A}{\R^m}$ is said to be \highlight{smooth on \bsdnn{A}} if it admits a smooth extension to an open neighborhood of each point, or more precisely, if for every $x\in A$, there exists an open neighborhood $U_x\subseteq \R^n$ and a smooth function $\mapping{\Tilde{F}}{U_x}{\R^m}$ that agrees with $F$ on $U_x\cap A$. The notion of diffeomorphism extends to arbitrary subsets in the obvious way: given arbitrary subsets $A,B\subseteq \R^n$, a \highlight{diffeomorphism from \bsdnn{A} to \bsdnn{B}} is a smooth bijective map $\mapping{f}{A}{B}$ with smooth inverse.
+\end{definition}
+
+\begin{definition}
+If $U\subseteq \R^n$ is open, the set of all real-valued functions of class $C^k$ on $U$ is denoted by $C^k(U)$, and the set of all smooth real-valued functions by $C^\infty(U)$. Sums, constant multiples, and products of functions are defined pointwise: for $\mapping{f,g}{U}{\R}$ and $c\in \R$,
+\begin{align*}
+    (f+g)(x) =& f(x) + g(x), \\
+    (cf)(x) =& c(f(x)), \\
+    (fg)(x) =& f(x)g(x).
+\end{align*}
+\end{definition}
+
+\begin{proposition}[\highlight{Equality of Mixed Partial Derivatives}]
+If $U$ is an open subset of $\R^n$ and $\mapping{F}{U}{\R^m}$ is a function of class $C^2$, then the mixed second-order partial derivatives of $F$ do not depend on the order of differentiation:
+\begin{equation*}
+\dfrac{\partial^2 F^i}{\partial x^j\partial x^k} = \dfrac{\partial^2 F^i}{\partial x^k\partial x^j}.
+\end{equation*}
+\end{proposition}
+
+\begin{corollary}
+If $\mapping{F}{U}{\R^m}$ is smooth, then the mixed partial derivatives of $F$ of any order are independent of the order of differentiation.
+\end{corollary}
+
+\begin{proposition}\label{prop:jacobian_matrix_form}
+Let $U\subseteq \R^n$ be open, and suppose $\mapping{F}{U}{\R^m}$ is differentiable at $a\in U$. Then all of the partial derivatives of $F$ at $a$ exist, and $DF(a)$ is the linear map whose matrix is the Jacobian of $F$ at $a$:
+\begin{equation*}
+DF(a) = \Bigg( \dparder{F^j}{i}(a)\Bigg).
+\end{equation*}
+\end{proposition}
+
+\begin{proof}
+Let $B = DF(a)$, and for $v\in \R^n$ small enough that $a+v\in U$, let $R(v) = F(a+v)-F(a)-Bv$. The fact that $F$ is differentiable at $a$ implies that each component of the vector-valued function $R(v)/\|v\|$ goes to zero as $v\rightarrow 0$. The i-th partial derivative of $F^j$ at $a$, if it exists, is 
+\begin{align*}
+\dparder{F^j}{i}(a) =& \Lt{t} \dfrac{F^j(a+te_i)-F^j(a)}{t} = \Lt{t} \dfrac{B_i^jt+R^j(te_i)}{t}
+= B^j_i + \Lt{t} \dfrac{R^j(te_i)}{t}.
+\end{align*}
+The norm of the quotient on the right above is $\|R^j(te_i)\|/\|te_i\|$, which approaches zero as $t\rightarrow 0$. It follows that $\parder{F^j}{i}(a)$ exists and is equal to $B^j_i$ as claimed.
+\end{proof}
+
+\begin{proposition}
+Suppose $U\subseteq \R^n$ is open. Then $\mapping{F}{U}{\R^m}$ is differentiable at $a\in U$ iff each of its component functions $F^1,\ldots,F^m$ is differentiable at $a$ and 
+\begin{equation*}
+DF(a) = \left(
+\begin{array}{c} 
+DF^1(a) \\ 
+\vdots  \\
+DF^m(a)
+\end{array} \right)
+\end{equation*}
+\end{proposition}
+
+\begin{proof}
+Using the fact that $y = (y_1,\ldots,y_m) \rightarrow 0 \Leftrightarrow y_i\rightarrow 0$ for each $i$, from Remark \ref{remark:differentiable_at_a} we see that
+\begin{align*}
+\Lt{v} \dfrac{\|F(a+v)-F(a)-DF(a)v\|}{\|v\|} = 0 &\Leftrightarrow 
+\Lt{v} \dfrac{F(a+v)-F(a)-DF(a)v}{\|v\|} = 0 \\
+&\Leftrightarrow 
+\Lt{v} \dfrac{F^i(a+v)-F^i(a)-DF^i(a)v}{\|v\|} = 0,\;\forall i \\ 
+&\Leftrightarrow 
+\Lt{v} \dfrac{\|F^i(a+v)-F^i(a)-DF^i(a)v\|}{\|v\|} = 0,\;\forall i.
+\end{align*}
+\end{proof}
+
+\begin{proposition}
+Let $U\subseteq \R^n$ be open. If $\mapping{F}{U}{\R^n}$ is of class $C^1$, then it is differentiable at each point of $U$.
+\end{proposition}
+
+% \begin{corollary}
+% Every function of class $C^1$ is of class $C^0$.
+% \end{corollary}
+
+\begin{proposition}
+Let $U\subseteq \R^n$ be an open subset, and suppose $f,g\in C^\infty(U)$ and $c\in \R$.
+\begin{enumerate}[(a)]
+    \item Then $f+g$, $cf$, and $fg$ are smooth.
+    \item If $g$ never vanishes on $U$, then $f/g$ is smooth.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+The result follows immediately by noting that each of the partial derivatives of $f+g$, $cf$, $fg$ and $f/g$ of any order are continuous as they can be written as sum, product, quotient of partial derivatives of $f$ and $g$ which are assumed to be continuous.
+\end{proof}
+
+\begin{proposition}[\highlight{The Chain Rule for Partial Derivatives}] \label{prop:chain_rule_partial_derivatives}
+Let $U\subseteq \R^n$ and $\Tilde{U}\subseteq \R^m$ be open subsets, and let $x = (x^1,\ldots,x^n)$ denote the standard coordinates on $U$ and $y = (y^1,\ldots,y^m)$ those on $\Tilde{U}$.
+\begin{enumerate}[(a)]
+    \item A composition of $C^1$ functions $\mapping{F}{U}{\Tilde{U}}$ and $\mapping{G}{\Tilde{U}}{\R^p}$ is again of class $C^1$, with partial derivatives given by
+    \begin{equation*}
+        \dparder{(G^i\circ F)}{j}(x) = \sum_{k=1}^m \dfrac{\partial G^i}{\partial y^k}(F(x)) \dparder{F^k}{j}(x).
+    \end{equation*}
+    \item If $F$ and $G$ are smooth, then $G\circ F$ is smooth.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\highlight{(a)} From the chain rule of total derivative(Prop. \ref{prop:chain_rule_total_derivatives}) and the Jacobian matrix formulation of total derivative(Prop. \ref{prop:jacobian_matrix_form}), the matrix of $D(G\circ F)$ will be the product of the Jacobian matrices of $G$ and $F$. Since $\mapping{H = G\circ F}{U}{\R^p}$, the components of $H = (H^1,\ldots,H^p)$ can be written as $\mapping{H^i = G^i\circ F}{U}{\R}$. Then we have
+\begin{align*}
+(\parder{H^i}{j}) =&\; (\partial G^i/\partial y^k) (\parder{F^k}{j}), \\
+\implies \dparder{H^i}{j}(x) = \dparder{(G^i\circ F)}{j}&(x) = \sum_{k=1}^m \dfrac{\partial G^i}{\partial y^k}(F(x)) \dparder{F^k}{j}(x).
+\end{align*}
+Then each component $\parder{H^i}{j}$ is continuous because it is sum of product of continuous functions. Thus $G\circ F$ is also $C^1$.
+
+\highlight{(b)} Repeated application of chain rule shows that $G\circ F$ is smooth.
+\end{proof}
+
+\begin{proposition}
+Suppose $A\subseteq \R^n$ and $B\subseteq \R^m$ are arbitrary subsets, and $\mapping{F}{A}{\R^m}$ and $\mapping{G}{B}{\R^p}$ are smooth maps (according to Def. \ref{def:smoothness_on_arbitrary_domains}) such that $F(A)\subseteq B$. Then $\mapping{G\circ F}{A}{\R^p}$ is smooth.
+\end{proposition}
+
+\begin{proof}
+Let $x\in A$, then by smoothness of $F$, there exists a neighborhood $U$ of $x$ and a smooth map $\mapping{\Tilde{F}}{U}{\R^m}$ such that $ \bigvert{\Tilde{F}}{U\cap A} = F$. But $F(x)\in B$, so by smoothness of $G$, we find a neighborhood $V$ of $F(x)$ and a smooth map $\mapping{\Tilde{G}}{V}{\R^p}$ such that $\bigvert{\Tilde{G}}{V\cap B} = G$. Define $\Tilde{U} = U\cap A\cap F^{-1}(V\cap B)$. Then $\Tilde{U}$ is a neighborhood of $x$, and $\mapping{\Tilde{G}\circ \Tilde{F}}{\Tilde{U}}{\R^p}$ is a smooth map (by Prop. \ref{prop:chain_rule_partial_derivatives}) such that $\bigvert{\Tilde{G}\circ \Tilde{F}}{\Tilde{U}} = G\circ F$.
+\end{proof}
+
+\begin{definition}
+Suppose $\mapping{f}{U}{\R}$ is a smooth real-valued function on an open subset $U\subseteq \R^n$ and $a\in U$. For each vector $v\in \R^n$, we define the \highlight{directional derivative of \bsdnn{f} in the direction \bsdnn{v} at \bsdnn{a}} to be the number 
+\begin{equation}
+D_v f(a) = \bigvert{\dfrac{d}{dt}}{t=0} f(a+tv).
+\end{equation}
+\end{definition}
+
+\begin{remark}
+This definition makes sense for any vector $v$; we do not require $v$ to be a unit vector as one sometimes does in elementary calculus.
+\end{remark}
+
+\begin{remark}
+Since $D_vf(a)$ is the ordinary derivative of the composite function $t\mapsto a+tv\mapsto f(a+tv)$, by chain rule it can be written more concretely as
+\begin{equation*}
+D_vf(a) = \sum_{i=1}^n v^i \dparder{f}{i}(a) = Df(a)v.
+\end{equation*}
+\end{remark}
+
+\begin{proposition}[\highlight{Differentiation Under an Integral Sign}] \label{prop:fundamental_theorem_of_calculus}
+Let $U\subseteq\R^n$ be an open subset, let $a,b\in \R$, and let $\mapping{f}{U\times[a,b]}{\R}$ be continuous function such that partial derivatives $\mapping{\parder{f}{i}}{U\times[a,b]}{\R}$ exist and are continuous on $U\times [a,b]$ for $i = 1,\ldots,n$. Define $\mapping{F}{U}{\R}$ by
+\begin{equation*}
+F(x) = \int_{a}^b f(x,t)dt.
+\end{equation*}
+Then $F$ is of class $C^1$, and its partial derivatives can be computed by differentiating under the integral sign:
+\begin{equation*}
+\dparder{F}{i}(x) = \int_a^b \dparder{f}{i}(x,t) dt.
+\end{equation*}
+\end{proposition}
+
+For any $m$-tuple $I = (i_1,\ldots,i_m)$ of indices with $1\le i_j\le n$, we let $|I| = m$ denote the number of indices in $I$, and
+\begin{align*}
+\partial_I =& \dfrac{\partial^m}{\partial x^{i_1}\ldots\partial x^{i_m}},\\
+(x-a)^I =& (x^{i_1}-a^{i_1})\ldots(x^{i_m}-a^{i_m}).
+\end{align*}
+
+\begin{proposition}[\highlight{Taylor's Theorem}]
+Let $U\subseteq \R^n$ be an open subset, and let $a\in U$ be fixed. Suppose $f\in C^{k+1}(U)$ for some $k\ge 0$. If $W$ is any convex subset of $U$ containing $a$, then for all $x\in W$,
+\begin{equation}\label{eqn:Taylor_expansion}
+f(x) = P_k(x) + R_k(x),
+\end{equation}
+where $P_k$ is the \highlight{\bsdnn{k}-th order Taylor polynomial of \bsdnn{f} at \bsdnn{a}}, defined by
+\begin{equation}\label{eqn:Taylor_polynomial}
+P_k(x) = f(a) + \sum_{m = 1}^k \dfrac{1}{m!}\sum_{I:\,|I| = m}\partial_I f(a)(x-a)^I,
+\end{equation}
+and $R_k$ is the \highlight{\bsdnn{k}-th remainder term}, given by 
+\begin{equation}\label{eqn:Taylor_remainder}
+R_k(x) = \dfrac{1}{k!}\sum_{I:\,|I| = k+1}(x-a)^I \int_0^1 (1-t)^k\partial_I f(a+t(x-a)) dt.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $k = 0$ (where we interpret $P_0$ to mean $f(a)$), this is just the fundamental theorem of calculus (Prop. \ref{prop:fundamental_theorem_of_calculus}) applied to the function $u(t) = f(a+t(x-a))$, together with the chain rule. Assume the result holds for some $k$, integration by parts applied to the integral in the remainder term yield
+\begin{align*}
+\int_0^1 (1-t)^k&\partial_I f(a+t(x-a)) dt \\
+=& \bigg[ -\dfrac{(1-t)^{k+1}}{k+1}\partial_I f(a+t(x-a)) \bigg]_{t = 0}^{t=1} +
+\int_0^1 \dfrac{(1-t)^{k+1}}{k+1}\dfrac{\partial}{\partial t}(\partial_I f(a+t(x-a))) dt \\
+=& \dfrac{1}{k+1}\partial_I f(a) + \dfrac{1}{k+1} \sum_{j = 1}^n (x^j-a^j)\int_0^1 (1-t)^{k+1} \parop{j} \partial_I f(a+t(x-a)) dt.
+\end{align*}
+When we insert this into \eqref{eqn:Taylor_expansion}, we obtain the analogous formula with $k$ replaced by $k+1$.
+\end{proof}
+
+\begin{corollary}
+Suppose $U\subseteq\R^n$ is an open subset, $a\in U$, and $f\in C^{k+1}(U)$ for some $k\ge 0$. If $W$ is a convex subset of $U$ containing $a$ on which all of the $(k+1)$-st partial derivatives of $f$ are bounded in absolute value by a constant $M$, then for all $x\in W$,
+\begin{equation*}
+|f(x) - P_k(x)|\le \dfrac{n^{k+1}M}{(k+1)!}|x-a|^{k+1},
+\end{equation*}
+where $P_k$ is the $k$-th Taylor polynomial of $f$ at $a$, defined by \eqref{eqn:Taylor_polynomial}.
+\end{corollary}
+
+\begin{proof}
+There are $n^{k+1}$ terms on the right-hand side of \eqref{eqn:Taylor_remainder}, each term is bounded in absolute value by $(1/(k+1)!)|x-a|^{k+1}M$.
+\end{proof}
+
+\begin{proposition}[\highlight{Lipschitz Estimate for \bsdnn{C^1} Functions}] \label{prop:Lipschitz_continuity_of_C1_functions}
+Let $U\subseteq \R^n$ be an open subset, and suppose $\mapping{F}{U}{\R^m}$ is of class $C^1$. Then $F$ is Lipschitz continuous on every compact convex subset $K\subseteq U$. The Lipschitz constant can be taken to be $sup_{x\in K}\|DF(x)\|$.
+\end{proposition}
+
+\begin{proof}
+Since $\|DF(x)\|$ is a continuous function of $x$, it is bounded on the compact set $K$. Let $M = sup_{x\in K}\|DF(x)\|$. For arbitrary $a,b\in K$, we have $a+t(b-a)\in K$ for all $t\in [0,1]$ because $K$ is convex. By the fundamental theorem of calculus applied to each component of $F$, together with the chain rule,
+\begin{align*}
+F(b) - F(a) =& \int_0^1 \dfrac{d}{dt} F(a+t(b-a)) dt \\
+=& \int_0^1 DF(a+t(b-a)) (b-a)dt. \\
+\implies \|F(b)-F(a)\| \le& \int_0^1 \|DF(a+t(b-a))\| \|b-a\| dt \\
+\le& \int_0^1 M\|b-a\| dt = M\|b-a\|.
+\end{align*}
+\end{proof}
+
+\begin{corollary}
+If $U\subseteq \R^n$ is an open subset and $\mapping{F}{U}{\R^m}$ is of class $C^1$, then $f$ is locally Lipschitz continuous.
+\end{corollary}
+
+\begin{proof}
+Each point of $U$ is contained in a ball whose closure is contained in $U$, and Prop. \ref{prop:Lipschitz_continuity_of_C1_functions} shows that the restriction of $F$ to such a ball is Lipschitz continuous.
+\end{proof}
+
+\section{The Inverse Function Theorem and Related Results}
+
+\begin{definition}
+Let $(X,d)$ be a metric space. A map $\mapping{G}{X}{X}$ is said to be a \highlight{contraction} if there is a constant $\lambda\in (0,1)$ such that $d(G(x),G(y))\le \lambda d(x,y)$ for all $x,y\in X$. A \highlight{fixed point} of a map $\mapping{G}{X}{X}$ is a point $x\in X$ such that $G(x) = x$.
+\end{definition}
+
+\begin{remark}
+Clearly, every contraction is continuous.
+\end{remark}
+
+\begin{proposition}[\highlight{Contraction Lemma}]
+Let $X$ be a nonempty complete metric space. Every contraction $\mapping{G}{X}{X}$ has a unique fixed point.
+\end{proposition}
+
+\begin{proof}
+Uniqueness is immediate, for if $x,x'$ are both fixed points of $G$, the contraction property implies that $d(x,x') = d(G(x),G(x'))\le \lambda d(x,x')$, which is possible only if $x = x'$.
+
+To prove the existence of a fixed point, let $x_0$ be an arbitrary point in $X$, and define a sequence $(x_n)_{n=0}^\infty$ inductively by $x_{n+1} = G(x_n)$. For any $i\ge 1$ we have $d(x_i,x_{i+1}) = d(G(x_{i-1}),G(x_i))\le \lambda d(x_{i-1},x_i)$, and therefore by induction $d(x_i,x_{i+1})\le \lambda^i d(x_0,x_1)$. If $N$ is a positive integer and $j\ge i\ge N$,
+\begin{align*}
+d(x_i,x_{j}) \le&\; d(x_i,x_{i+1})+d(x_{i+1},x_{i+2})+\ldots+d(x_{j-1},x_{j}) \\
+\le&\; (\lambda^i+\ldots+\lambda^{j-1})d(x_0,x_1) \le\; \lambda^i \Big(\sum_{n=0}^\infty \lambda^n \Big) d(x_0,x_1)\\
+\le&\; \lambda^N \Big( \dfrac{1}{1-\lambda}\Big) d(x_0,x_1),
+\end{align*}
+where we have used that $\lambda^N\ge \lambda^i$ for $i\ge N$. Since the last expression can be made as small as desired by choosing $N$ large, the sequence $(x_n)$ is Cauchy and therefore converges to a limit $x\in X$. Because $G$ is continuous,
+\begin{align*}
+x_n\rightarrow x \implies G(x_n)\rightarrow G(x), 
+\text{ but } G(x) = \underset{n\rightarrow \infty}{Lt} G(x_n) =  \underset{n\rightarrow \infty}{Lt} x_{n+1} = x,
+\end{align*}
+so $x$ is the desired fixed point.
+\end{proof}
+
+\begin{proposition}[\highlight{Inverse Function Theorem}]
+Suppose $U, V$ are open subsets of $\R^n$, and $\mapping{F}{U}{V}$ is a smooth function. If $DF(a)$ is invertible, i.e., Jacobian determinant is nonzero, at some point $a\in U$, then there exists connected neighborhoods $U_0\subseteq U$ of $a$ and $V_0\subseteq V$ of $F(a)$ such that $\mapping{\bigvert{F}{U_0}}{U_0}{V_0}$ is a diffeomorphism.
+\end{proposition}
+
+\begin{proof}
+We begin by making some simple modifications to the function $F$ to streamline the proof. First, the function $F_1$ defined by $F_1(x) = F(x+a)-F(a)$ is smooth on a neighborhood of $0$ and satisfies $F_1(0) = 0$ and $DF_1(0) = DF(a)$; clearly, $F$ is a diffeomorphism on a connected neighborhood of $a$ iff $F_1$ is a diffeomorphism on a connected neighborhood of $0$. Second, the function $F_2 = DF_1(0)^{-1}\circ F_1$ is smooth on the same neighborhood of $0$ and satisfies $F_2(0) = 0$ and $DF_2(0) = I_n$; and $F_2$ is a diffeomorphism on a connected neighborhood of $0$ iff $F_1$ is a diffeomorphism and therefore also $F$. Henceforth, replacing $F$ by $F_2$, we assume that $F$ is defined in a neighborhood $U$ of $0$, $F(0) = 0$ and $DF(0) = I_n$. Because the determinant of $DF(x)$ is a continuous function of $x$, by shrinking $U$ if necessary, we may assume that $DF(x)$ is invertible for each $x\in U$.
+
+Let $H(x) = x - F(x)$ for each $x\in U$. Then $DH(0) = I_n - I_n = 0$. Because the matrix entries of $DH(x)$ are continuous functions of $x$, there is a number $\delta>0$ such that $\bb_0(\delta)\subseteq U$ and for all $x\in \bar{\bb}_0(\delta)$, we have $\|DH(x)\|\le \frac{1}{2}$. If $x,x'\in \bar{\bb}_0(\delta)$, the Lipschitz estimate for smooth functions (Prop. \ref{prop:Lipschitz_continuity_of_C1_functions}) implies that 
+\begin{equation}\label{eqn:Lipschitz_continuity}
+    \|H(x)-H(x')\|\le \frac{1}{2}\|x-x'\|.
+\end{equation}
+In particular, taking $x' = 0$, this implies
+\begin{equation}\label{eqn:bound_on_H}
+    \|H(x)\|\le \frac{1}{2}\|x\|.
+\end{equation}
+Since $x'-x = F(x')-F(x) + H(x')-H(x)$, it follows that 
+\begin{equation*}
+\|x'-x\|\le \|F(x')-F(x)\| + \|H(x')-H(x)\| \le \|F(x')-F(x)\| + \frac{1}{2}\|x'-x\|,
+\end{equation*}
+and rearranging gives
+\begin{equation}\label{eqn:relation_between_F_and_x}
+    \|x'-x\|\le 2\|F(x')-F(x)\|
+\end{equation}
+for all $x,x'\in \bar{\bb}_0(\delta)$. In particular, this shows that $F$ is injective on $\bar{\bb}_0(\delta)$.
+
+Now let $y\in \bb_0(\delta/2)$ be arbitrary. We will show that there exists a unique point $x\in \bb_0(\delta)$ such that $F(x) = y$. Let $G(x) = y + H(x) = y+x-F(x)$, so that $G(x) = x$ iff $F(x) = y$. If $\|x\|\le\delta$, \eqref{eqn:bound_on_H} implies 
+\begin{equation}\label{eqn:bound_on_G}
+\|G(x)\| \le \|y\| + \|H(x)\| < \frac{\delta}{2} + \frac{1}{2}\|x\|\le \delta,
+\end{equation}
+so $G$ maps $\bar{\bb}_0(\delta)$ to itself. It follows from \eqref{eqn:Lipschitz_continuity} that $\|G(x')-G(x)\| = \|H(x) - H(x')\|\le \frac{1}{2}\|x-x'\|$, so $G$ is a contraction. Since $\bar{\bb}_0(\delta)$ is a complete metric space, the contraction lemma implies that $G$ has a unique fixed point $x\in \bar{\bb}_0(\delta)$. From \eqref{eqn:bound_on_G}, $\|x\| = \|G(x)\|<\delta$, so in fact $x\in \bb_0(\delta)$, thus proving the claim.
+
+Let $V_0 = \bb_0(\delta/2)$ and $U_0 = \bb_0(\delta)\cap F^{-1}(V_0)$. Then $U_0$ is open in $\R^n$, and the argument above shows that $\mapping{F}{U_0}{V_0}$ is bijective, so $\mapping{F^{-1}}{V_0}{U_0}$ exists. Substituting $x = F^{-1}(y)$ and $x' = F^{-1}(y')$ into \eqref{eqn:relation_between_F_and_x} shows that $F^{-1}$ is continuous. Thus $\mapping{F}{U_0}{V_0}$ is a homeomorphism, and it follows that $U_0$ is connected because $V_0$ is.
+
+The only thing that remains to be proved is that $F^{-1}$ is smooth. If we knew it were smooth, Prop. \ref{prop:total_derivative_of_inverse} would imply that $D(F^{-1})(y) = DF(x)^{-1}$, where $x = F^{-1}(y)$. We begin by showing that $F^{-1}$ is differentiable to each point of $V_0$, with total derivative given by this formula.
+
+Let $y\in V_0$ be arbitrary, and set $x = F^{-1}(y)$ and $L = DF(x)$. We need to show that 
+\begin{equation*}
+\underset{y'\rightarrow y}{Lt} \dfrac{F^{-1}(y') - F^{-1}(y) - L^{-1}(y'-y)}{\|y'-y\|} = 0.
+\end{equation*}
+Given $y'\in V_0- \{y\}$, write $x' = F^{-1}(y')\in U_0-\{x\}$. Then
+\begin{align*}
+\dfrac{F^{-1}(y') - F^{-1}(y) - L^{-1}(y'-y)}{\|y'-y\|} =&\; L^{-1}\bigg( \dfrac{L(x'-x)-(y'-y)}{\|y'-y\|} \bigg) \\
+=& \dfrac{\|x'-x\|}{\|y'-y\|}L^{-1}\bigg( - \dfrac{F(x')-F(x)-L(x'-x)}{\|x'-x\|} \bigg).
+\end{align*}
+The factor $\|x'-x\|/\|y'-y\|$ above is bounded due to \eqref{eqn:relation_between_F_and_x}, and because $L^{-1}$ is linear and therefore bounded, $\|L^{-1}\|$ is bounded. As $y'\rightarrow y$, it follows that $x'\rightarrow x$ by continuity of $F^{-1}$, and then the term in the bracket of last equation goes to zero because $L=DF(x)$ and $F$ is differentiable. This complete the proof that $F^{-1}$ is differentiable.
+
+By Prop. \ref{prop:jacobian_matrix_form}, the partial derivatives of $F^{-1}$ are defined at each point $y\in V_0$. Observe that the formula $D(F^{-1})(y) = DF(F^{-1}(y))^{-1}$ implies that the matrix-valued function $y\mapsto D(F^{-1})(y)$ can be written as the composition 
+\begin{equation}\label{eqn:composition_of_inverse_of_total_derivative}
+y\overset{F^{-1}}{\longmapsto} F^{-1}(y) \overset{DF}{\longmapsto} DF(F^{-1}(y)) \overset{i}{\longmapsto} DF(F^{-1}(y))^{-1},
+\end{equation}
+where $i$ is the matrix inversion. In the composition, $F^{-1}$ is continuous; $DF$ is smooth because its component functions are the partial derivatives of $F$; and $i$ is smooth because Cramer's rule expresses the entries of an inverse matrix as rational functions of entries of the matrix. Because $D(F^{-1})$ is composition of continuous functions, it is continuous. Thus, the partial derivatives of $F^{-1}$ are continuous, so $F^{-1}$ is of class $C^1$.
+
+Now assume by induction that we have shown that $F^{-1}$ is of class $C^k$. This means that each of the functions in \eqref{eqn:composition_of_inverse_of_total_derivative} is of class $C^k$. Because $D(F^{-1})$ is a composition of $C^k$ functions, it is itself $C^k$; this implies that partial derivatives of $F^{-1}$ are of class $C^k$, so $F^{-1}$ itself is of class $C^{k+1}$. Continuing by induction, we conclude that $F^{-1}$ is smooth.
+\end{proof}
+
+\begin{corollary}
+Suppose $U\subseteq \R^n$ is an open subset, and $\mapping{F}{U}{\R^m}$ is a smooth function whose Jacobian determinant is nonzero at every point in $U$. Then
+\begin{enumerate}[(a)]
+    \item $F$ is an open map.
+    \item If $F$ is injective, then $\mapping{F}{U}{F(U)}$ is a diffeomorphism.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+\highlight{(a)} For each $a\in U$, the fact that the Jacobian determinant of $F$ is nonzero implies that $DF(a)$ is invertible, so the inverse function theorem implies that there exists open subsets $U_a\subseteq U$ containing $a$ and $V_a\subseteq F(U)$ containing $F(a)$ such that $F$ restricts to a diffeomorphism $\mapping{\bigvert{F}{U_a}}{U_a}{V_a}$. In particular, this means that each point of $F(U)$ has a neighborhood contained in $F(U)$, so $F(U)$ is open. If $U_0\subseteq U$ is an arbitrary open subset, the same argument with $U$ replaced by $U_0$ shows that $F(U_0)$ is also open.
+
+\highlight{(b)} If $F$ is injective, then the inverse map $\mapping{F^{-1}}{F(U)}{U}$ exists; on a neighborhood of each point $F(a)\in F(U)$ $F^{-1}$ defined above is equal to the inverse of $\bigvert{F}{U_a}$, so it is smooth.
+\end{proof}
+
+\begin{proposition}[\highlight{Implicit Function Theorem}]
+Let $U\in \R^n\times \R^k$ be an open subset, and let $(x,y) = (x^1,\ldots,x^n,y^1,\ldots,y^k)$ denote the standard coordinates on $U$. Suppose $\mapping{\Phi}{U}{\R^k}$ is a smooth function, $(a,b)\in U$, and $c = \Phi(a,b)$. If the $k\times k$ matrix $(\partial \Phi^i(a,b)/\partial y^j)$ is nonsingular, then there exists neighborhoods $V_0\subseteq \R^n$ of $a$ and $W_0\in R^k$ of $b$ and a smooth function $\mapping{F}{V_0}{W_0}$ such that $\Phi^{-1}(c)\cap (V_0\times W_0)$ is the graph of $F$, i.e., $\Phi(x,y) = c$ for $(x,y)\in V_0\times W_0$ iff $y = F(x)$.
+\end{proposition}
+
+\begin{proof}
+Consider the smooth function $\mapping{\Psi}{U}{\R^n\times \R^k}$ defined by $\Psi(x,y) = (x,\Phi(x,y))$. Its total derivative at $(a,b)$ is
+\begin{equation*}
+D\Psi(a,b) = \left(
+\begin{array}{cc} 
+I_n & 0 \\ 
+\dfrac{\partial \Phi^i}{\partial x^j}(a,b) & \dfrac{\partial \Phi^i}{\partial y^j}(a,b)
+\end{array} \right),
+\end{equation*}
+which is nonsingular because it is block lower triangular and the two blocks on the main diagonal are nonsingular. Thus by inverse function theorem there exists connected neighborhood $U_0$ of $(a,b)$ and $Y_0$ of $(a,c)$ such that $\mapping{\Psi}{U_0}{Y_0}$ is a diffeomorphism. Since $\mapping{\Psi}{U_0}{Y_0}$ is defined by $\Psi(x,y) = (x,\Phi(x,y))$, the inverse map $\mapping{\Psi^{-1}}{Y_0}{U_0}$ will be of the form $\Psi^{-1}(x,y) = (x,B(x,y))$ for smooth function $\mapping{B}{Y_0}{\R^k}$. Shrinking $U_0$ and $Y_0$ if necessary, we may assume that $U_0 = V\times W$ is a product neighborhood.
+
+The two compositions $\Psi\circ\Psi^{-1}$ and $\Psi^{-1}\circ\Psi$ give
+\begin{align}
+(x,y) =&\; (\Psi\circ\Psi^{-1})(x,y) = \Psi(x,B(x,y)) = (x,\Phi(x,B(x,y))),\; \forall\;(x,y)\in Y_0\nonumber\\
+(x,y) =&\; (\Psi^{-1}\circ\Psi)(x,y) = \Psi^{-1}(x,\Phi(x,y)) = (x,B(x,\Phi(x,y)))\; \forall\;(x,y)\in U_0.\label{eqn:composition_expressions}
+\end{align}
+
+If $\Phi(x,y) = c$, then the second equation of \eqref{eqn:composition_expressions} gives $y = B(x,c)$. This suggests that we define $F(x) = B(x,c)$ for all $x\in \R^n$ for which $(x,c)\in Y_0$. Now let $V_0 = \{x\in V:\,(x,c)\in Y_0\}$ and $W_0 = W$, then $\mapping{F}{V_0}{W_0}$ defined by $F(x) = B(x,c)$. 
+
+Let $x\in V_0$. If $\Phi(x,y) = c$ then $y = B(x,c) = F(x)$, so the graph of $F$ is contained in $\Phi^{-1}(c)$. Conversely, suppose $y = F(x)$ and in the first equation of \eqref{eqn:composition_expressions} we set $(x,y) = (x,c)$, then $c = \Phi(x,B(x,c)) = \Phi(x,F(x)) = \Phi(x,y)$. This completes the proof.
+\end{proof}
+
+\begin{proposition}
+The implicit function theorem is equivalent to the inverse function theorem.
+\end{proposition}
+
+\begin{proof}
+\forward Already shown above.
+\\
+\converse Let $\mapping{F}{U}{V}$ be a smooth map defined such that $U,V\subseteq \R^n$ are open subsets such that at some point $p\in U$ the Jacobian determinant is nonzero. Finding a local inverse for $y = F(x)$ near $p$ amounts to solving the equation $G(x,y) = F(x)-y = 0$
+for $x$ in terms of $y$ near $(p,F(p))$. Note that $\parder{G^i}{j}=\parder{F^i}{j}$. Hence,
+\begin{equation*}
+det\bigg[ \dparder{G^i}{j}(p,F(p))\bigg] = det\bigg[ \dparder{F^i}{j}(p,F(p))\bigg] \neq 0.
+\end{equation*}
+By the implicit function theorem, $x$ can be expressed in terms of $y$ locally near $(p,F(p))$, i.e., there is a smooth function $x = H(y)$ defined in a neighborhood of $F(p)$ in $\R^n$ such that $G(x,y) = F(x) - y = F(H(y)) - y = 0$. Thus, $y = F(H(y))$. Since $y = F(x)$, $x = H(y) = H(F(x))$. Therefore, $F$ and $H$ are inverse functions defined near $p$ and $F(p)$ respectively and $H$ is smooth by implicit function theorem.
+\end{proof}
+
+% \begin{proposition}[\highlight{Constant Rank Theorem}]
+% Suppose $U$ is a open subset of $\R^n$, and $\mapping{F}{U}{\R^m}$ is a smooth function. 
+% \end{proposition}
+
+% \newpage
+
+\begin{thebibliography}{9}
+\bibitem{JohnLee}
+John M. Lee, Introduction to Smooth Manifolds.
+
+% \bibitem{Prop 1}
+% [Prop 1(b)]Closure and continuity - \href{https://math.stackexchange.com/questions/114462/}{math.SE}
+
+% \bibitem{Seq Lemma (b)}
+% [Sequence Lemma (b)] \href{https://math.stackexchange.com/questions/1876224/}{math.SE}
+
+\end{thebibliography}
+
+
+\end{document}

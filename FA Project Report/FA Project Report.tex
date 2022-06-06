@@ -1,0 +1,415 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage[hidelinks]{hyperref}
+
+\author{\textbf{Team: epsilon-delta}; Jayadev Naram, Rishabh Singhal}
+\title{Set Theory $\bigcap$ Functional Analysis}
+
+\begin{document}
+
+\date{}
+\maketitle
+% \tableofcontents
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem*{remark}{Remark}
+\newtheorem*{example}{Example}
+\newtheorem*{note}{Note}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{ac}{Axiom of Choice}
+\newtheorem*{zl}{Zorn's Lemma}
+\newtheorem*{wop}{Well-ordering principle}
+\newtheorem*{ehb}{Existence of Hamel Basis}
+\newtheorem*{hbt}{Hahn-Banach Theorem}
+\newtheorem*{zlac}{Zorn's Lemma is equivalent to Axiom of Choice}
+\newtheorem*{zlhbt}{Zorn's Lemma implies Hahn-Banach Theorem}
+
+\newcommand{\highlight}[1]{\textsl{\textbf{#1}}}
+\newcommand{\mapping}[3]{$#1:#2\rightarrow #3$}
+\newcommand{\doubt}{\highlight{[??]}}
+\newcommand{\restrict}[1]{\raisebox{-.5ex}{$|$}_{#1}} 
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\eqdef}{=\vcentcolon}
+
+
+\section{Basic Definitions}\label{sec:basic_definition}
+
+% --- FOR AXIOM OF CHOICE
+\begin{definition}
+    A \highlight{choice function} $f$ on a collection $\mathcal{C}$ of set $X$ is a function such that for all $A \in \mathcal{C}$, $f(A) \in A$.
+\end{definition}
+
+\begin{example}
+    Consider a collection $\{\{1, 2\}, \{3, 4\}\}$ and a function $f$ defined as $f(\{1, 2\}) = 2$ and $f(\{3, 4\}) = 3$. Then $f$ is a choice function.
+\end{example}
+
+\begin{definition}
+    Suppose $I$ is a set, called as the \highlight{index set}, and with each $i \in I$ we associate a set $A_i$. Then, $\{ A_i : i \in I\}$ is defined as the \highlight{family of sets}. This can also be denoted by $\{A_i\}_{i \in I}$ 
+\end{definition}
+
+% --- DONE -- AXIOM OF CHOICE
+
+% --- FOR Zorn's Lemma
+\begin{definition}
+    % will add about poset -- partially ordered set
+    A \highlight{partially ordered set} is a set together with a partial order on it $(X,\preccurlyeq)$ where partial order on $X$ is defined as a relation $\preccurlyeq$ in $X$ such that, for all $x, y, z \in X$ it follows 
+    \begin{enumerate}
+        \item \textbf{Reflexive.} $x \preccurlyeq x$
+        \item \textbf{Anti-symmetric.} If $x \preccurlyeq y$ and $y \preccurlyeq x$ then $x = y$
+        \item \textbf{Transitive.} If $x \preccurlyeq y$ and $y \preccurlyeq z$, then $x \preccurlyeq z$
+    \end{enumerate}
+\end{definition}
+
+\begin{note}
+    If $x \preccurlyeq y$ and $x \neq y$, then we write $x \prec y$ and say that $x$ is \highlight{smaller than} $y$. It is not necessary for all $x, y \in X$ to have a partial order defined between them.
+\end{note}
+
+\begin{definition}
+    A set together with a total order on it is a \highlight{chain} or \highlight{totally ordered set} where a relation $\preccurlyeq$ is \highlight{total order} if for every $x, y \in X$ either $x \preccurlyeq y$ or $y \preccurlyeq x$, consequently the set is called as a totally ordered set.
+\end{definition}
+
+\begin{definition}
+    % what is an upper-bound
+    Let $X$ be a partially ordered set, then an element $a\in X$ is the \highlight{upper bound} of a subset $E\subseteq X$ if $x \preccurlyeq a$ for all $x \in E$.
+\end{definition}
+
+\begin{definition}
+    % what is a maximal element
+    Let $X$ be a partially ordered set, then an element $a\in X$ is \highlight{maximal} if $a \preccurlyeq x$ implies $x = a$.
+\end{definition}
+
+\begin{definition}
+    % include maximum element
+    Let $X$ be a partially ordered set, then an element $a \in X$ is \highlight{maximum (or largest)} if $x \preccurlyeq a\ \forall x \in X$.
+\end{definition}
+
+\begin{example}
+    Consider the set $W = \{\emptyset, \{1\}, \{2\}, \{3\}, \{1,2\}\}$  with set inclusion $\subseteq$ as a partial ordering. The maximal elements are $\{1, 2\}$ and $\{3\}$. If we view $W$ as a subset of the power set of $\{1, 2, 3\}$, then the upper bound of $W$ is the element $\{1, 2, 3\}$.
+\end{example}
+
+\begin{definition}
+    A poset $P$ is called \highlight{well-ordered} if it is a chain, and every non-empty subset $S\subseteq P$ has a minimum.
+\end{definition}
+
+% --- DONE -- Zorn's Lemma
+
+\begin{definition}
+    For a vector space $X$, a set $B\subseteq X$ is called a \highlight{basis} (or \highlight{Hamel basis}) if $B$ is a linearly independent set and $\text{span}(B) = X$.
+\end{definition}
+
+% ---- FOR Hahn-Banach Theorem
+\begin{definition}
+    Let $X$ be a linear space. A function $p : X \rightarrow \mathbb{R}$ is a \highlight{Sublinear Functional} if the following properties hold 
+    \begin{enumerate}
+        \item \highlight{Subadditive.} $p(x + y) \leq p(x) + p(y)\ \forall x, y \in X$.
+        \item \highlight{Nonnegatively Homogeneous.} $p(\lambda x) = \lambda p(x)\ \forall \lambda \geq 0$ where  $\lambda \in \mathbb{R}, x \in X$
+    \end{enumerate}
+\end{definition}
+
+\begin{example}
+    Norm is an example of sublinear functional which is not linear.
+\end{example}
+% --- DONE -- Hahn-Banach Theorem
+
+\section{Theorem statements}
+
+Two formulations of \highlight{Axiom of Choice} are given.
+\begin{itemize}
+    \item The Cartesian product of a non-empty family of non-empty sets is non-empty.
+    \item For every non-empty set X, there exists a choice function f defined on X.
+\end{itemize}
+
+\begin{note}
+    The equivalence proof of the above mentioned variants is skipped. In the further discussion regarding Axiom of Choice, we will be using the choice function formulation.
+\end{note}
+
+\begin{zl}
+    If X is a non-empty partially ordered set such that every chain in X has an upper bound, then X contains a maximal element.
+\end{zl}
+
+\begin{wop}
+ Every set has a well ordering.
+\end{wop}
+
+\begin{ehb}
+    Every vector space $X\neq \{0\}$ has a basis.
+\end{ehb}
+
+\begin{hbt}
+ Let $X$ be a real vector space and $p$ a sublinear functional on $X$. Furthermore, let $f$ be a linear functional which is defined on a subspace $Z$ of $X$ and satisfies 
+ \begin{equation*}
+     f(x) \leq p(x)\ \forall x \in Z
+ \end{equation*}
+ Then $f$ has a linear extension of $\tilde{f}$ from $Z$ to $X$ satisfying
+ \begin{equation*}
+     \tilde{f}(x) \leq p(x)\ \forall x \in X 
+ \end{equation*}
+ that is, $\tilde{f}$ is a linear functional on $X$, satisfying above inequality on $X$ and $\tilde{f}(x) = f(x)$ for every $x \in Z$.
+\end{hbt}
+
+\section{Proof of Equivalences}
+
+\textbf{Zorn's Lemma $\iff$ Axiom of Choice $\iff$ Well-Ordering Principle}
+
+\begin{theorem}\label{thm:zl_ac}
+    Zorn's Lemma $\implies$ Axiom of Choice.
+\end{theorem}
+
+\begin{proof}
+    Let $X$ be any non-empty set. Consider a set $P$
+    $$
+        P = \{(Y,f):\;Y\subseteq X\text{ and f is choice function on }Y\}.
+    $$
+    We define a relation $\preccurlyeq$ on P as $(Y,f)\preccurlyeq (Y',f')$ whenever $Y\subseteq Y'$ and $f = f'\restrict{Y}$. It is easy to see that $(P,\preccurlyeq)$ is a poset. Note that P is non-empty as for any element $x\in X$, $\{x\} \mapsto x$ is a choice function, consequently $(\{x\},\{x\}\mapsto x)\in P$. 
+    
+    Consider a chain $C$ in $P$. We define $\tilde{Y} = \bigcup_{(Y,f)\in C}Y$ and $\tilde{f}(S) = f(S)$ for any $S$ such that $f$ is defined on $S$. Notice that $(\tilde{Y},\tilde{f})$ is an upper bound for $C$ by construction. Since $C$ was chosen arbitrarily and was shown to have an upper bound, then by Zorn's Lemma there is some maximal element in P, say $(Y^*,f^*)$. 
+    
+    Now we show that $Y^* = X$. Suppose not then there is some element $x\in X\setminus Y^*$. We can extend $f^*$ to $f^{**}$ from $Y^*$ to $Y^*\cup \{x\}$ by defining $f^{**}(S) = x$, if $x\in S$ and $f^{**}(S) = f^*(S),$ if $S\subseteq Y^*$. Then we note that $(Y^*,f^*)\preccurlyeq (Y^*\cup\{x\},f^{**})$ which is a contradiction. Hence, $Y^* = X$ and $f^*$ is the required choice function on $X$.
+\end{proof}
+
+\begin{theorem}
+    Zorn's Lemma $\implies$ Well-ordering principle.
+\end{theorem}
+
+\begin{proof}
+    The proof is similar to that of Theorem \ref{thm:zl_ac}. Let $X$ be any non-empty set. Consider a relation $(P,\preccurlyeq)$, where P is defined as 
+    $$
+        P = \{(Y,\le_Y):\;Y\subseteq X\text{ and }\le_Y\text{ is a well-ordering on }Y\},
+    $$
+    and $(Y,\le_Y) \preccurlyeq (Y',\le_{Y'})$ whenever $Y\subseteq Y'$ and $\le_Y$ and $\le_{Y'}$ agree on $Y$. It is easy to see that $(P,\preccurlyeq)$ is a poset. Note that P is non-empty as every singleton set is well-ordered.
+    
+    On similar lines of Theorem \ref{thm:zl_ac} proof, we conclude that there exists some maximal element in P, say $(Y^*,\le_{Y^*})$. 
+    
+    Now we show that $Y^* = X$. Suppose not then there is some element $x\in X\setminus Y^*$. We can extend $(Y^*,\le_{Y^*})$ to $Y^*\cup \{x\}$ by defining $x$ to be greater than every element in $Y^*$. This is a contradiction that $(Y^*,\le_{Y^*})$ is maximal element. Hence, $Y^* = X$ and $\le_{Y^*}$ is the required well-ordering on $X$.
+\end{proof}
+
+\begin{theorem}
+    Well-ordering principle $\implies$ Axiom of choice.
+\end{theorem}
+
+\begin{proof}
+    Suppose $X$ is a non-empty set, and $\le$ is a well-ordering of $X$. Then $f(S) = \text{min }S$, defines a choice function on $X$ which is guaranteed to exist for any set $S$ by Well-ordering principle.
+\end{proof}
+
+\begin{theorem}
+    Axiom of Choice $\implies$ Zorn's Lemma.
+\end{theorem}
+
+\begin{proof}
+    Let's assume there exist a non-empty partially ordered set $P$ such that every chain in $P$ has an upper bound, but does not contain a maximal element. 
+    
+    Considering axiom of choice is true, there must exist a choice function $f$ on $P$, and let $x_0 \defeq f(P)$.
+    
+    Also, let the set of \emph{strict} upper bounds on a chain $C$ in $P$ be 
+    $$
+        Upp(C) \defeq \{ u \notin C : \forall x \in C, x \prec u \}
+    $$
+    
+    \begin{lemma}
+    For any chain $C$, the set $Upp(C)$ is non-empty.
+    \end{lemma}
+    
+    \begin{proof}
+        As $C$ is a chain in $P$, therefore there exists an upper bound $u$ for $C$. There can be two cases,
+        \begin{enumerate}
+            \item $C$ does not have any maximum element, then $u \notin C$ and $u \in Upp(C)$ must be true by definitions. 
+            \item $C$ contains a maximum element, let's say $m$. Since $P$ has no maximal element (assumed), there exist a $u$ greater than $m$. Then $x \preccurlyeq m \prec u$ for each $x \in C$, and hence $u \in Upp(C)$.
+        \end{enumerate}
+        Hence, in both cases $Upp(C)$ is non-empty for any chain $C$ in $P$.
+    \end{proof}
+
+    A sub-chain $C'$ is an initial segment of a chain $C$ such that $x \in C, y \in C'$ and $x \prec y$ implies $c \in C'$. \textbf{Intuition:} For all $y \in C \setminus C'$, and for all $x \in C'$, $x \prec y$. Now, let's define a function $g$, such that for any chain $C$,
+    $$
+        g(C) \defeq f(Upp(C))
+    $$
+
+    Also, let's define an \highlight{attempt} as a well ordered set $A \subset P$ satisfying following:
+    \begin{enumerate}
+        \item $\min A = x_0$
+        \item For every \text{proper} initial segment $C \subset A$, min $A \setminus C = g(C)$
+    \end{enumerate}
+    
+    \begin{lemma}
+    If $A$ and $A'$ are two attempts, then either $A \subseteq A'$ or  $A' \subseteq A$.
+    \end{lemma}
+    
+    \begin{proof}
+        Let's assume that both $A \subseteq A'$ and $A' \subseteq A$ does not apply, and let $z = \min A \setminus A'$ and $z' = \min A' \setminus A$. As both $A$ and $A'$ are attempts (and hence well-ordered by definition).
+        Since $z \neq z'$, $z \preccurlyeq z'$ and $z' \preccurlyeq z$ can not be true together. So, let's assume wlog $z' \not\preccurlyeq z$. Let's define a set $C = \{x \in A : x \prec z\}$. From the definitions of $z$ it follows that $C \subseteq A$. It is clear from this that $z = \min A \setminus C$, and so $z = g(C)$.
+        There are now two cases possible.
+        \begin{enumerate}
+            \item $C = A'$. Now, as $C \subseteq A$ therefore $A' \subseteq A$. Hence, the given lemma is true in this case.
+            \item $C \neq A'$. If $z' \preccurlyeq x$ for some $x \in C$, then transitivity of partial order implies $z' \prec z$, which is a contradiction. So, since $A'$ is a chain (as it is well-ordered), $x \preceq z'\ \forall x \in C$. therefore $C$ is a proper initial segment of $A'$ which implies $g(C) \in A'$. But, $g(C) = z \notin A'$. Therefore a contradiction. Hence,the given lemma is true.
+        \end{enumerate}
+    \end{proof}
+    
+    As, for any two attempts $A, A'$ either $A \subseteq A'$ or $A' \subseteq A$, therefore $A \cup A'$ is either $A$ or $A'$ which is an attempt. Let $\mathcal{A}$ be the set of all attempts then $A \defeq \bigcup_{\tilde{A} \in \mathcal{A}} \tilde{A}$. Then $A$ is also an attempt. 
+    
+    However, $A \cup \{g(A)\}$ is also an attempt and must have belonged in the previous set of attempts $\mathcal{A}$, and also $A \subseteq A \cup \{g(A)\}$ therefore $A \cup \{g(A)\} \defeq \bigcup_{A \in \mathcal{A}} A$ but this is not the case, therefore a contradiction. And, hence there must exist a maximal element of $P$.
+\end{proof}
+
+\par\noindent\rule{\textwidth}{0.4pt}
+
+\begin{theorem}
+    Zorn's Lemma $\implies$ ``Every vector space $X\neq \{0\}$ has a basis".
+\end{theorem}
+
+\begin{proof}
+    Let $X$ be a non-empty vector space. We define a relation $(P,\preccurlyeq)$ where $P$ is the set of subsets of $X$ which are linearly independent and for every $B,B'\in P$, $B\preccurlyeq B'$ whenever $B\subseteq B'$. It is easy to note that $(P,\subseteq)$ is a poset. Notice that $P\neq \emptyset$ as $X\neq \{0\}$, there is some non-zero element $x\in X$, consequently $B = \{x\}\in P$.
+    
+    Consider a chain $C$ in $P$. Define $\tilde{B} = \bigcup_{B\in C}B$. Notice that $\tilde{B}$ is an upper bound for $C$, hence by Zorn's Lemma there exists a maximal element in $P$, say $B^*$.
+    
+    We show that $\text{span}(B^*) = X$. Suppose not, then there is an element $x\in X\setminus \text{span}(B^*)$ and $x\neq 0$. Then extend the set $B^*$ by including $x$ in it. Notice that the extended set is an element in $P$ which is greater than $B^*$ under the subset relation. This is a contradiction. Hence $\text{span}(B^*) = X$ and $B^*$ is a linearly independent set, thus $B^*$ is a basis for $X$.
+\end{proof}
+
+\begin{note}
+    A variant of converse of the above result is also true which is 
+    $$
+    \textbf{``Every vector space $X\neq \{0\}$ has a basis" $\implies$ Axiom of Choice,}
+    $$
+    thus establishing equivalence between the two. The proof can be found in \textbf{\cite{bases_AC}} which shows the implication for \textbf{Axiom of Multiple Choice} instead. It is known that Axiom of Multiple Choice is equivalent to Axiom of Choice. We skip this proof as it is quite involved.
+\end{note}
+
+% \begin{theorem}
+%     ``Every vector space $X\neq \{0\}$ has a basis" $\implies$ Axiom of Multiple Choice.
+% \end{theorem}
+
+\par\noindent\rule{\textwidth}{0.4pt}
+
+\begin{theorem}
+    Zorn's Lemma $\implies$ Hahn-Banach Theorem
+\end{theorem}
+
+\begin{proof}
+    Let's proof this in 3 parts,
+    \begin{enumerate}
+        \item[(A)] Let's define $M$ as the partial order set of pairs $(Z, f_Z)$ where
+        \begin{enumerate}
+            \item $Z$ is a subspace of $X$ containing $Y$.
+            \item $f_Z : Z \to \mathbb{R}$ is a linear functional extending $f$, satisfying 
+            $$ 
+                f_Z(z) \leq p(z)\ \forall\; z \in Z
+            $$
+        \end{enumerate}
+        with partial ordering defined as $(Z_1, f_{Z_1}) \preccurlyeq (Z_2, f_{Z_2})$ if $Z_1 \subset Z_2$ and $(f_{Z_2})\restrict{Z_1} = f_{Z_1}$. Since, $(Y, f) \in M$, $M$ is a non-empty set. Let's choose any arbitrary chain $C = \{ (Z_\alpha, f_{Z_\alpha})\}_{\alpha \in \Lambda}$ in $M$, with $\Lambda$ being some indexing set.
+        
+        \begin{lemma}
+            $C$ has an upper bound in $M$.
+        \end{lemma}
+        
+        \begin{proof}
+            Let $W = \bigcup_{\alpha \in \Lambda} Z_{\alpha}$ and construct a functional $f_{W} : W \implies \mathbb{R}$ defined as follow: If $w \in W$, then $w \in Z_{\alpha}$ for some $\alpha \in \Lambda$ and we set $f_{W}(w) = f_{Z_{\alpha}}(w)$ for that particular $\alpha$.
+            \begin{itemize}
+                \item This definition is well-defined. Indeed, suppose $w \in Z_{\alpha}$ and $w \in Z_{\beta}$. If $Z_{\alpha} \subset Z_{\beta}$, then $f_{Z_{\beta}}|_{Z_{\alpha}} = f_{Z_{\alpha}}$, since they are a part of chain.
+                \item $W$ clearly contains $Y$, and we show that $W$ is a subspace of $X$ and $f_W$ is a linear functional on $W$. Choose any $w_1,w_2 \in W$, then $w_1 \in Z_{\alpha_1},w_2 \in Z_{\alpha_2}$ for some $\alpha_1, \alpha_2 \in \lambda$. If $Z_{\alpha_1} \subset Z_{\alpha_2}$, say, then for any scalars $\beta, \gamma \in \mathbb{R}$ we have
+                $$
+                    w_1, w_2 \in Z_{\alpha_2} \implies \beta w_1 + \gamma w_2 \in Z_{\alpha_2} \subset W
+                $$
+                
+                Also, with $f_W(u) = f_{Z_{\alpha_1}}(u)$ and $f_W(v) = f_{Z_{\alpha_2}} (v)$,
+                \begin{align*}
+                    f_w(\beta u + \gamma v) &= f_{Z_{\alpha_2}}(\beta u + \gamma v)\\
+                    &= \beta f_{Z_{\alpha_2}}(u) + \gamma f_{Z_{\alpha_2}}(v) \text{  linearity}\\
+                    &= \beta f_{Z_{\alpha_1}}(u) + \gamma f_{Z_{\alpha_2}}(v) \text{  because in same chain}\\
+                    &= \beta f_{Z_{W}}(u) + \gamma f_{Z_{W}}(v) 
+                \end{align*}
+                The case $Z_{\alpha_2} \subset Z_{\alpha_1}$ follows from a symmetric argument.
+                \item Choose any $w \in W$,then $w \in Z_{\alpha}$ for some $\alpha \in \Lambda$ and
+                $$
+                    f_W(w) = f_{Z_{\alpha}}(w) \leq p(w)\  \text{since}\  (w,Z_{\alpha}) \in M
+                $$
+            \end{itemize}
+            
+            Hence, $(W,f_W)$ is an element of $M$ and an upper bound of $C$ since $(Z_{\alpha},f_{Z_\alpha}) \leq (W,f_W)$ for all $\alpha in \Lambda$. Since $C$ was an arbitrary chain in $M$, by Zorn’s lemma, $M$ has a maximal element $(Z,f_Z) \in M$, and $f_Z$ is (by definition) a linear extension of $f$ satisfying $f_Z(z) \leq p(z)$ for all $z \in Z$.
+        \end{proof}
+        
+            \item[(B)] The proof is complete if we can show that $Z = X$. Suppose not, then there exists an $\theta \in X \setminus Z$; note $ \theta \neq 0$ since $Z$ is a subspace of $X$. Consider the subspace $Z_\theta = \text{span}\{Z,\{\theta\}\}$. Any $x \in Z_\theta$ has a unique representation $x = z + \alpha \theta$, $z \in Z$, $\alpha \in \mathbb{R}$. Indeed, if
+            $$
+                x = z_1 + \alpha_1 \theta = z_2 + \alpha_2 \theta, z_1, z_2 \in Z, \alpha_1, \alpha_2 \in \mathbb{R}
+            $$
+            then $z_1 - z_2 =(\alpha_2 - \alpha_1) \theta \in Z$ since $Z$ is a subspace of $X$. Since $\theta \notin Z$, we must have $\alpha_2 - \alpha_1 = 0$ and $z_1 - z_2 = \theta$. Next, we construct a functional $f_{Z_{\theta}} : Z_{\theta} \to \mathbb{R}$ defined by
+            
+            $$
+                f_{Z_{\theta}}(x) = f_{Z_{\theta}} (z + \alpha \theta) = f_Z (z) + \alpha \delta, \text{ ... (1)}
+            $$
+            where $\delta$ is any real number. It can be shown that $f_{Z_\theta}$ is linear and $f_{Z_{\theta}}$ is a proper linear extension of $f_Z$ ; indeed, we have, for $\alpha = 0, f_{Z_{\theta}} (x) = f_{Z_{\theta}} (z) = f_Z (x)$. Consequently, if we can show that
+            $$
+                f_{Z_{\theta}}(x) \leq p(x)\ \forall x \in Z_{\theta}  \text{ ... (2)}
+            $$
+            then $(Z_{\theta} , f_{Z_{\theta}})  \in  M$ satisfying $(Z, f_Z) \leq (Z_{\theta} , f_{Z_{\theta}} )$, thus contradicting the maximality of $(Z,f_Z)$.
+            
+            \item[(C)] From (1), observe that (2) is trivial if $\alpha = 0$, so suppose $\alpha \neq 0$. We do have a single degree of freedom, which is the parameter $\delta$ in (1), thus the problem reduces to showing the existence of a suitable $\delta \in \mathbb{R}$ such that (2) holds. Consider any $x = z + \alpha \theta \in Z_{\theta} , z \in Z, \alpha \in \mathbb{R}$. Assuming $ \alpha > 0$,(2) is equivalent to
+            \begin{align*}
+                f_Z(z) + \alpha \delta &\leq p(z + \alpha \theta) = \alpha p(z/\alpha + \theta) \\
+                f_Z (z/\alpha) + \delta &\leq p(z/\alpha + \theta)\\
+                \delta &\leq p(z/\alpha + \theta) - f_Z(z/\alpha)
+            \end{align*}
+            Since the above must holds for all $z \in Z, \alpha \in \mathbb{R}$, we need to choose $\delta$ such that
+            $$
+                \delta \leq \inf_{z_1 \in Z} (p(z_1 + \theta) - f_Z(z_1)) = m_1 \text{ ... (3)}
+            $$
+            Assuming $ \alpha < 0$, (2) is equivalent to
+            \begin{align*}
+                f_Z(z) + \alpha \delta &\leq p(z + \alpha \theta) = -\alpha p(-z/\alpha - \theta)\\
+                - f_Z(z/\alpha) - \delta &\leq p(-z/\alpha - \theta)\\
+                \delta &\geq -p(-z/\alpha - \theta) - f_Z(z/\alpha)
+            \end{align*}
+            Since the above must holds for all $z \in Z, \alpha \in \mathbb{R}$, we need to choose $\delta$ such that
+            $$
+                \delta \geq \sup_{z_2 \in Z} (- p(z_2 + \theta) - f_Z(z_2)) = m_0 \text{ ... (4)}
+            $$
+            We are left with showing condition (3), (4) are compatible, i.e
+            $$
+                -p(-z_2 - \theta) - f_Z(z_2) \leq p(z_1 + \theta) - f_Z(z_1)\ \forall z_1, z_2  \in Z
+            $$
+            The inequality above is trivial if $z_1 = z_2$, so suppose not. We have that
+            \begin{align*}
+                p(z_1 + \theta) - f_Z(z_1) + p(-z_2 - \theta) + f_Z(z_2) &= p(z_1 + \theta) + p(-z_2 - \theta) + f_Z(z_2 - z_1)\\
+                &\geq f_Z(z_2 - z_1) + p(z_1 + \theta - z_2 - \theta)\\
+                &= f_Z(z_2 - z_1) + p(z_1 - z_2)\\
+                &=  - f_Z(z_1 - z_2) + p(z_1 - z_2) \geq 0
+            \end{align*}
+            where linearity of $f_Z$ and subadditivity of $p$ are used. Hence, the required condition on $\delta$ is $m_0 \leq \delta \leq m_1$
+        \end{enumerate}
+    Therefore, by using Zorn's Lemma (as using in 1st part) we proved Hahn-Banach Theorem.
+\end{proof}
+
+\begin{note}
+    The converse of the above theorem is not true, i.e, Hahn-Banach Theorem $\nRightarrow$ Zorn's Lemma. It is known that Hahn-Banach Theorem is equivalent to a statement which is strictly weaker than Axiom of Choice.\cite{WikiHBT}
+\end{note}
+
+\newpage
+
+\begin{thebibliography}{9}
+
+\bibitem{bases_AC}
+\href{http://www.math.lsa.umich.edu/~ablass/bases-AC.pdf}{Existence of Basis implies AC}
+
+\bibitem{AC_equivalences}
+\href{http://www.borisbukh.org/MathStudiesAlgebra1718/notes_ac.pdf}{Axiom of Choice equivalents}
+
+\bibitem{WikiHBT}
+\href{https://en.wikipedia.org/wiki/Hahn-Banach_theorem#Relation_to_axiom_of_choice}{Wikipedia, Hahn-Banach Theorem}
+
+\bibitem{halmos}
+P. Halmos, Naive set theory. New York, 1974.
+
+\bibitem{HBT}
+\href{https://www.math.utah.edu/~tan/6710_FA/Hahn Banach Theorem.pdf}{Hahn-Banach Theorem}
+
+\end{thebibliography}
+
+\end{document}
