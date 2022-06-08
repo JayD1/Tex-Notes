@@ -27,9 +27,10 @@
 
 \begin{document}
 
+\date{}
 \maketitle
 \tableofcontents
-% \newpage
+\newpage
 
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -87,7 +88,9 @@
 \newcommand{\grad}{\text{grad}\,}
 \newcommand{\hess}{\text{Hess}\,}
 
-\section{Affine Sets}
+\section{Convex Sets and Convex Functions}
+
+\subsection{Affine Sets}
 
 Let $\R^n$ denote the $n$-dimensional Euclidean real vector space with the inner product defined for any $x,y\in \R^n$ as $\innerproduct{x}{y} = x^Ty = \sum_{i=1}^n x_i y_i$, where $x = [x_1,\ldots, x_n]^T$ and $y = [y_1,\ldots, y_n]^T$ are the coordinates of $x$ and $y$ respectively. Let the norm and the metric on $\R^n$ be defined as $\|x\| = \sqrt{\innerproduct{x}{x}}$ and $d(x,y) = \|x-y\|$, respectively.
 
@@ -392,7 +395,7 @@ By convention, the dimension of $\emptyset$ is $-1$, and affine sets of dimensio
 \end{proof}
 
 
-\section{Convex Sets and Cones}
+\subsection{Convex Sets and Cones}
 
 \begin{definition}
     If $x$ and $y$ are different points in $\R^n$, the set of points of the form 
@@ -625,7 +628,7 @@ At this point, the normal cone map definition only helps in simplfying notation 
     which shows that $\lambda x^*+\mu y^*$ also belongs to the barrier cone of $C$.
 \end{proof}
 
-\section{The Algebra of Convex Sets}
+\subsection{The Algebra of Convex Sets}
 
 \begin{theorem}
     Let $C$ be a convex set in $\R^n$. Then so is every translate $C+a$ and every \highlight{scalar multiple} $\lambda C = \{\lambda x\;:\; x\in C\}$, where $a\in \R^n$ and $\lambda \in \R$.
@@ -725,8 +728,8 @@ At this point, the normal cone map definition only helps in simplfying notation 
     Given an arbitrary family of non-empty convex sets $\{C_i\;:\;i\in I\}$ in $\R^n$, there is a unique largest convex set included in all of them, namely $\bigcap_{i\in I}C_i$, and a unique smallest convex set including all of them, namely conv $(\bigcup_{i\in I} C_i)$.
 \end{proposition}
 
-\begin{remark}
-    From the above proposition, the collection of convex subsets in $\R^n$ is a \highlight{complete} \highlight{lattice} under the natural partial order corresponding to inclusion.
+\begin{remark}\label{remark:convex_sets_complete_lattice}
+    From the above proposition, the collection of convex subsets in $\R^n$ is a complete lattice under the natural partial order corresponding to inclusion.
 \end{remark}
 
 \begin{theorem}\label{thm:convex_hull_finite_convex_combinations}
@@ -816,7 +819,7 @@ At this point, the normal cone map definition only helps in simplfying notation 
     The latter set is $K_1+K_2$ when $0<\lambda<1$ (since $\lambda K = K$ for a cone with $\lambda>0$), $K_1$ when $\lambda = 0$, $K_2$ when $\lambda = 1$. Since $0\in K_1$ and $0\in K_2$, $K_1+K_2$ includes both $K_1$ and $K_2$. Thus conv $(K_1\cup K_2)$ coincides with $K_1+K_2$.
 \end{proof}
 
-\section{Convex Functions}
+\subsection{Convex Functions}
 
 \begin{definition}
     Let $\mapping{f}{S\subseteq \R^n}{\R\cup \{\pm \infty\}}$ be a function. The set 
@@ -1073,7 +1076,7 @@ At this point, the normal cone map definition only helps in simplfying notation 
     Thus $f$ is linear on $L$.
 \end{proof}
 
-\section{Functional Operations}
+\subsection{Functional Operations}
 
 \begin{theorem}\label{thm:composite_convex_function}
     Let $f$ be a convex function from $\R^n$ to $(-\infty,+\infty]$, and let $\varphi$ be a convex function from $\R$ to $(-\infty,+\infty]$ which is non-decreasing. Then $h(x) = \varphi(f(x))$ is convex on $\R^n$ (where one sets $\varphi(+\infty) = +\infty$).
@@ -1126,6 +1129,21 @@ At this point, the normal cone map definition only helps in simplfying notation 
         f((1-\lambda)x+\lambda y) \le (1-\lambda)\mu+\lambda \gamma,
     \end{equation} 
     such that $f(x)\le \mu$ and $f(y)\le \gamma$. Then by Cor. \ref{cor:convex_function_def_1}, $f$ is convex.
+\end{proof}
+
+\begin{remark}
+    It is noteworthy to compare epi $f$ with $F$. Now suppose $(x,\mu)\in F$, then $f(x)\le \mu$ by definition of $f$, so that $(x,\mu)\in \text{epi}\ f$. This shows that $F\subseteq \text{epi}\ f$. 
+\end{remark}
+
+\begin{proposition}\label{prop:f_inf_epi_f}
+    Let $f$ be a function on $\R^n$. Then
+    \begin{equation*}
+        f(x) = \inf \{\mu\;:\;(x,\mu)\in \text{epi}\ f\}.
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    We need to show that $f(x)$ is the greatest lower bound of the set $M = \{\mu\;:\;(x,\mu)\in \text{epi}\ f\}$. Note that for all $(x,\mu)\in \text{epi}\ f$, we have $f(x)\le \mu$ from the definition of the epigraph. For any $\epsilon>0$, we have $\mu = f(x)\in M$ such that $\mu-\epsilon<f(x)$ showing that $f(x)$ is the greatest lower bound of $M$.
 \end{proof}
 
 \begin{definition}
@@ -1184,9 +1202,16 @@ At this point, the normal cone map definition only helps in simplfying notation 
         \begin{align}
             (f\lambda)(x) &= \inf\{\mu\;:\;(x,\mu)\in \lambda (\text{epi}\ f)\} \nonumber\\
             &= \inf\{\lambda (\mu/\lambda)\;:\;(x/\lambda,\mu/\lambda)\in (\text{epi}\ f)\}\nonumber\\
-            &= \lambda f(\lambda^{-1}x).\label{eqn:f_lambda_alternate_def}
+            &\overset{(\dagger)}{=} \lambda f(\lambda^{-1}x),\label{eqn:f_lambda_alternate_def}
         \end{align}
-        When $\lambda = 0$, $(f0)(x) = \delta_{\{0\}}(x)$ for $f\not\equiv +\infty$, otherwise $f0 = f$, for $f\equiv +\infty$.
+        where we used Prop. \ref{prop:f_inf_epi_f} to obtain $(\dagger)$. When $\lambda = 0$, $(f0)(x) = \delta_{\{0\}}(x)$ for $f\not\equiv +\infty$, otherwise $f0 = f$, for $f\equiv +\infty$.
+        \item Consider the epigraph of $f\lambda$ for $\lambda>0$
+        \begin{align}
+            \text{epi}\ (f\lambda) &= \{(x,\mu)\;:\; \mu\ge (f\lambda)(x)\}\nonumber \\
+            &= \{(x,\mu)\;:\; \mu\ge \lambda f(\lambda^{-1} x)\}\nonumber \\
+            &= \lambda\{(\lambda^{-1} x,\lambda^{-1} \mu)\;:\; \lambda^{-1}\mu\ge f(\lambda^{-1} x)\}\nonumber \\
+            &= \lambda (\text{epi}\ f).\label{eqn:epi_f_lambda}
+        \end{align}
         \item The function $f$ is positively homogeneous iff $f\lambda = f$ for each $\lambda>0$. This is evident from \eqref{eqn:f_lambda_alternate_def} and Def. \ref{def:postively_homogeneous}.
     \end{itemize}
 \end{remark}
@@ -1196,13 +1221,138 @@ At this point, the normal cone map definition only helps in simplfying notation 
     \begin{equation*}
         f(x) = \inf \{\mu\;:\;(x,\mu)\in \text{cone}(\text{epi}\ h)\}.
     \end{equation*}
+    Then epi $f \overset{\textcolor{red}{(?)}}{=} \text{cone}\ (\text{epi}\ h) = \bigcup_{\lambda\ge 0} \lambda (\text{epi}\ h)$. Thus, epi $f$ is a convex cone in $\R^{n+1}$ containing origin. This shows that $f$ is positively homogeneous convex function with the property that $f(0)\le 0$ and $f(x)\le h(x)$ for all $x\in$ dom $h$. From the definition of $f$ it is also true that $f$ is the \textit{greatest} such function satisfying these conditions. We call this $f$ to be the \highlight{positively homogeneous convex function generated by \bsdnn{h}}. Since $\text{cone}\ (\text{epi}\ h) = \bigcup_{\lambda\ge 0} \lambda (\text{epi}\ h)$, using the right scalar multiple definition here we also have
+    \begin{equation*}
+        f(x) = \inf\{(h\lambda)(x)\;:\;\lambda\ge 0\},\quad\text{when}\ h\not\equiv +\infty.
+    \end{equation*}
 
+    \noindent Consider the function $h(x) = \delta_C(x)+1$ for a non-empty convex set in $\R^n$. Then the positively homogeneous convex function generated by $h$ at $x\in R^n$ is 
+    \begin{equation*}
+        \inf\{(h\lambda)(x)\;:\;\lambda\ge 0\} = \inf \{\delta_{\lambda C}(x)+\lambda\;:\; \lambda\ge 0\} = \inf\{\lambda\ge 0\;:\; x\in \lambda C\} = \gamma_C(x).
+    \end{equation*}
+    Thus the gauge function defined in Def. \ref{def:gauge_function} is positively homogeneous convex function on $\R^n$.
 \end{remark}
 
-% def:convex_cone_generated_by_a_set
-% remark:convex_cone_generated_by_a_set
+\begin{theorem}\label{thm:pointwise_sup}
+    The pointwise supremum of an arbitrary collection of convex functions is convex.
+\end{theorem}
 
+\begin{proof}
+    Let $f_i$ be an arbitrary collection of convex sets indexed by $I$. Then the pointwise supremum of this collection is defined as
+    \begin{equation*}
+        f(x) = \sup \{f_i(x)\;:\; i\in I\}.
+    \end{equation*}
+    It is easy to set that epi $f = \bigcap_{i\in I} \text{epi}\ f_i$. Then by the definition of convexity and Lemma \ref{lem:intersection_convex_cones}, $f$ is convex.
+\end{proof}
 
+\begin{remark}
+    Here are few applications of Theorem \ref{thm:pointwise_sup}.
+    \begin{itemize}
+        \item The convexity of the support function $\delta^*_C$ defined in Def. \ref{def:support_function} is implied by Theorem \ref{thm:pointwise_sup}, because this function is by definition the pointwise supremum of the collection of linear function $\innerproduct{\cdot}{y}$ as $y$ ranges over $C$.
+        \item Consider the function $f$ which assigns to each $x = (\xi_1,\ldots,\xi_n)$ the greatest of the components $\xi_i$ of $x$. This function is convex by Theorem \ref{thm:pointwise_sup}, because it is the pointwise supremum of the linear function $\innerproduct{x}{e_j}$, $j = 1,\ldots,n$, where $e_j$ is the $j$th column of the $n\times n$ identity matrix. The function $f$ is also positively homogeneous and in fact $f$ is the support function of the simplex
+        \begin{equation*}
+            C = \{y = (\eta_1,\ldots,\eta_n)\;:\;\eta_j\ge 0,\eta_1+\cdots+\eta_n = 1\}.
+        \end{equation*}
+        as for an $x\in \R^n$, $\innerproduct{x}{y}\le \max \{\xi_j\;:\;j=1,\ldots,n\}$ which is attained by setting $y = e_j$ when $\xi_j$ is maximum.
+        \item The \highlight{Tchebycheff norm} or the $\ell_{\infty}$ norm on $\R^n$ is defined as
+        \begin{equation*}
+            k(x) = \max \{|\xi_j|\;:\;j = 1,\ldots,n\},
+        \end{equation*}
+        which is a convex function by Theorem \ref{thm:pointwise_sup}. This function is the support function of the convex set 
+        \begin{equation*}
+            D = \{y=(\eta_1,\ldots,\eta_n)\;:\; |\eta_1|+\cdots+|\eta_n| = 1\},
+        \end{equation*}
+        which can been following similar arguments to the previous case and at the same time the gauge of the $n$-dimensional cube 
+        \begin{equation*}
+            E = \{x = (\xi_1,\ldots,\xi_n)\;:\;-1\le \xi_j\le 1, j = 1,\ldots,n\}.
+        \end{equation*}
+        This can be seen by noting that 
+        \begin{equation*}
+            \inf \{\lambda\ge 0\;:\;|\xi_j|\le \lambda,\ j = 1,\ldots,n\} = \max \{|\xi_j|\;:\;j=1,\ldots,n\} = k(x).
+        \end{equation*}
+    \end{itemize}
+\end{remark}
+
+\begin{definition}
+    The {convex hull} of a non-convex function $g$, denoted by conv $g$, is the \textit{greatest convex function majorized by} $g$ which is defined as 
+    \begin{equation*}
+        \text{conv}\ g = \inf \{\mu\;:\;(x,\mu)\in \text{conv}(\text{epi}\ g)\}.
+    \end{equation*}
+    The convex hull of an arbitrary collection of functions $\{f_i\;:\;i\in I\}$ on $\R^n$ is the \textit{greatest convex function} $f$ defined as 
+    \begin{equation*}
+        f(x) = \inf \{\mu\;:\;(x,\mu)\in \text{conv}(\cup_{i\in I}\ \text{epi}\ f_i)\}.
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    Another way to represent the convex hull of $g$ is as follows. By Theorem \ref{thm:convex_hull_convex_combinations} $(x,\mu)\in \text{conv}(\text{epi}\ g)$ iff there exist $(x_i,\mu_i)\in \text{epi}\ g$ and $\lambda_i\ge 0$ for $i = 1,\ldots,m$ such that 
+    \begin{equation*}
+        (x,\mu) = \lambda_1 (x_1,\mu_1) + \cdots + \lambda_m (x_m,\mu_m) = (\lambda_1 x_1 + \cdots + \lambda_m x_m,\lambda_1\mu_1+\cdots+\lambda_m\mu_m),
+    \end{equation*}
+    and $\lambda_1+\cdots+\lambda_m = 1$. Then
+    \begin{equation*}
+        \text{conv}\ g = \inf\{\lambda_1g(x_1)+\cdots+\lambda_mg(x_m)\;:\; \lambda_1x_1+\cdots+\lambda_mx_m = x, \lambda_1+\cdots+\lambda_m = 1\},
+    \end{equation*}
+    provided $g$ does not take on the value $-\infty$, so that the summation is unambiguous.
+\end{remark}
+
+\begin{theorem}
+    Let $\{f_i\;:\;i\in I\}$ be an arbitrary collection of proper convex functions on $\R^n$, and let $f$ be the convex hull of the collection. Then
+    \begin{equation*}
+        f(x) = \inf\bigg\{\sum_{i\in I} \lambda_i f_i(x_i)\;:\;\sum_{i\in I}\lambda_i x_i = x\bigg\},
+    \end{equation*}
+    where the infimum is taken over all representation of $x$ as a convex combinations of elements $x_i$, such that only finitely many coefficients $\lambda_i$ are non-zero. (The formula is also valid if one actually restricts $x_i$ to lie in dom $f_i$.)
+\end{theorem}
+
+\begin{proof}
+    By definition $f(x)$ is the infimum of the values of $\mu$ such that $(x,\mu)\in F$, where $F$ is the convex hull of the union of convex sets $C_i = \text{epi}\ f_i$. Each $C_i$ is non-empty as they are assumed to be proper. By Theorem \ref{thm:convex_hull_finite_convex_combinations}, $(x,\mu)\in F$ iff $(x,\mu)$ can be expressed as a finite combination of the form
+    \begin{equation*}
+        (x,\mu) = \sum_{i\in I} \lambda_i (x_i,\mu_i) = \bigg(\sum_{i\in I}\lambda_i x_i, \sum_{i\in I}\lambda_i \mu_i \bigg),
+    \end{equation*}
+    where $(x_i,\mu_i)\in C_i$ (only finitely many of the coefficients being non-zero). Thus $f(x)$ is the infimum of $\sum_{i\in I}\lambda_i \mu_i$ over all expressions of $x$ as a finite convex combinations $\sum_{i\in I}\lambda_i x_i$ with $\mu_i\ge f_i(x_i)$ for every $i$. This is same as the infimum in the theorem statement.
+\end{proof}
+
+\begin{remark}
+    Similar to Remark \ref{remark:convex_sets_complete_lattice} for convex sets, the collection of all convex functions on $\R^n$, regarded as a partially ordered set relative to the pointwise ordering (where $f\ge g$ iff $f(x)\ge g(x)$ for every $x$), is a complete lattice. The greatest lower bound of a family of convex functions is the convex hull of the collection, while the least upper bound is $\sup\{f_i\;:\;i\in I\}$. 
+\end{remark}
+
+\begin{theorem}\label{thm:convex_function_linear_transformation}
+    Let $A$ be a linear transformation from $\R^n$ to $\R^m$. Then, for each convex function $g$ on $\R^m$, the function $gA$ defined by
+    \begin{equation*}
+        (gA)(x) = g(Ax)
+    \end{equation*}
+    is convex on $\R^n$. For each convex function $h$ on $\R^n$, the function $Ah$ defined by
+    \begin{equation*}
+        (Ah)(y) = \inf\{h(x)\;:\;Ax = y\}
+    \end{equation*}
+    is convex on $\R^m$.  
+\end{theorem}
+
+\begin{proof}
+    Let $x,y\in \R^n$ and $0\le \lambda\le 1$. Then 
+    \begin{equation*}
+        (gA)((1-\lambda)x+\lambda y) = g((1-\lambda)Ax+\lambda Ay) \overset{(\dagger)}{=} (1-\lambda)(gA)(x) + \lambda (gA)(y),
+    \end{equation*}
+    where we used the convexity of $g$ to obtain $(\dagger)$. This shows the convexity of $gA$.
+
+    \noindent The convexity of $f = Ah$ also follows from applying Theorem \ref{thm:convex_set_inf_convex_function} to the image $F$ of the epigraph of $h$ under the linear transformation $(x,\mu)\rightarrow (Ax,\mu)$ from $\R^{n+1}$ to $\R^{m+1}$.
+\end{proof}
+
+\begin{remark}
+    The function $Ah$ in Theorem \ref{thm:convex_function_linear_transformation} is called the \highlight{image of \bsdnn{h} under \bsdnn{A}}, while $gA$ is called the \highlight{inverse image of \bsdnn{g} under \bsdnn{A}}. This terminology is suggested by the case where $g$ and $h$ are indicators of convex sets.
+\end{remark}
+
+\begin{proposition}
+    Let $h$ be any map on $\R^n$ and $A$ is a linear transformation on $\R^n$. If $A$ is non-singular, then $Ah = hA^{-1}$.
+\end{proposition}
+
+\begin{proof}
+    Consider the expressions of $Ah$ 
+    \begin{equation*}
+        (Ah)(y) = \inf\{h(x)\;:\;Ax = y\} = \inf \{h(A^{-1}y)\} \overset{(\dagger)}{=} h(A^{-1}y) = (hA^{-1})(y),
+    \end{equation*}
+    where we used the uniqueness of $A^{-1}y$ in $(\dagger)$.
+\end{proof}
 
 \section*{Convex Cones - Fenchel Notes}
 
