@@ -27,7 +27,7 @@
 \newtheorem{definition}{Definition}
 \newtheorem*{remark}{Remark}
 \newtheorem*{example}{Example}
-\newtheorem*{note}{Note}
+\newtheorem*{remark}{remark}
 \newtheorem{proposition}{Proposition}
 \newtheorem*{ac}{Axiom of Choice}
 \newtheorem*{zl}{Zorn's Lemma}
@@ -73,9 +73,9 @@
     \end{enumerate}
 \end{definition}
 
-\begin{note}
+\begin{remark}
     If $x \preccurlyeq y$ and $x \neq y$, then we write $x \prec y$ and say that $x$ is \highlight{smaller than} $y$. It is not necessary for all $x, y \in X$ to have a partial order defined between them.
-\end{note}
+\end{remark}
 
 \begin{definition}
     A set together with a total order on it is a \highlight{chain} or \highlight{totally ordered set} where a relation $\preccurlyeq$ is \highlight{total order} if for every $x, y \in X$ either $x \preccurlyeq y$ or $y \preccurlyeq x$, consequently the set is called as a totally ordered set.
@@ -132,9 +132,9 @@ Two formulations of \highlight{Axiom of Choice} are given.
     \item For every non-empty set X, there exists a choice function f defined on X.
 \end{itemize}
 
-\begin{note}
+\begin{remark}
     The equivalence proof of the above mentioned variants is skipped. In the further discussion regarding Axiom of Choice, we will be using the choice function formulation.
-\end{note}
+\end{remark}
 
 \begin{zl}
     If X is a non-empty partially ordered set such that every chain in X has an upper bound, then X contains a maximal element.
@@ -275,13 +275,13 @@ Two formulations of \highlight{Axiom of Choice} are given.
     We show that $\text{span}(B^*) = X$. Suppose not, then there is an element $x\in X\setminus \text{span}(B^*)$ and $x\neq 0$. Then extend the set $B^*$ by including $x$ in it. Notice that the extended set is an element in $P$ which is greater than $B^*$ under the subset relation. This is a contradiction. Hence $\text{span}(B^*) = X$ and $B^*$ is a linearly independent set, thus $B^*$ is a basis for $X$.
 \end{proof}
 
-\begin{note}
+\begin{remark}
     A variant of converse of the above result is also true which is 
     $$
     \textbf{``Every vector space $X\neq \{0\}$ has a basis" $\implies$ Axiom of Choice,}
     $$
     thus establishing equivalence between the two. The proof can be found in \textbf{\cite{bases_AC}} which shows the implication for \textbf{Axiom of Multiple Choice} instead. It is known that Axiom of Multiple Choice is equivalent to Axiom of Choice. We skip this proof as it is quite involved.
-\end{note}
+\end{remark}
 
 % \begin{theorem}
 %     ``Every vector space $X\neq \{0\}$ has a basis" $\implies$ Axiom of Multiple Choice.
@@ -387,9 +387,9 @@ Two formulations of \highlight{Axiom of Choice} are given.
     Therefore, by using Zorn's Lemma (as using in 1st part) we proved Hahn-Banach Theorem.
 \end{proof}
 
-\begin{note}
+\begin{remark}
     The converse of the above theorem is not true, i.e, Hahn-Banach Theorem $\nRightarrow$ Zorn's Lemma. It is known that Hahn-Banach Theorem is equivalent to a statement which is strictly weaker than Axiom of Choice.\cite{WikiHBT}
-\end{note}
+\end{remark}
 
 \newpage
 

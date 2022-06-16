@@ -6,17 +6,22 @@
 \usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{algorithm}
-\usepackage[noend]{algpseudocode}
+\usepackage{algpseudocode}
 \usepackage{amssymb}
 \usepackage{enumerate}
-\usepackage{physics}
 \usepackage[hidelinks]{hyperref}
-\usepackage{graphicx} %package to manage images
-\usepackage[rightcaption]{sidecap}
-\usepackage{wrapfig}
-\usepackage{subfig}
+\usepackage{cancel}
 
-\graphicspath{ {./images/} }
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Differential Geometry},
+    pdfpagemode=FullScreen,
+}
+
+% \graphicspath{ {./images/} }
 
 \author{Jayadev Naram}
 \title{Differential Geometry}
@@ -29,34 +34,67 @@
 
 \newpage
 
-\newtheorem{theorem}{Theorem}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
+
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{definition}{Definition}
-\newtheorem{remark}{Remark}
-\newtheorem*{sketch}{Proof Sketch}
-\newtheorem*{example}{Example}
-% \newtheorem*{solution}{Solution}
-% \newtheorem{question}{Question}
-\newtheorem{note}{Note}
-\newtheorem{prop}{Proposition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{assume}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
 
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\B}{\mathbb{B}}
 \newcommand{\A}{\mathcal{A}}
 \newcommand{\M}{\mathcal{M}}
 \newcommand{\N}{\mathcal{N}}
-\newcommand{\Cinf}{\mathcal{C}^\infty}
-\newcommand{\highlight}[1]{\textsl{\textbf{#1}}}
+\newcommand{\h}{\mathcal{H}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Dist}{\mathcal{D}}
+\newcommand{\perpProj}{\mathcal{P}^\perp}
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\Sprod}{\mathbb{S}_{xy}}
+\newcommand{\highlight}[1]{\underline{\textit{\textbf{#1}}}}
 \newcommand{\mapping}[3]{#1:#2\rightarrow #3}
 \newcommand{\doubt}{\highlight{[??]}}
+% \newcommand{\bigvert}[2]{#1{\raisebox{-.5ex}{$|$}_{#2}}}
+\newcommand{\Cinf}{\mathcal{C}^\infty}
 \newcommand{\bigvert}[2]{\left.#1\right|_{#2}}
+\newcommand{\sdnn}[1]{${#1}$}
 \newcommand{\bsdnn}[1]{$\boldsymbol{#1}$}
+\newcommand{\ifthen}[2]{\textbf{(#1)}\boldsymbol{\implies}\textbf{(#2)}}
 \newcommand{\bsdn}[1]{\boldsymbol{#1}}
+\newcommand{\forward}{$(\implies)$\ }
+\newcommand{\converse}{$(\impliedby)$\ }
+\newcommand{\Lt}[1]{\underset{#1\rightarrow 0}{Lt}}
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\dparder}[2]{\dfrac{\partial #1}{\partial x_{#2}}}
+\newcommand{\fparder}[2]{\frac{\partial #1}{\partial x_{#2}}}
+\newcommand{\parder}[2]{\partial #1/\partial x_{#2}}
+\newcommand{\parop}[1]{\dfrac{\partial}{\partial x_{#1}}}
+\newcommand{\innerproduct}[2]{\langle #1, #2 \rangle}
+\newcommand{\metric}[2]{[#1, #2]}
+\newcommand{\genst}{St_B(n,p)}
+\newcommand{\igenst}[1]{St_{B_{#1}}(n_{#1},p)}
+\newcommand{\realmat}[2]{\R^{#1\times #2}}
+\newcommand{\Skew}{\mathcal{S}_{skew}(p)}
+\newcommand{\Sym}{\mathcal{S}_{sym}(p)}
+\newcommand{\XperpB}{X_{B^\perp}}
+\newcommand{\polarRetr}{R^{polar}_X}
+\newcommand{\qrRetr}{R^{QR}_X}
+\newcommand{\vectransport}{\mathcal{T}}
+\newcommand{\grad}{\text{grad}\,}
+\newcommand{\hess}{\text{Hess}\,}
 
 \section{Smooth Manifolds}
 
 \begin{definition}
-A topological space $\M$ is said to be \highlight{locally Euclidean of dimension $n$} if every point of $\M$ has a neighborhood in $\M$ that is homeomorphic to an open subset of $\R^n$.
+A topological space $\M$ is said to be \highlight{locally Euclidean} of dimension $n$ if every point of $\M$ has a neighborhood in $\M$ that is homeomorphic to an open subset of $\R^n$.
 \end{definition}
 
 \begin{lemma}
@@ -67,23 +105,25 @@ A topological space $\M$ is locally Euclidean of dimension $n$ if and only if ei
 \end{enumerate}
 \end{lemma}
 
-\begin{sketch}
-For (a) one need to show that any open subset of $\R^n$ is homeomorphic to the unit open ball in $\R^n$. Note that the unit open ball is homeomorphic to any open ball in $\R^n$. For (b) it suffices to show that unit open ball in $\R^n$ is homeomorphic to $\R^n$.
-\end{sketch}
+\begin{proof}
+% (Sketch) For (a) one need to show that any open subset of $\R^n$ is homeomorphic to the unit open ball in $\R^n$. Note that the unit open ball is homeomorphic to any open ball in $\R^n$. For (b) it suffices to show that unit open ball in $\R^n$ is homeomorphic to $\R^n$.
+(a) \forward Let $x\in \M$ and suppose that there a neighborhood of $x$ in $\M$ that is homeomorphic to an open subset $U$ in $\R^n$. 
+
+\end{proof}
 
 \begin{definition}
-Suppose $\M$ is a topological space. $\M$ is a \highlight{topological manifold of dimension $n$} or a \highlight{topological n-manifold} if it has the following properties:
+Suppose $\M$ is a topological space. We say $\M$ is a \highlight{topological manifold} of dimension $n$ or a \highlight{topological \bsdnn{n}-manifold} if it has the following properties:
 \begin{enumerate}[(a)]
-    \item $\M$ is a \highlight{Hausdorff space}.
-    \item $\M$ is a \highlight{second-countable}.
-    \item $\M$ is \highlight{locally Euclidean of dimension $n$}.
+    \item $\M$ is a {Hausdorff space}.
+    \item $\M$ is a {second-countable}.
+    \item $\M$ is {locally Euclidean of dimension $n$}.
 \end{enumerate}
-A \highlight{coordinate chart}(or just a \highlight{chart}) on $\M$ is a pair $(U,\varphi)$, where $U$ is an open subset of $\M$ and $\mapping{\varphi}{U}{\hat{U}}$ is a homeomorphism from $U$ to an open subset $\hat{U} = \varphi(U)\subseteq \R^n$. The set $U$ is called a \highlight{coordinate domain} or a \highlight{coordinate neighborhood} of each of its points. The map $\varphi$ is called a \highlight{(local) coordinate map}, and the component functions $(x^1,\ldots,x^n)$ of $\varphi$, defined by $\varphi(p) = (x^1(p),\ldots,x^n(p))$, are called \highlight{local coordinates} on $U$.
+A \highlight{coordinate chart} (or just a \highlight{chart}) on $\M$ is a pair $(U,\varphi)$, where $U$ is an open subset of $\M$ and $\mapping{\varphi}{U}{\hat{U}}$ is a homeomorphism from $U$ to an open subset $\hat{U} = \varphi(U)\subseteq \R^n$. The set $U$ is called a \highlight{coordinate domain} or a \highlight{coordinate neighborhood} of each of its points. The map $\varphi$ is called a \highlight{(local) coordinate map}, and the component functions $(x^1,\ldots,x^n)$ of $\varphi$, defined by $\varphi(p) = (x^1(p),\ldots,x^n(p))$, are called \highlight{local coordinates} on $U$.
 \end{definition}
 
-\begin{prop}
+\begin{proposition}
 A nonempty $n$-dimensional topological manifold cannot be homeomorphic to an $m$-dimensional manifold unless $m=n$.
-\end{prop}
+\end{proposition}
 
 \begin{example}
 Here are some examples of topological manifolds.
@@ -156,21 +196,21 @@ Solve the exercise questions 1-1 to 1-10 from \cite[Ch 1]{JohnLee}.
 
 \section{Smooth Maps}
 
-\begin{note}
+\begin{remark}
 For the sake of convenience, we reserve the word \highlight{function} for a map whose codomain is $\R$ (a \highlight{real-valued function}) or $\R^k$ for some $k>1$ (a \highlight{vector-valued function}). Either of the words \highlight{map} or \highlight{mapping} can mean any type of map, such as a map between arbitrary manifolds.
-\end{note}
+\end{remark}
 
 \begin{definition}\label{def:smooth_function}
 Suppose $\M$ is a smooth $n$-manifold, $k$ is a nonnegative integer, and $\mapping{f}{\M}{\R^k}$ is any function. We say that $f$ is a \highlight{smooth function} if for every $p\in\M$, there exists a smooth chart $(U,\varphi)$ for $\M$ whose domain contains $p$ and such that the composite function $f\circ\varphi^{-1}$ is smooth on the open subset $\hat{U} = \varphi(U)\subseteq\R^n$.
 \end{definition}
 
-\begin{note}
+\begin{remark}
 The most important special case is that of smooth real-valued functions $\mapping{f}{\M}{\R}$; the set of all such functions is denoted by $\Cinf(\M)$. Because sums and constant multiples of smooth functions are smooth, $\Cinf(\M)$ is a vector space over $\R$.
-\end{note}
+\end{remark}
 
-\begin{prop}\label{prop:smooth_coordinate_rep}
+\begin{proposition}\label{prop:smooth_coordinate_rep}
 Let $\M$ be a smooth manifold, and suppose $\mapping{f}{\M}{\R^k}$ is a smooth function. Then $\mapping{f\circ\varphi^{-1}}{\varphi(U)}{\R^k}$ is smooth for every smooth chart $(U,\varphi)$ for $\M$.
-\end{prop}
+\end{proposition}
 
 % \begin{proof}
 % The function $\mapping{f}{\M}{\R^k}$ is a smooth function, then for all $p\in\M$ there exists a smooth chart $(U,\varphi)$ for $\M$ such that $p\in U$ and $\mapping{f\circ \varphi^{-1}}{\varphi(U)}{\R^k}$ is smooth, where $\varphi(U)$ is an open subset of $\R^n$. Consider any other smooth chart on
@@ -184,51 +224,51 @@ Given a function $\mapping{f}{\M}{\R^k}$, and a chart $(U,\varphi)$ for $\M$, th
 By Def.\ref{def:smooth_function}, $f$ is smooth iff its coordinate representation is smooth in some smooth chart around each point. By Prop.\ref{prop:smooth_coordinate_rep}, smooth functions have smooth coordinate representations in every smooth chart.
 \end{remark}
 
-\begin{prop}
+\begin{proposition}
 Let $U$ be an open submanifold of $\R^n$ with its standard smooth manifold structure. Then a function $\mapping{f}{U}{\R^k}$ is smooth in the sense of Def.\ref{def:smooth_function} iff it is smooth in the sense of ordinary calculus.
-\end{prop}
+\end{proposition}
 
 \begin{definition}\label{def:smooth_map}
 Let $\M, \N$ be smooth manifolds, and let $\mapping{F}{\M}{\N}$ be any map. We say that $F$ is a \highlight{smooth map} if for every $p\in\M$, there exist smooth charts $(U,\varphi)$ containing $p$ and $(V,\psi)$ containing $F(p)$ such that $F(U)\subseteq V$ and the composite map $\psi\circ F\circ \varphi^{-1}$ is smooth from $\varphi(U)$ to $\psi(V)$.
 \end{definition}
 
-\begin{note}
+\begin{remark}
 Def.\ref{def:smooth_function} can be viewed as a special case of Def.\ref{def:smooth_map} by taking $\N=V=\R^k$ and $\psi=\mapping{Id}{\R^k}{\R^k}$.
-\end{note}
+\end{remark}
 
-\begin{prop}
+\begin{proposition}
 Every smooth map is continuous.
-\end{prop}
+\end{proposition}
 
-\begin{prop}[\highlight{Equivalent Characterizations of Smoothness}]
+\begin{proposition}[\highlight{Equivalent Characterizations of Smoothness}]
 Suppose $\M$ and $\N$ are smooth manifolds, and $\mapping{F}{\M}{\N}$ is a map. Then $F$ is smooth iff either of the following conditions is satisfied:
 \begin{enumerate}[(a)]
     \item For every $p\in\M$, there exists smooth charts $(U,\varphi)$ containing $p$ and $(V,\psi)$ containing $F(p)$ such that $U\cap F^{-1}(V)$ is open in $\M$ and the composite map $\psi\circ F\circ \varphi^{-1}$ is smooth from $\varphi(U\cap F^{-1}(V))$ to $\psi(V)$.
     \item $F$ is continuous and there exist smooth atlases $\{(U_\alpha,\varphi_\alpha)\}$ and $\{(V_\beta,\psi_\beta)\}$ for $\M$ and $\N$, respectively, such that for each $\alpha$ and $\beta$, $\psi_\beta\circ F\circ \varphi_\alpha^{-1}$ is smooth from $\varphi_\alpha(U_\alpha\cap F^{-1}(V_\beta))$ to $\psi_\beta(V_\beta)$.
 \end{enumerate}
-\end{prop}
+\end{proposition}
 
-\begin{prop}[\highlight{Smoothness is Local}]
+\begin{proposition}[\highlight{Smoothness is Local}]
 Let $\M,\N$ be smooth manifolds, and let $\mapping{F}{\M}{\N}$ be a map.
 \begin{enumerate}[(a)]
     \item If every point $p\in\M$ has a neighborhood $U$ such that the restriction $F|_U$ is smooth, then $F$ is smooth.
     \item Conversely, if $F$ is smooth, then its restriction to every open subset is smooth.
 \end{enumerate}
-\end{prop}
+\end{proposition}
 
-\begin{prop}[\highlight{Gluing Lemma for Smooth Maps}]
+\begin{proposition}[\highlight{Gluing Lemma for Smooth Maps}]
 Let $\M,\N$ be smooth manifolds, and let $\{U_\alpha\}_{\alpha\in A}$ be an open cover of $\M$. Suppose that for each $\alpha\in A$, we are given a smooth map $\mapping{F_\alpha}{U_\alpha}{\N}$ such that the maps agree on overlaps: $F_\alpha|_{U_\alpha\cap U_\beta} = F_\beta|_{U_\alpha\cap U_\beta}$ for all $\alpha$ and $\beta$. Then there exists a unique smooth map $\mapping{F}{\M}{\N}$ such that $F|_{U_\alpha} = F_\alpha$ for each $\alpha\in A$.
-\end{prop}
+\end{proposition}
 
 \begin{definition}
 Given a map $\mapping{F}{\M}{\N}$, and smooth charts $(U,\varphi)$ and $(V,\psi)$ for $\M$ and $\N$, respectively, the function $\mapping{\hat{F}}{\varphi(U\cap F^{-1}(V))}{\psi(V)}$ defined by $\hat{F}(x) = \psi\circ F\circ\varphi^{-1}(x)$ is called the \highlight{coordinate representation of $\boldsymbol F$}.
 \end{definition}
 
-\begin{prop}
+\begin{proposition}
 Suppose $\mapping{F}{\M}{\N}$ is a smooth map between smooth manifolds. Then the coordinate representation of $F$ with respect to every pair of smooth charts for $\M$ and $\N$ is smooth.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\M$, $\N$, and $\mathcal{P}$ be smooth manifolds.
 \begin{enumerate}[(a)]
     \item Every constant map $\mapping{c}{\M}{\N}$ is smooth.
@@ -236,11 +276,11 @@ Let $\M$, $\N$, and $\mathcal{P}$ be smooth manifolds.
     \item If $U \subseteq \M$ is an open submanifold, then the inclusion map $U\hookrightarrow \M$ is smooth.
     \item If $\mapping{F}{\M}{\N}$ and $\mapping{G}{\N}{\mathcal{P}}$ are smooth, then so is $\mapping{G\circ F}{\M}{\mathcal{P}}$.
 \end{enumerate}
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Suppose $\M_1,\ldots, \M_k$ and $\N$ are smooth manifolds. For each $i$, let $\mapping{\pi_i}{\M_1\times\ldots\times\M_k}{\M_i}$ denote the projection onto the $\M_i$ factor. A map $\mapping{F}{\N}{\M_1\times\ldots\times\M_k}$ is smooth iff each of the component maps $F_i = \mapping{\pi_i\circ F}{\N}{\M_i}$ is smooth.
-\end{prop}
+\end{proposition}
 
 \section{Partitions of Unity}
 
@@ -252,11 +292,11 @@ $$\R^n_x = \{x\}\times \R^n = \{(x,v):\;v\in\R^n\}.$$
 A \highlight{geometric tangent vector} in $\R^n$ is an element of $\R^n_x$ for some $x \in \R^n$. As a matter of notation, we abbreviate $(x,v)$ as $v_x$ or $\bigvert{v}{x}$. We think of $v_x$ as the vector $v$ with its initial point at $x$.
 \end{definition}
 
-\begin{note}
+\begin{remark}
 The set $\R^n_x$ is a real vector space under the natural operations
 $$v_x + w_x = (v+w)_x,\;\;\; c(v_x) = (cv)_x.$$
 Consequently, the vectors $\bigvert{e_i}{x}, i = 1,\ldots, n$, are a basis for $\R^n_x$.
-\end{note}
+\end{remark}
 
 \begin{definition}
 If $x$ is a point of $\R^n$, a map $\mapping{w}{\Cinf(\R^n)}{\R}$ is called a \highlight{derivation at $\boldsymbol{x}$} if it is linear over $\R$ and satisfies the following product rule:
@@ -266,12 +306,12 @@ $$
 Let $T_x\R^n$ denote the set of all derivation of $\Cinf(\R^n)$ at $x$.
 \end{definition}
 
-\begin{note}
+\begin{remark}
 Clearly, $T_x\R^n$ is a vector space under the operations
 $$ (w_1+w_2)f = w_1f+w_2f, \;\;\; (cw)f = c(wf). $$
-\end{note}
+\end{remark}
 
-\begin{note}\label{note:directional_derivative}
+\begin{remark}\label{note:directional_derivative}
 For any geometric tangent vector $v_x\in \R^n_x$ we define a derivation to be a map which takes the directional derivative of any $f\in\Cinf(\R^n)$ in the direction $v$ at $x$:
 $$
 \bigvert{D_v}{x} f = Df(x)[v] = \bigvert{\dfrac{d}{dt}}{t=0} f(x+tv) = 
@@ -291,7 +331,7 @@ If $v_a = \sum_{i=1}^n v^{(i)} \bigvert{e_i}{a}$ in terms of the standard basis,
 $$
 \bigvert{D_v}{a}f = \sum_{i=1}^n v^{(i)} \dfrac{\partial f}{\partial x^{(i)}}(a).
 $$
-\end{note}
+\end{remark}
 
 \begin{lemma}[\highlight{Properties of Derivations}]
 Suppose $x\in\R^n,w\in T_x\R^n$, and $f,g\in\Cinf(\R^n)$.
@@ -301,13 +341,13 @@ Suppose $x\in\R^n,w\in T_x\R^n$, and $f,g\in\Cinf(\R^n)$.
 \end{enumerate}
 \end{lemma}
 
-\begin{prop}
+\begin{proposition}
 Let $x\in \R^n$.
 \begin{enumerate}[(a)]
     \item For each geometric tangent vector $v_x\in\R^n_x$, the map $\mapping{\bigvert{D_v}{x}}{\Cinf(R^n)}{\R}$ defined in Note \ref{note:directional_derivative} is a derivation at $x$.
     \item The map $v_x\mapsto \bigvert{D_v}{x}$ is an isomorphism from $\R^n_x$ onto $T_x\R^n$.
 \end{enumerate}
-\end{prop}
+\end{proposition}
 
 \begin{corollary}
 For any $a\in \R^n$, the n derivations
@@ -350,7 +390,7 @@ dF_p(v)(fg)
 \end{align*}
 \end{remark}
 
-\begin{prop}[\highlight{Properties of Differentials}]
+\begin{proposition}[\highlight{Properties of Differentials}]
 Let $\M, \N,$ and $\mathcal{P}$ are smooth manifolds, let $\mapping{F}{\M}{\N}$ and $\mapping{G}{\N}{\mathcal{P}}$ be smooth maps, and let $p\in\M$,
 \begin{enumerate}
     \item $\mapping{dF_p}{T_p\M}{T_{F(p)}\N}$ is linear.
@@ -358,29 +398,29 @@ Let $\M, \N,$ and $\mathcal{P}$ are smooth manifolds, let $\mapping{F}{\M}{\N}$ 
     \item $d(Id_\M) = \mapping{Id_{T_p\M}}{T_p\M}{T_p\M}$.
     \item If $F$ is a diffeomorphism, then $\mapping{dF_p}{T_p\M}{T_{F(p)}\N}$ is an isomorphism, and $(dF_p)^{-1} = d(F^{-1})_{F(p)}$.
 \end{enumerate}
-\end{prop}
+\end{proposition}
 
-\begin{prop}[\highlight{Tangent vectors act locally}]
+\begin{proposition}[\highlight{Tangent vectors act locally}]
 Let $\M$ be a smooth manifold, $p \in \M$ and $v\in T_p\M$. If $f, g \in \Cinf(M)$ agree on some neighborhood of $p$, then $vf = vg$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}[\highlight{The Tangent Space to an Open Submanifold}]
+\begin{proposition}[\highlight{The Tangent Space to an Open Submanifold}]
 Let $\M$ be a smooth manifold, let $U\subseteq \M$ be an open subset, and let $\mapping{\iota}{U}{\M}$ be the inclusion map. For every $p \in U$, the differential $\mapping{d\iota_p}{T_pU}{T_p\M}$ is an isomorphism.
-\end{prop}
+\end{proposition}
 
-\begin{prop}[\highlight{Dimension of the Tangent Space}]
+\begin{proposition}[\highlight{Dimension of the Tangent Space}]
 If $\M$ is an $n$-dimensional smooth manifold, then for each $p \in \M$, the tangent space $T_p\M$ is an $n$-dimensional vector space.
-\end{prop}
+\end{proposition}
 
-\begin{prop}[\highlight{The Tangent Space to a Vector Space}]
+\begin{proposition}[\highlight{The Tangent Space to a Vector Space}]
 Suppose $V$ is a finite-dimensional vector space with its standard smooth structure. For any vector $v\in V$, we define a  map $\mapping{\bigvert{D_v}{a}}{\Cinf(V)}{\R}$ by 
 \begin{equation*}
     \bigvert{D_v}{a} f = \bigvert{\dfrac{d}{dt}}{t=0} f(a+tv).
 \end{equation*}
 Then, the map $v\mapsto \bigvert{D_v}{a}$ defined above is an isomorphism from $v$ to $T_aV$, such that for any linear map $\mapping{L}{V}{W}$ we have $dL_a(\bigvert{D_v}{a}) = D_{\bigvert{Lv}{La}}$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}[\highlight{The Tangent Space to a Product Manifold}]
+\begin{proposition}[\highlight{The Tangent Space to a Product Manifold}]
 Let $\M_1,\ldots,\M_k$ be smooth manifolds, and for each $j$, let $\mapping{\pi_j}{\M_1\times\ldots\times\M_k}{\M_j}$ denote the projection onto the $\M_j$ factor. For any point $p = (p_1,\ldots,p_k)\in \M_1\times\ldots\times\M_k$, the map 
 \begin{equation*}
     \mapping{\alpha}{T_p(\M_1\times\ldots\times\M_k)}{T_{p_1}\M_1\oplus\ldots\oplus T_{p_k}\M_k}
@@ -390,11 +430,11 @@ defined by
     \alpha(v) = (d(\pi_1)_p(v),\ldots,d(\pi_k)_p(v))
 \end{equation*}
 is an isomorphism.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\M$ be a smooth $n$-manifold, and let $p\in \M$. Then $T_p\M$ is an $n$-dimensional vector space, and for any smooth chart $(U,(x^{(i)}))$ containing $p$, the coordinate vectors $\bigvert{\partial/\partial x^{(1)}}{p},\ldots,\bigvert{\partial/\partial x^{(n)}}{p}$ form a basis for $T_p\M$.
-\end{prop}
+\end{proposition}
 
 
 

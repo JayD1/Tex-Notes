@@ -31,21 +31,21 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{assume}{Assumption}
 
 \theoremstyle{definition}
-\newtheorem{mydef}[theorem]{Definition}
+\newtheorem{definition}[theorem]{Definition}
 
 % \newtheorem{theorem}{Theorem}
 % \newtheorem{lemma}[theorem]{Lemma}[subsection]
-% \newtheorem{mydef}{Definition}[subsection]
+% \newtheorem{definition}{Definition}[subsection]
 % \newtheorem{remark}{Remark}[subsection]
 % \newtheorem{example}{Example}[subsection]
-% \newtheorem{note}{Note}[subsection]
-% \newtheorem{prop}{Proposition}[subsection]
+% \newtheorem{remark}{remark}[subsection]
+% \newtheorem{proposition}{Proposition}[subsection]
 % \newtheorem{corollary}{Corollary}[prop]
 % \newtheorem{assume}{Assumption}
 
@@ -309,17 +309,17 @@ Substituting this is the expression of Riemannian Hessian, we have
 \end{align*}
 where we used the identity $\Proj_x(\nabla h(x)) = 0$. Then we see that the Riemannian Newton equation in \eqref{eqn:Riemannian_Newton_system} and $p\in T_x\M$ gives us the KKT condition of \eqref{eqn:Riemannian_SQP_KKT}.
 
-\begin{prop}[\highlight{Riemannain Newton and FP-SQP}]
-Assume as always that $0$ is a regular value of $h$, so that the set $\M$ is an embedded submanifold of $\R^n$. Then simple FP-SQP (Algo. \ref{algo:FP-SQP}), with $\lambda$ in Step 3 chosen as in \eqref{eqn:least_squares_solution_for_lambda}, is equivalent to Riemannian Newton method (Algo. \ref{algo:Riemannian_Newton}). \end{prop}
+\begin{proposition}[\highlight{Riemannain Newton and FP-SQP}]
+Assume as always that $0$ is a regular value of $h$, so that the set $\M$ is an embedded submanifold of $\R^n$. Then simple FP-SQP (Algo. \ref{algo:FP-SQP}), with $\lambda$ in Step 3 chosen as in \eqref{eqn:least_squares_solution_for_lambda}, is equivalent to Riemannian Newton method (Algo. \ref{algo:Riemannian_Newton}). \end{proposition}
 
 \begin{remark}
 Even though they coincide under the above assumptions, FP-SQP and Newton
 on manifolds are not identical methods. FP-SQP makes no assumption on $\lambda_k$ beyond the fact that it must converge to the correct value, whereas Newton on manifolds requires $\lambda_k$ to be defined by \eqref{eqn:least_squares_solution_for_lambda}. On the other hand, the Newton algorithm on manifolds is not restricted to submanifolds.
 \end{remark}
 
-\begin{prop}
+\begin{proposition}
 Assume that $\M$ is an embedded submanifold of $\R^n$ and $\mapping{f}{\M}{\R}$ is a smooth function with isolated minima on $\M$. If $x\in \M$ is a local minimum of $f$ on $\M$, then the second-order derivative of the Lagrangian along $v \in T_{x}\M$ captures all second-order information of the cost function $f$ on $\M$.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 Note that 
@@ -359,9 +359,9 @@ Let $M\in \realmat{d}{d}$ be fixed SPD matrix using which Riemannian metric is d
 
 We denote the eigenvalues of the matrix pencil $(S_B,S_W+\lambda I_d)$ by $\rho_1\ge \rho_2\ge\ldots\ge \rho_d\ge 0$.
 
-\begin{prop}[\highlight{Critical Points}]
+\begin{proposition}[\highlight{Critical Points}]
 A point $W\in St_{(S_W+\lambda I_d)}(d,p)$ is a critical point of \eqref{eqn:Riemannian_LDA_problem} iff the columns of $W$ are some $p$ generalized eigenvectors of the matrix pencil $(S_B,S_W+\lambda I_d)$.
-\end{prop}
+\end{proposition}
 
 \begin{remark}
 Note that $W$ is a critical point w.r.t. every metric on $St_{(S_W+\lambda I_d)}(d,p)$ because 
@@ -412,9 +412,9 @@ where $D = W^TS_BW$ which is a diagonal matrix. This implies that the columns of
 In the above proposition, we have proved that the critical points of $f$ are matrices $W\in St_{(S_W+\lambda I_d)}(d,p)$ such that the columns are $p$ generalized eigenvectors of the matrix pencil $(S_B,S_W+\lambda I_d)$. Consequently, of all the possible critical points, the optimal solutions are only those $W\in St_{(S_W+\lambda I_d)}(d,p)$ such that the columns are the $p$-dominant generalized eigenvectors of the matrix pencil $(S_B,S_W+\lambda I_d)$. Moreover, if we assume that $\rho_1>\rho_2>\ldots>\rho_{p+1}\ge 0$, then for the aforementioned $W\in St_{(S_W+\lambda I_d)}(d,p)$ that solve \eqref{eqn:Riemannian_LDA_problem} are unique up the the signs of the columns of $W$.
 \end{remark}
 
-\begin{prop}
+\begin{proposition}
 Let $\mapping{F}{St_{(S_W+\lambda I_d)}(d,p)}{St_{(S_W+\lambda I_d)}(d,p)}$ be a descent mapping for $f$ and assume that, for every $W\in St_{(S_W+\lambda I_d)}(d,p)$, all the accumulation points of $\{F^{(k)}(W)\}_{k=1,2,\ldots}$ are critical points of $f$. Assume that for every critical point $W^*\in St_{(S_W+\lambda I_d)}(d,p)$ of $f$, $\underset{W\rightarrow W^*}{Lt}dist(F(W),W) = 0$ and that $\rho_1>\rho_2>\ldots>\rho_{p+1}\ge 0$, i.e., the $p$-dominant generalized eigenvalues of the matrix pencil $(S_B,S_W+\lambda I_d)$ are nondegenerate, then $W\in St_{(S_W+\lambda I_d)}(d,p)$ such that the columns are the $p$-dominant generalized eigenvectors of the matrix pencil $(S_B,S_W+\lambda I_d)$ are asymptotically stable. Furthermore, critical points which are not a local minimum of Problem \eqref{eqn:Riemannian_LDA_problem} are unstable.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 To prove the asymptotic stability of $W\in St_{(S_W+\lambda I_d)}(d,p)$ such that the columns are $p$-dominant generalized eigenvectors of the matrix pencil $(S_B, S_W + \lambda I_d)$ we use Prop. \ref{prop:capture_theorem}. The assumption that the $p$-dominant generalized eigenvalues of the matrix pencil $(S_B, S_W + \lambda I_d)$ are simple implies that for the aforementioned $W\in St_{(S_W+\lambda I_d)}(d,p)$, the columns belong each to a one dimensional generalized eigenspace. Thus, in such case points $W$ that solve Problem \eqref{eqn:Riemannian_LDA_problem} are unique up the the signs of the columns of $W$, making these point isolated global (and consequently local) minimizers of $f$ on $St_{(S_W+\lambda I_d)}(d,p)$. According to Prop. \ref{prop:capture_theorem}, such points $W$ are asymptotically stable.
@@ -423,7 +423,7 @@ Suppose $W\in St_{(S_W+\lambda I_d)}(d,p)$ is a critical point of $f$ which is n
 multiplicities of the generalized eigenspaces, or where all other critical point achieve the same value for the cost function, if there are multiplicities of the generalized eigenspaces. Thus, according to Prop. \ref{prop:unstable_fixed_points}, such $W$ are unstable.
 \end{proof}
 
-\begin{prop}
+\begin{proposition}
 Consider using Riemannian optimization to solve \eqref{eqn:Riemannian_LDA_problem}, where we use the Riemannian metric defined by an SPD matrix $M\in\realmat{d}{d}$, which is a given preconditioner matrix. Assume that that $\rho_1>\rho_2>\ldots>\rho_{p+1}\ge 0$ and that $S_W+\lambda I_d$ is a SPD matrix. Let $W^*$ denote the global minimizer of \eqref{eqn:Riemannian_LDA_problem}. Then,
 \begin{equation*}
 \kappa(\hess f(W^*)) \le \kappa^*\cdot \kappa(S_W+\lambda I_d, M)
@@ -435,7 +435,7 @@ where
 and $\mu_1>\ldots>\mu_p>0$ are diagonal elements of $N$.
 
 If we further assume that for all $i = 1,\ldots, d$ the values $\rho_i$ are distinct, then the critical point $W^*$ is the only (strict) local minimizer of \eqref{eqn:Riemannian_LDA_problem} (up to the signs of the columns of $W^*$), and all other critical points are either saddle points or strict local maximizers. Thus, $W^*\in St_{(S_W+\lambda I_d)}(d,p)$ is the only asymptotically stable critical point, and all other critical points are unstable.
-\end{prop}
+\end{proposition}
 
 \subsection{Canonical Correlation Analysis}
 
@@ -486,15 +486,15 @@ The Riemannian gradient of $f$ is given by
 \left[\begin{array}{c}\Proj_U(M_{xx}^{-1}\Sigma_{xy}VN)\\\Proj_V(M_{yy}^{-1}\Sigma_{xy}^TUN)\end{array}\right].
 \end{equation}
 
-\begin{prop}[\highlight{Critical Points}]
+\begin{proposition}[\highlight{Critical Points}]
 A point $Z = (U,V)\in\Sprod$ is a critical point of \eqref{eqn:Riemannian_CCA_problem} iff the columns of $(\Tilde{U},\Tilde{V}) = (\Sigma_{xx}^{1/2}U,\Sigma_{yy}^{1/2}V)$ are $p$ left and right singular vectors of corresponding singular matrix $R:= \Sigma_{xx}^{1/2}\Sigma_{xy}\Sigma_{yy}^{1/2}$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\mapping{F}{\Sprod}{\Sprod}$ be a descent mapping for $f$ and assume that, for every $Z\in \Sprod$, all the accumulation points of $\{F^{(k)}(Z)\}_{k=1,2,\ldots}$ are critical points of $f$. Assume that for every critical point $Z^*\in \Sprod$ of $f$, $\underset{Z\rightarrow Z^*}{Lt}dist(F(Z),Z) = 0$ and that $\sigma_1>\sigma_2>\ldots>\sigma_{p+1}\ge 0$, i.e., the $p$-dominant singular values of the matrix $R$ are nondegenerate, then $Z = (U,V)\in \Sprod$ such that the columns of $(\Tilde{U},\Tilde{V}) = (\Sigma_{xx}^{1/2}U, \Sigma_{yy}^{1/2}V)$ are the $p$-dominant left and right singular vectors of the matrix $R$ on the same phase are asymptotically stable. Furthermore, critical points which are not a local minimum of Problem \eqref{eqn:Riemannian_CCA_problem} are unstable.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Consider using Riemannian optimization to solve \eqref{eqn:Riemannian_CCA_problem}, where we use the Riemannian metric defined by an SPD matrix $M = diag(M_{xx},M_{yy})$, where $M_{xx}\in\realmat{d_x}{d_x}$ and $M_{yy}\in\realmat{d_y}{d_y}$, which are given preconditioner matrices. Assume that that $\sigma_1>\sigma_2>\ldots>\sigma_{p+1}\ge 0$ and that $\Sigma$ is a SPD matrix. Let $Z^*$ denote the global minimizer of \eqref{eqn:Riemannian_CCA_problem}. Then,
 \begin{equation*}
 \kappa(\hess f(Z^*)) \le \kappa^*\cdot \kappa(\Sigma, M)
@@ -506,25 +506,25 @@ where
 and $\mu_1>\ldots>\mu_p>0$ are diagonal elements of $N$.
 
 If we further assume that for all $i = 1,\ldots, q$ the values $\sigma_i$ are distinct, then the critical point $Z^*$ is the only (strict) local minimizer of \eqref{eqn:Riemannian_CCA_problem} (up to the signs of the columns of $U^*$ and $V^*$), and all other critical points are either saddle points or strict local maximizers. Thus, $Z^*\in \Sprod$ is the only asymptotically stable critical point, and all other critical points are unstable.
-\end{prop}
+\end{proposition}
 
 
 \section{Appendix}
 
 \subsection{Non-Linear Programming}
 
-\begin{mydef}[\highlight{LICQ}]
+\begin{definition}[\highlight{LICQ}]
 Given the point $x$, we say that the linear independence constraint qualification (LICQ) holds if the set of constraint gradients $\{\nabla h_i(x):\,i = 1,\ldots,p\}$ is linearly independent.
-\end{mydef}
+\end{definition}
 
-\begin{prop}[\highlight{KKT conditions}]
+\begin{proposition}[\highlight{KKT conditions}]
 Suppose that $x^*$ is a local solution of \eqref{eqn:optimization_problem}, that the functions $f$ and $h$ are continuously differentiable, and that LICQ holds at $x^*$. Then there is a Lagrange multiplier vector $\lambda^*$ such that the following conditions are satisfied at $(x^*,\lambda^*)$
 \begin{equation}
 \nabla_x \mathcal{L}(x^*,\lambda^*) = 0,\qquad h(x^*) = 0. 
 \end{equation}
-\end{prop}
+\end{proposition}
 
-\begin{prop}\label{prop:nonsingular_jacobian}
+\begin{proposition}\label{prop:nonsingular_jacobian}
 Suppose Assumptions \ref{assume:nonsingular_jacobian} hold at $(x,\lambda)$. Then the KKT matrix 
 \begin{equation*}
 \nabla F(x,\lambda) = \left[
@@ -534,7 +534,7 @@ Suppose Assumptions \ref{assume:nonsingular_jacobian} hold at $(x,\lambda)$. The
 \end{array} \right]
 \end{equation*}
 is nonsingular, and hence there is a unique pair $(p_x^*,p_\lambda^*)$ satisfying the Newton-KKT system \eqref{eqn:Newton_KKT}.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 We show that $\nabla F(x,\lambda) p = 0$ implies $p = 0$. Suppose that
@@ -559,9 +559,9 @@ Then from the second equation of \eqref{eqn:proof_nonsingular} we have $h(x)^Tw 
 Therefore for a vector $w$ such that $h(x)^Tw = 0$, we have $w^T\nabla^2_{xx} \mathcal{L}(x,\lambda)w = 0$. Then by Assumption \ref{assume:nonsingular_jacobian}(b), we conclude that $w = 0$. Now consider the first equation in \eqref{eqn:proof_nonsingular}, $\nabla^2_{xx} \mathcal{L}(x,\lambda)w-\nabla h(x)v = 0$. But $w = 0$ which implies that $\nabla h(x) v = 0$. The LICQ assumption implies that $v = 0$.
 \end{proof}
 
-\begin{prop}\label{prop:uniqueness_QP}
+\begin{proposition}\label{prop:uniqueness_QP}
 Suppose Assumptions \ref{assume:nonsingular_jacobian} hold at $(x,\lambda)$. Then the vector $p^*$ satisfying \eqref{eqn:SQP_KKT_matrix_form} is the unique global solution of \eqref{eqn:SQP_model}.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 First note that $p^*$ is also a feasible point, i.e., $\nabla h(x)^Tp^*_x + h(x) = 0$. Let $p_x$ be any other feasible point (satisfying $\nabla h(x)^Tp + h(x) = 0$), and define $w = p^*-p$. Then $\nabla h(x)^Tw = \nabla h(x)^T(p^*-p) = 0$. By substituting the objective in \eqref{eqn:SQP_model}, we obtain
@@ -580,28 +580,28 @@ q(p) = \frac{1}{2}w^T\nabla_{xx}^2\mathcal{L}(x,\lambda)w + q(p^*).
 By Assumption \ref{assume:nonsingular_jacobian}(b), we have $\frac{1}{2}w^T\nabla_{xx}^2\mathcal{L}(x,\lambda)w>0$ except when $w = 0$, i.e., $p = p^*$. So we have $q(p)>q(p^*)$ when $p\neq p^*$, thus $p^*$ is the unique global minimizer of \eqref{eqn:SQP_model}.
 \end{proof}
 
-\begin{prop}[\highlight{Lojasiewicz inequality}] \label{prop:Lojasiewicz_inequality}
+\begin{proposition}[\highlight{Lojasiewicz inequality}] \label{prop:Lojasiewicz_inequality}
 Consider an open set $U\subseteq \R^n$ and an analytic function $\mapping{f}{U}{\R}$. For every critical point $x^*\in U$ of $f$ there is a neighborhood $V$ of $x^*$, an exponent $\mu\in [0,1)$ and a constant $c>0$ such that for all $x\in V$
 \begin{equation*}
 \|\nabla f(x)\| \ge c|f(x) - f(x^*)|^\mu.
 \end{equation*}
-\end{prop}
+\end{proposition}
 
-\begin{mydef}[\highlight{Polyak-Lojasiewicz inequality}] \label{def:pl_inequality}
+\begin{definition}[\highlight{Polyak-Lojasiewicz inequality}] \label{def:pl_inequality}
 A function $\mapping{f}{U}{\R}$ that is differentiable satisfies Polyak-Lojasiewicz (PL) inequality if there exists a positive scalar $c > 0$ such that for all $x\in U$
 \begin{equation*}
 \dfrac{1}{2}\|\nabla f(x)\|^2 \ge c(f(x) - f(x^*)),
 \end{equation*}
 where $x^*$ is the global minimizer of $f$.
-\end{mydef}
+\end{definition}
 
 \subsection{Differential Geometry} \label{section:diffgeo}
 
 \subsubsection{General Theory}
 
-\begin{mydef}
+\begin{definition}
 A bijection $\varphi$ of a subset $U$ of $\M$ onto an open subset of $\R^d$ is called a \highlight{\bsdnn{d}-dimensional chart} of the set $\M$, denoted by $(U,\varphi)$.
-\end{mydef}
+\end{definition}
 
 Given a chart $(U,\varphi)$ of $\M$ and $x\in U$, the $d$-tuple of elements $\varphi(x)\in \R^d$ are called the \highlight{coordinates of \bsdnn{x}} in the chart $(U,\varphi)$.
 
@@ -609,21 +609,21 @@ Given a chart $(U,\varphi)$ of $\M$ and $x\in U$, the $d$-tuple of elements $\va
 In the following, whenever we use a specific chart in the definition, it can be show that the definition is independent of the chart chosen.
 \end{remark}
 
-\begin{mydef}
+\begin{definition}
 A \highlight{(\bsdnn{\mathcal{C}^\infty} or smooth) atlas} of $\M$ into $\R^d$ is a collection of charts $(U_\alpha,\varphi_\alpha)$ of the set $\M$ such that $\cup_\alpha U_\alpha = \M$ and for any pair $\alpha,\beta$ with $U_\alpha\cap U_\beta \neq \emptyset$, the sets $\varphi_\alpha(U_\alpha\cap U_\beta)$ and $\varphi_\beta(U_\alpha\cap U_\beta)$ are open sets in $\R^d$ and the change of coordinates $\mapping{\varphi_\beta\circ \varphi_\alpha^{-1}}{\R^d}{\R^d}$ is smooth on its domain $U_\alpha\cap U_\beta$.
-\end{mydef}
+\end{definition}
 
-\begin{mydef}
+\begin{definition}
 Given a maximal atlas $\mathcal{A}^+$ on a set $\M$, the topology generated by taking chart domains of $\mathcal{A}^+$ as the basis elements is called the \highlight{atlas topology} on $\M$.
-\end{mydef}
+\end{definition}
 
-\begin{mydef}
+\begin{definition}
 A \highlight{(\bsdnn{\mathcal{C}^\infty} or smooth) manifold} is a pair $(\M, \mathcal{A}^+)$ consisting of a set $\M$ and a maximal atlas $\mathcal{A}^+$ on $\M$ such that the atlas topology is Hausdorff and second-countable.
-\end{mydef}
+\end{definition}
 
-\begin{mydef}\label{def:smooth_maps}
+\begin{definition}\label{def:smooth_maps}
 Let $\M_1$ and $\M_2$ be manifolds of dimensions $d_1$ and $d_2$ respectively, and let $\mapping{F}{\M_1}{\M_2}$ be any map. We say that $F$ is a \highlight{smooth map} if for every $p\in \M_1$, there exists smooth chart $(U,\varphi)$ containing $p$ and $(V,\psi)$ containing $F(p)$ such that $F(U)\subseteq V$ and the composite map  $\hat{F} = \mapping{\psi\circ F\circ \varphi^{-1}}{\varphi(U)\subseteq \R^{d_1}}{\psi(V)\subseteq \R^{d_2}}$, called the \highlight{coordinate representation of \bsdnn{F}}, is smooth. We denote the set of all smooth real-valued functions from an open subset $U$ of $\M$ by $\mathfrak{F}(U)$.
-\end{mydef}
+\end{definition}
 
 Let $x$ be a point on a $d$-dimensional manifold $\M$. Consider the set $C_x$ of smooth curves on $\M$ passing through $x$ at $t=0$:
 \begin{equation*}
@@ -635,12 +635,12 @@ where smoothness of $c$ on an open interval $I\subseteq \R$ around $0$ is to be 
 \end{equation*}
 The equivalence class $[c]$ of a curve $c\in C_x$ is the set $[c] = \{\bar{c}\in C_x:\, c\sim \bar{c}\}.$
 
-\begin{mydef}
+\begin{definition}
 Let $x\in \M$ be a point on the manifold. A \highlight{tangent vector} to $\M$ at $x$ is defined to be an equivalence class $[c]$, for some $c\in C_x$. The \highlight{tangent space} to $\M$ at $x$, denoted by $T_x\M$, the quotient set, i.e., the set of all equivalence classes:
 \begin{equation*}
 T_x\M = C_x/\sim\;= \{[c]:\, c\in C_x\}.
 \end{equation*}
-\end{mydef}
+\end{definition}
 
 Given a chart $(U,\varphi)$ around $x\in \M$, define the map $\theta^\varphi_x$ as
 \begin{equation*}
@@ -651,85 +651,85 @@ Then we define a linear structure on $T_x\M$, by exploiting the linear structure
 a\cdot [c_1]+b\cdot [c_2] \equiv (\theta^\varphi_x)^{-1}(a\, \theta^\varphi_x([c_1])+b\, \theta^\varphi_x([c_2])).
 \end{equation}
 
-\begin{prop}
+\begin{proposition}
 Tangent spaces are linear space of dimension dim$\,\M$, with the linear structure given through \eqref{eqn:linear_structure_on_tangent_space}.
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 The \highlight{tangent bundle} of a manifold $\M$ is the set:
 \begin{equation*}
 T\M = \{ (x,v):\, x\in \M\text{ and }v\in T_x\M \}.
 \end{equation*}
 The projection $\mapping{\pi}{T\M}{\M}$ extracts the foot of a tangent vector, i.e., $\pi(x,v) = x$.
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 For any manifold $\M$ of dimension $d$, the tangent bundle $T\M$ is itself a manifold of dimension $2d$, in such a way that the projection $\mapping{\pi}{T\M}{\M}$ is smooth.
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 Given manifolds $\M$ and $\N$, the \highlight{differential} of a smooth map $\mapping{F}{\M}{\N}$ at $x$ is a linear operator $\mapping{DF(x)}{T_x\M}{T_{F(x)\N}}$ defined by:
 \begin{equation*}
 DF(x)[v] = [t\mapsto F(c(t))],
 \end{equation*}
 where $c$ is a smooth curve on $\M$ passing through $x$ at $t = 0,$ such that $v = [c]$.
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 Consider a smooth map $\mapping{F}{\M}{\N}$ and its differential $\mapping{DF}{T\M}{T\N}$ defined by $DF(x,v) = DF(x)[v]$. With the natural smooth structures on $T\M$ and $T\N$, the map $DF$ is smooth.
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 A \highlight{vector field} $V$ is a map from $\M$ to $T\M$ such that $\pi\circ V$ is the identity map. The set of all smooth vector fields on $\M$ are denoted by $\mathfrak{X}(\M)$.
-\end{mydef}
+\end{definition}
 
 Let $V$ be a vector field on $\M$. We define the action of $V$ on a smooth function $f\in \mathcal{F}(U)$ with $U$ open in $\M$ as the function $\mapping{Vf}{U}{\R}$ defined by $(Vf)(x) = Df(x)[V(x)].$
 
-\begin{prop}
+\begin{proposition}
 Let $V$ be a vector field on $\M$. Then the following statements are equivalent:
 \begin{enumerate}[(a)]
     \item $V$ is smooth.
     \item For every chart $(U,\varphi)$ of $\M$, the map $x\mapsto \theta_x^\varphi(V(x))$ is smooth on $U$.
     \item $Vf$ is smooth for all $f\in \mathcal{F}(U)$.
 \end{enumerate}
-\end{prop}
+\end{proposition}
 
-\begin{mydef}\label{def:retraction}
+\begin{definition}\label{def:retraction}
 A \highlight{retraction} on $\M$ is a smooth map $\mapping{R}{T\M}{\M}$ with the following properties. For each $x\in \M$, let $\mapping{R_x}{T_x\M}{\M}$ be the restriction of $R$ at $x$, so that $R_x(v) = R(x,v)$. Then,
 \begin{enumerate}[(a)]
     \item $R_x(0) = 0$, and
     \item $\dfrac{d}{dt}\bigvert{R_x(tv)}{t = 0} = v,$ for all $v\in T_x\M$ or equivalently, $DR_x(0) = Id_{T_x\M}$.
 \end{enumerate}
-\end{mydef}
+\end{definition}
 
-\begin{mydef}
+\begin{definition}
 An inner product on $T_x\M$ is a bilinear, symmetric, positive definite function $\mapping{\innerproduct{\cdot}{\cdot}_x}{T_x\M\times T_x\M}{\R}$. It induces a norm for the tangent vectors: $\|u\|_x = \sqrt{\innerproduct{u}{u}_x}$. A \highlight{metric} on $\M$ is a choice of inner product $\innerproduct{\cdot}{\cdot}_x$ for each $x\in \M$. 
-\end{mydef}
+\end{definition}
 
-\begin{mydef}
+\begin{definition}
 A metric $\innerproduct{\cdot}{\cdot}_x$ on $\M$ is a \highlight{Riemannian metric} if it varies smoothly with $x$, in the sense that if $V,W$ are two smooth vector fields on $\M$ then the function $x\mapsto \innerproduct{V(x)}{W(x)}_x$ is smooth from $\M$ to $\R$. A manifold with a Riemannian metric is a \highlight{Riemannian manifold}.
-\end{mydef}
+\end{definition}
 
-\begin{mydef}
+\begin{definition}
 Let $\mapping{f}{\M}{\R}$ be a smooth function on a Riemannian manifold $\M$. The \highlight{Riemannian gradient} of $f$ is the vector field $\grad f$ on $\M$ uniquely defined by:
 \begin{equation*}
     Df(x)[v] = \innerproduct{v}{\grad f(x)}_x, \qquad \forall\,(x,v)\in T\M.
 \end{equation*}
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 For $f\in \mathcal{F}(\M)$, where $\M$ is a Riemannian manifold, $\grad f$ is smooth.
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 The \highlight{Lie bracket} of smooth vector fields $U,V\in \mathfrak{X}(\M)$ on a manifold $\M$ is a map $\mapping{[U,V]}{\mathfrak{F}(\M)}{\mathfrak{F}(\M)}$ such that $[U,V]f = U(Vf) - V(Uf)$.
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 Let $U,V\in \mathfrak{X}(M)$ on a manifold $\M$. There exists a unique smooth vector field $W$ on $\M$ such that $[U,V]f = Wf$ for all $f\in \mathfrak{F}(\M)$. We identify $[U,V]$ with that smooth vector field.
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 An \highlight{(affine) connection} on $\M$ is an operator:
 \begin{equation*}
 \mapping{\nabla}{\mathfrak{X}(\M)\times \mathfrak{X}(\M)}{\mathfrak{X}(\M)}: (U,V)\mapsto \nabla_V U
@@ -741,41 +741,41 @@ which satisfies the following three properties for arbitrary $U,V,W\in \mathfrak
     \item \highlight{Leibniz rule}: $\nabla_U (fV) = (Uf)V + f\nabla_U V$.
 \end{enumerate}
 The field $\nabla_U V$ is the \highlight{covariant derivative} of $V$ along $U$ with respect to $\nabla$. 
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 On a Riemannian manifold $\M$, there exists a unique connection $\nabla$ which satisfied two additional properties for all $U,V,W\in\mathfrak{X}(\M)$:
 \begin{enumerate}[(d)]
     \item \highlight{Symmetry}: $[U,V] = \nabla_U V - \nabla_V U$; and
     \item \highlight{Compatibility with the metric}: $U\innerproduct{V}{W} = \innerproduct{\nabla_U V}{W} + \innerproduct{V}{\nabla_U W}$.
 \end{enumerate}
 This connection is called the \highlight{Levi-Civita} or \highlight{Riemannian connection}.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 For any connection $\nabla$ and smooth vector fields $U, V$ on manifold $\M$, the vector field $\nabla_U V$ at $x$ depends on $U$ only through $U(x)$. Thus, we can write $\nabla_u V$ to mean $(\nabla_U V)(x)$ for any $U\in\mathfrak{X}(\M)$ such that $U(x) = u$, without ambiguity.
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 Let $\M$ be a Riemannian manifold with its Riemannian connection $\nabla$. The \highlight{Riemannian Hessian} of $f\in \mathfrak{F}(\M)$ at $x\in\M$ is a linear operator $\mapping{\hess f(x)}{T_x\M}{T_x\M}$ defined as follows:
 \begin{equation*}
     \hess f(x)[u] = \nabla_u \grad f.
 \end{equation*}
 Equivalently, $\hess f$ maps $\mathfrak{X}(\M)$ to $\mathfrak{X}(\M)$ as $\hess f[U] = \nabla_U\grad f$.
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 The Rimennian Hessian is self-adjoint w.r.t. the Riemannian metric. That is, for all $x\in \M$ and $u,v\in T_x\M$,
 \begin{equation*}
 \innerproduct{\hess f(x)[u]}{v}_x = \innerproduct{u}{\hess f(x)[v]}_x.
 \end{equation*}
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 Given a smooth curve $\mapping{c}{I}{\M}$ on a manifold $\M$, the map $\mapping{Z}{I}{T\M}$ is a \highlight{smooth vector field on \bsdnn{c}} if $Z(t)$ is in $T_{c(t)}\M$ for all $t\in I$, and if it is smooth as a map from $I$ (open in $\R$) to $T\M$. The set of smooth vector fields on $c$ is denoted by $\mathfrak{X}(c)$.
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 Let $\mapping{c}{I}{\M}$ be a smooth curve on a manifold equipped with a connection $\nabla$. There exists a unique operator $\mapping{\dfrac{D}{dt}}{\mathfrak{X}(c)}{\mathfrak{X}(c)}$ satisfying these three properties for all $Y,Z\in\mathfrak{X}(c)$, $U\in\mathfrak{X}(\M)$, $g\in \mathfrak{F}(I)$, and $a,b\in\R$:
 \begin{enumerate}[(a)]
     \item \highlight{$\R$-linearity}: $\dfrac{D}{dt}(aY+bZ) = a\dfrac{D}{dt}Y+b\dfrac{D}{dt}Z$;
@@ -787,14 +787,14 @@ This operator is called the \highlight{induced covariant derivative}. Furthermor
     \item \highlight{Product rule}: $\dfrac{d}{dt}\innerproduct{Y}{Z} = \bigg\langle{\dfrac{D}{dt}Y},{Z}\bigg\rangle+\bigg\langle{Y},{\dfrac{D}{dt}}Z\bigg\rangle$,
 \end{enumerate}
 where $\innerproduct{Y}{Z}\in\mathfrak{F}(I)$ is defined by $\innerproduct{Y}{Z}(t) = \innerproduct{Y(t)}{Z(t)}_{c(t)}$.
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 Let $\mapping{c}{I}{\M}$ be a smooth curve on a manifold $\M$. The \highlight{velocity} of $c$ is a smooth vector field on $c$ defined for all $t\in I$ by $c'(t) = [\tau \mapsto c(t+\tau)]$,
 where the brackets on the right-hand side take the equivalence class of the shifted. The \highlight{acceleration} of $c$ is a smooth vector field on $c$ defined as the covariant derivative of the velocity $c'' = \dfrac{D}{dt}c'$. A \highlight{geodesic} is a smooth curve $\mapping{c}{I}{\M}$ such that $c''(t) = 0$ for all $t\in I$.
-\end{mydef}
+\end{definition}
 
-\begin{mydef}\label{def:vector_transport}
+\begin{definition}\label{def:vector_transport}
 A \highlight{vector transport} on a manifold $\M$ is a smooth mapping
 \begin{equation*}
 T\M\oplus T\M\rightarrow T\M :\,(\eta_x,\xi_x)\mapsto \vectransport_{\xi_x}(\eta_x)\in T\M
@@ -805,20 +805,20 @@ satisfying the following properties for all $x\in \M$:
     \item (Consistency). $\vectransport_0(\xi_x) = \xi_x$ for all $\xi_x\in T_x\M$.
     \item (Linearity). $\vectransport_{\eta_x}(a\xi_x+b\zeta_x) = a\vectransport_{\eta_x}(\xi_x)+b\vectransport_{\eta_x}(\zeta_x)$.
 \end{enumerate}
-\end{mydef}
+\end{definition}
 
-\begin{prop}\label{prop:vector_transport_diff_retraction}
+\begin{proposition}\label{prop:vector_transport_diff_retraction}
 Let $\M$ be a manifold endowed with a retraction $R$. Then a vector transport on $\M$ is defined by 
 \begin{equation}
 \vectransport_{\eta_x}(\xi_x) := DR_x(\eta_x)[\xi_x] = \dfrac{d}{dt} \bigvert{R_x(\eta_x+t\xi_x)}{t=0}.
 \end{equation}
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 Suppose $\M$ and $\N$ are manifolds. Given a smooth map $\mapping{F}{\M}{\N}$ and a point $x\in \M$, we define the \highlight{rank of \bsdnn{F} at \bsdnn{x}} to be the rank of the linear map $\mapping{DF(x)}{T_x\M}{T_{F(x)}\N}$. If $F$ has the same rank $r$ at every point, we say that it has \highlight{constant rank}, and write rank$\,F = r$. We say $F$ is a \highlight{submersion} if its differential is surjective at each point in the domain (or equivalently, if rank$\,F =$ dim$\,\N$). It is called an \highlight{immersion} if its differential is injective at each point (equivalently, rank$\,F = $ dim$\,\M$).
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 Suppose $\M$ and $\N$ are manifolds of dimension $m$ and $n$, respectively and $\mapping{F}{\M}{\N}$ is a smooth map with constant rank $r$. For each $x\in \M$ there exists charts $(U,\varphi)$ of $x$ for $\M$ and $(V,\psi)$ of $F(x)$ for $\N$ such that $F(U)\subseteq V$, in which $F$ has a coordinate representation of the form
 \begin{equation*}
 \hat{F}(x^1,\ldots,x^r,x^{r+1},\ldots,x^m) = (x^1,\ldots,x^r,0,\ldots,0).
@@ -831,25 +831,25 @@ and if $F$ is an immersion, it is
 \begin{equation*}
 \hat{F}(x^1,\ldots,x^m) = (x^1,\ldots,x^m,0,\ldots, 0).
 \end{equation*}
-\end{prop}
+\end{proposition}
 
 \subsubsection{Embedded submanifolds}
 
-\begin{mydef}
+\begin{definition}
 Consider two manifolds $\M,\bar{\M}$ such that $\M\subseteq \bar{\M}$. If the inclusion map $\mapping{\iota}{\M}{\bar{\M}}$ is smooth with constant rank $dim\,\M$ for all $x\in \M$, we say that $\M$ is an \highlight{submanifold} of $\bar{\M}$. If in addition, the atlas topology on $\M$ coincides with the subspace topology of $\M$, then $\M$ is called an \highlight{embedded submanifold} of $\bar{\M}$, while $\bar{\M}$ is called the \highlight{ambient} or \highlight{embedding space}.
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 A subset $\M$ of a manifold $\bar{\M}$ is an embedded submanifold of $\bar{\M}$ iff either of the following holds:
 \begin{enumerate}[(a)]
     \item $\M$ is an open subset of $\bar{\M}$. Then, we also call $\M$ an \highlight{open submanifold} and $dim\,\M = dim\,\bar{\M}$.
     \item For a fixed integer $k\ge 1$ and for each $x\in \M$ there exists a neighborhood $\bar{U}$ of $x$ in $\bar{\M}$ and a smooth function $\mapping{h}{\bar{U}}{\R^k}$ such that $h^{-1}(0) = \M\cap \bar{U}$ and rank of $h$ at $x$ or $rank\,Dh(x) = k$. Then, $dim\,\M = dim\,\bar{\M} - k$ and $h$ is called a \highlight{local defining function}. The tangent spaces of $\M$ are $T_x\M = ker\,Dh(x)\subseteq T_x\bar{\M}$.
 \end{enumerate}
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 If $\M$ and $\N$ are manifolds and $\mapping{\Phi}{\M}{\N}$ is a smooth map. Then a point $x\in \M$ is said to be a \highlight{regular point} of $h$ if $h$ is a rank$\,\Phi$ at $x$ is $dim\,\N$, i.e., $D\Phi(x)$ is surjective. A point $c\in \N$ is called a \highlight{regular value} of $\Phi$ if every point of the level set $\Phi^{-1}(c)$ is a regular point, equivalently, for each $x\in \Phi^{-1}(c)$, LICQ holds at $x$.
-\end{mydef}
+\end{definition}
 
 \begin{corollary}[\highlight{Submersion Theorem}] \label{prop:submersion_theorem}
 Let $\mapping{h}{\bar{\M}}{\N}$ be a smooth map and $c\in \N$ is a regular value of $h$. Then $\M = h^{-1}(c)$ is a closed embedded submanifold of $\bar{\M}$ with dimension $dim\,\M  = dim\bar{\M}-dim\,\N$, and $T_x\M = ker\,Dh(x)$.
@@ -859,53 +859,53 @@ Let $\mapping{h}{\bar{\M}}{\N}$ be a smooth map and $c\in \N$ is a regular value
 Let $\mapping{h}{\bar{\M}}{\N}$ be a smooth map and $\M = h^{-1}(c)$ be a nonempty. If $h$ has constant rank $r$ for all $x$ in a neighborhood of $\M$, then $\M$ is a closed embedded submanifold of $\bar{\M}$ with dimension $dim\,\M  = dim\bar{\M}-r$, and $T_x\M = ker\,Dh(x)$.
 \end{corollary}
 
-% \begin{prop} 
+% \begin{proposition} 
 % Let $p$ be a regular value of $h$. Then the level set 
 % \begin{equation*}
 % \M = h^{-1}(p) = \{ x\in\R^n:\,h(x) = p \}
 % \end{equation*}
 % is a closed $d$-dimensional submanifold of $\R^n$, where $d = n-p$, with tangent space given by $T_x\M = ker(\nabla h(x)^T)$.
-% \end{prop}
+% \end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\bar{\M}, \N$ be manifolds and $\M$ be an embedded submanifold of $\bar{\M}$. If $\mapping{\bar{F}}{\bar{\M}}{\N}$ is smooth (at $x\in \M$), then the restriction $F = \bigvert{\bar{F}}{\M}$ is smooth (at $x$). Conversely, if $\mapping{F}{\M}{\N}$ is smooth at $x$, then there exists a neighborhood $\bar{U}$ of $x$ in $\bar{\M}$ and a smooth map $\mapping{\bar{F}}{\bar{U}}{\N}$ such that $\bar{F}(y) = F(y)$ for all $y\in \M\cap \bar{U}$. If $F$ is smooth, then there exists a neighborhood $\bar{U}$ of $\M$ in $\bar{\M}$ and a smooth map $\mapping{\bar{F}}{\bar{U}}{\N}$ such that $F = \bigvert{\bar{F}}{\M}$. Such maps $\bar{F}$ are called \highlight{smooth extensions} of $F$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\bar{\M}, \N$ be manifolds and $\M$ be an embedded submanifold of $\bar{\M}$. A map $\mapping{F}{\N}{\M}$ is smooth (at x) iff $\mapping{\bar{F}}{\N}{\bar{\M}}$, defined by $\bar{F(y)} = F(y)$ for all $y\in \N$, is smooth (at $x$).
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\innerproduct{\cdot}{\cdot}$ be the Riemannian metric on Riemannian manifold $\bar{\M}$ and $\M$ be an embedded submanifold of $\bar{\M}$. Then the metric on $\M$ defined at each $x$ by restriction, $\innerproduct{u}{v}_x = \innerproduct{u}{v}$, for $u, v \in T_x\M$, is a \highlight{Riemannian metric}. Thus $\M$ is a \highlight{Riemannian submanifold} of $\bar{\M}$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\M$ be a level set of $\mapping{h}{\R^n}{\R^m}$ such that it is an embedded submanifold of $\R^n$. The map $\mapping{\Proj_x}{\R^n}{T_x\M}$ defined as 
 \begin{equation*}
 \Proj_x = I - \nabla h(x)(\nabla h(x)^T\nabla h(x))^{-1}\nabla h(x)^T    
 \end{equation*}
 is the orthogonal projector onto the tangent space $T_x\M$ at $x\in \M$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\M$ be a Riemannian submanifold of a Euclidean space $\mathcal{E}$ and $\M$ is endowed with a retraction $R$, then a vector transport on $\M$ is defined by 
 \begin{equation}
 \vectransport_{\eta_x}(\xi_x) := \Proj_{R_x(\eta_x)}(\xi_x),
 \end{equation}
 where $\Proj_x$ denotes the orthogonal projector onto $T_x\M$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\M$ be a Riemannian submanifold of $\R^n$ and let $\mapping{f}{\M}{\R}$ be a smooth function. The \highlight{Riemannian
 gradient of \bsdnn{f}} is given by $\grad f(x) = \Proj_x(\nabla \bar{f}(x))$, where $\bar{f}$ is any smooth extension of $f$ to a neighborhood of $\M$ in $\R^n$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\M$ be a Riemannian submanifold of $\R^n$. Consider a smooth function $\mapping{f}{\M}{\R}$, and let $\bar{G}$ be a smooth extension of $\grad f$. The \highlight{Riemannian Hessian of \bsdnn{f}} at $x \in\M$ is a linear operator $\mapping{\hess f(x)}{T_x\M}{T_x\M}$ defined as follows:
 \begin{equation*}
 \hess f(x)[u] = \Proj_x(D\bar{G}(x)[u]), \;\;u\in T_x\M.
 \end{equation*}
-\end{prop}
+\end{proposition}
 
 \subsubsection{Quotient Manifolds}
 
@@ -918,38 +918,38 @@ be the resulting quotient set. The \highlight{canonical projection} or \highligh
     \mapping{\pi}{\bar{\M}}{\M}:\,x\mapsto \pi(x) = [x].
 \end{equation*}
 
-\begin{mydef}
+\begin{definition}
 The quotient set $\M$ inherits a topology from $\bar{\M}$ called the \highlight{quotient topology}, turning $\M$ into a \highlight{quotient space}. The topology is defined as follows:
 \begin{equation*}
 U\subseteq \M \text{ is open } \Longleftrightarrow \pi^{-1}(U)\text{ is open in }\bar{\M}.
 \end{equation*}
-\end{mydef}
+\end{definition}
 
-\begin{mydef}
+\begin{definition}
 The quotient set $\M = \bar{\M}/\sim$ equipped with a smooth structure is a \highlight{quotient manifold} of $\bar{\M}$ if the projection $\pi$ is a smooth submersion.
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 Let $\M = \bar{\M}/\sim$ be a quotient manifold. For any $x\in \bar{\M}$, the equivalence class $\mathcal{F} = \pi^{-1}(\pi(x))$, also called a \highlight{fiber}, is a closed embedded submanifold of $\bar{\M}$. Its tangent spaces are given by
 \begin{equation*}
 T_y\mathcal{F} = ker\,D\pi(y)\subseteq T_y\bar{\M}.
 \end{equation*}
 In particular, $dim\,\mathcal{F} = dim\,\bar{\M}-dim\,\M$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Given a quotient manifold $\M = \bar{\M}/\sim$ with the canonical projection $\pi$ and any manifold $\N$, a map $\mapping{F}{\M}{\N}$ is smooth iff $\mapping{\bar{F}}{\bar{\M}}{\N}$ is smooth.
-\end{prop}
+\end{proposition}
 
-% \begin{prop}
+% \begin{proposition}
 % For any $x\in \bar{\M}$ there exists a neighborhood $U$ of $[x]$ on the quotient manifold $\M = \bar{\M}/\sim$ and a smooth map $\mapping{\sigma}{U}{\bar{\M}}$ (called a local section) such that $\pi\circ \sigma = Id_U$ and $\sigma([x]) = x$, i.e., $\sigma$ is the smooth right inverse for $\pi$ on $U$.
-% \end{prop}
+% \end{proposition}
 
-\begin{prop}
+\begin{proposition}
 Let $\mapping{\bar{F}}{\N}{\bar{\M}}$ be a map from one manifold into another, and let $\M = \bar{\M}/\sim$ be a quotient manifold with the projection $\pi$. If $\bar{F}$ is smooth, then $F = \mapping{\pi\circ \bar{F}}{\N}{\M}$ is smooth. Conversely, if $\mapping{F}{\N}{\M}$ is smooth, then for all $[x]\in \M$ there exists a neighborhood $U$ of $[x]$ such that $\bigvert{F}{F^{-1}(U)} = \pi\circ \bar{F}$ for some smooth map $\mapping{\bar{F}}{F^{-1}(U)}{\bar{\M}}$. 
-\end{prop}
+\end{proposition}
 
-\begin{mydef}
+\begin{definition}
 For a quotient manifold $\M = \bar{\M}/\sim$, the \highlight{vertical space} at $x\in\bar{\M}$ is the subspace
 \begin{equation*}
     V_x = T_x\mathcal{F} = ker\,D\pi(x),
@@ -959,11 +959,11 @@ where $\mathcal{F} = \pi^{-1}(\pi(x))\subseteq \bar{\M}$ is the fiber of $x$. If
 H_x = (V_x)^\perp  = \{u\in T_x\bar{\M}:\, \innerproduct{u}{v}_x = 0\text{ for all }v\in V_x\}.
 \end{equation*}
 Then, $T_x\bar{\M} = V_x\oplus H_x$ is a direct sum of linear spaces.
-\end{mydef}
+\end{definition}
 
 For $x\in \bar{\M}$, the vertical space $V_x$ can also be seen as the set of tangent vectors, movements along which keep $x$ in its equivalence class or fiber. And the horizontal space $H_x$ can also be seen as the set of tangent vectors, movements along which move $x$ across equivalence classes or fibers.
 
-\begin{mydef}
+\begin{definition}
 Consider a point $x\in \bar{\M}$ and a tangent vector $\boldsymbol\xi\in T_{[x]}\M$. The \highlight{horizontal lift} (or simply lift) of $\boldsymbol\xi$ at $x$ is the (unique) horizontal vector $u\in H_x$ such that $D\pi(x)[u] = \boldsymbol\xi$. We write
 \begin{equation*}
     u = (\bigvert{D\pi(x)}{H_x})^{-1}[\boldsymbol\xi] = \lift_x(\boldsymbol\xi).
@@ -973,7 +973,7 @@ We have the following compositions:
 D\pi(x)\circ \lift_x = Id\qquad\text{and}\qquad \lift_x\circ D\pi(x) = \Proj_x^H,
 \end{equation*}
 where $\Proj_x^H$ is the orthogonal projector from $T_x\bar{\M}$ to $H_x$.
-\end{mydef}
+\end{definition}
 
 \begin{remark}
 It should be noted that the horizontal lift depends on the point at which the vector is lifted, but there is no ambiguity as to which abstract tangent vector it represents. Specifically, for a tangent vector $\boldsymbol\xi\in T_{[x]}\M$, if $x\sim y$, we may consider horizontal lifts $u_x\in H_x$ and $u_y\in H_y$. While $u_x$ and $u_y$ are generally different objects, they represent the same tangent vector of $\M$:
@@ -984,30 +984,30 @@ It should be noted that the horizontal lift depends on the point at which the ve
 
 We can relate the vector fields on $\M$ to \highlight{horizontal vector fields}, i.e., vector fields on $\bar{\M}$ whose tangent vectors are horizontal.
 
-\begin{mydef}
+\begin{definition}
 Let $\mapping{V}{\M}{T\M}$ be a vector field on a quotient manifold $\M = \bar{\M}/\sim$. The \highlight{horizontal lift} of $V$ is a (unqiue) horizontal vector field $\bar{V}$ on $\bar{\M}$ defined by 
 \begin{equation*}
 \bar{V}(x) = \lift_x(V([x]))\text{ or compactly as } \bar{V} = \lift(V).
 \end{equation*}
-\end{mydef}
+\end{definition}
 
-\begin{prop}
+\begin{proposition}
 A vector field $V$ on a quotient manifold $\M = \bar{\M}/\sim$ with canonical projection $\pi$ is related to its horizontal lift $\bar{V}$ by:
 \begin{equation*}
 V\circ \pi = D\pi\circ \bar{V}.
 \end{equation*}
 Furthermore, $V$ is smooth on $\M$ iff $\bar{V}$ is smooth on $\bar{\M}$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 For a quotient manifold $\M = \bar{\M}/\sim$ with canonical projection $\pi$, consider $V\in \mathfrak{X}(\M)$ and $f\in\mathfrak{F}(\M)$ together with their lifts $\bar{V}\in\mathfrak{X}(\bar{\M})$ and $\bar{f}\in\mathfrak{F}(\bar{\M})$. Then, the lift of $Vf$ is $\bar{V}\bar{f}$, i.e., 
 \begin{equation*}
 (Vf)\circ \pi = \bar{V}\bar{f}.
 \end{equation*}
 In words: we may lift then act, or act then lift.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 If the retraction $\bar{R}$ on the total space $\bar{\M}$ satisfies
 \begin{equation*}
 x\sim y\implies \bar{R}_x(\lift_x(\boldsymbol\xi)) = \bar{R}_y(\lift_y(\boldsymbol\xi))
@@ -1016,9 +1016,9 @@ for all $([x],\boldsymbol\xi)\in T\M$, then the following map defines a retracti
 \begin{equation*}
 R_{[x]}(\boldsymbol\xi) = [\bar{R}_x(\lift_x(\boldsymbol\xi))].
 \end{equation*}
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 If the Riemannian metric on $\bar{\M}$ satisfies
 \begin{equation*}
 x\sim y\implies \innerproduct{\lift_x(\boldsymbol\xi)}{\lift_x(\boldsymbol\zeta)}_x = \innerproduct{\lift_y(\boldsymbol\xi)}{\lift_y(\boldsymbol\zeta)}_y
@@ -1028,43 +1028,43 @@ for all $\boldsymbol\xi,\boldsymbol\zeta\in T_{[x]}\M$. Then the Riemannian metr
 \innerproduct{\boldsymbol\xi}{\boldsymbol\zeta}_{[x]} = \innerproduct{\lift_x(\boldsymbol\xi)}{\lift_x(\boldsymbol\zeta)}_x.
 \end{equation*}
 With this metric, $\M$ is called a \highlight{Riemannian quotient manifold} of $\bar{\M}$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}
+\begin{proposition}
 The Riemannian gradient of $f\in\mathfrak{F}(\M)$ on a Riemannian quotient manifold $\M$ is related to the Riemannian gradient of the lifted function $\bar{f} = f\circ \pi$ on the total space for all $x\in \bar{\M}$ through
 \begin{equation*}
 \lift_x(\grad f([x])) = \grad \bar{f}(x).
 \end{equation*}
-\end{prop}
+\end{proposition}
 
 \subsection{Riemannian Optimization}
 
-\begin{prop}[\highlight{Second-order Necessary Conditions}]
+\begin{proposition}[\highlight{Second-order Necessary Conditions}]
 Consider a smooth function $\mapping{f}{\M}{\R}$ defined on a Riemannian manifold $\M$. If $x$ is a local (or global) minimizer of $f$, then $\grad f(x) = 0$ and $\hess f(x) \succeq 0$.
-\end{prop}
+\end{proposition}
 
-\begin{prop}[\highlight{Second-order Sufficient Conditions}]
+\begin{proposition}[\highlight{Second-order Sufficient Conditions}]
 Consider a smooth function $\mapping{f}{\M}{\R}$ defined on a Riemannian manifold $\M$. If $\grad f(x) = 0$ and $\hess f(x) \succ 0$, then $x$ is a strict local (or global) minimizer of $f$.
-\end{prop}
+\end{proposition}
 
 \begin{remark}[\highlight{Second-order Necessary and Sufficient Conditions}]\label{remark:second_order_optimality_conditions}
 A point $x^*\in \M$ is a strict local minimizer of a smooth function $\mapping{f}{\M}{\R}$ defined on a Riemannian manifold $\M$ iff $\grad f(x) = 0$ and $\hess f(x) \succ 0$.
 \end{remark}
 
-\begin{mydef}[\highlight{Gradient-related sequence}]
+\begin{definition}[\highlight{Gradient-related sequence}]
 Given a cost function $f$ on a Riemannian manifold $\M$, a sequence $(\eta_k), \eta_k\in T_{x_k}\M$, is \highlight{gradient-related} if, for any subsequence $(x_k)_{k\in\mathcal{K}}$ of $(x_k)$ that converges to a non-critical point of $f$, the corresponding subsequence $(\eta_k)_{k\in\mathcal{K}}$ is bounded and satisfies
 \begin{equation*}
 \underset{k\rightarrow \infty,k\in\mathcal{K}}{\;\;Lt\;sup} \innerproduct{\grad f(x_k)}{\eta_k} < 0.
 \end{equation*}
-\end{mydef}
+\end{definition}
 
-\begin{mydef}[\highlight{Armijo point}]
+\begin{definition}[\highlight{Armijo point}]
 Given a cost function $f$ on a Riemannian manifold $\M$ with retraction $R$, a point $x\in \M$, a tangent vector $\eta\in T_x\M$, and scalars $\bar{\alpha}>0,\beta,\sigma\in (0,1)$, the \highlight{Armijo point} is $\eta_A = t^A\eta = \beta^m\bar{\alpha}\eta$, where $m$ is the smallest nonnegative integer such that 
 \begin{equation*}
 f(x) - f(R_x(\beta^m\bar{\alpha}\eta)) \ge -\sigma\innerproduct{\grad f(x)}{\beta^m\bar{\alpha}\eta}.
 \end{equation*}
 The real number $t^A$ is the \highlight{Armijo step size}.
-\end{mydef}
+\end{definition}
 
 \begin{algorithm}
     \centering
@@ -1083,9 +1083,9 @@ The real number $t^A$ is the \highlight{Armijo step size}.
     \end{algorithmic}
 \end{algorithm}
 
-\begin{prop}[\highlight{Convergence of ALS}]
+\begin{proposition}[\highlight{Convergence of ALS}]
 Let $(x_k)$ be an infinite sequence of iterates generated by Algo. \ref{algo:ALS}. Then every accumulation point of $\{x_k\}$ is a critical point of the cost function $f$.
-\end{prop}
+\end{proposition}
 
 \begin{corollary}
 Let $(x_k)$ be an infinite sequence of iterates generated by Algo. \ref{algo:ALS}. Assume that the level set $\mathcal{L} = \{x\in\M:\,f(x)\le f(x_0)\}$ is compact (which holds in particular when $\M$ itself is compact). Then 
@@ -1099,32 +1099,32 @@ Let $F^{(n)}$ denote the result of $n$ applications of the map $F$ to $x$, i.e.,
     F^{(1)}(x) = F(x),\qquad F^{(i+1)}(x) = F(F^{(i)}(x)), i = 1,2,\ldots.
 \end{equation*}
 
-\begin{mydef}
+\begin{definition}
 Let $\mapping{F}{\M}{\M}$ be a mapping. A point $x^*\in\M$ is a \highlight{fixed point} of $F$ if $F(x^*) = x^*$.
-\end{mydef}
+\end{definition}
 
-\begin{mydef}
+\begin{definition}
 A fixed point $x^*$ is a \highlight{stable point} of $\mapping{F}{\M}{\M}$ if, for every neighborhood $\mathcal{U}$ of $x^*$, there exists a neighborhood $\mathcal{V}$ of $x^*$ such that, for all $x\in\mathcal{V}$ and all positive integer $n$, it holds that $F^{(n)}\in \mathcal{U}$. 
-\end{mydef}
+\end{definition}
 
-\begin{mydef}
+\begin{definition}
 The fixed point $x^*$ is \highlight{asymptotically stable} of $\mapping{F}{\M}{\M}$ if it is a stable, and, moreover, $\underset{k\rightarrow\infty}{Lt}F^{(k)} = x^*$ for all sufficiently close to $x^*$. 
-\end{mydef}
+\end{definition}
 
-\begin{mydef}
+\begin{definition}
 The fixed point $x^*$ is \highlight{unstable} of $\mapping{F}{\M}{\M}$ if it is not stable; in other words, there exists a neighborhood $\mathcal{U}$ of $x^*$ such that, for all neighborhoods $\mathcal{V}$ of $x^*$, there is a point $x\in \mathcal{V}$ such that $F^{(n)}\notin \mathcal{U}$ for some $n$.
-\end{mydef}
+\end{definition}
 
-\begin{mydef}
+\begin{definition}
 We say that $F$ is a \highlight{descent mapping} for a cost function $f$ if 
 \begin{equation*}
 f(F(x))\le f(x),\;\forall\,x\in\M.
 \end{equation*}
-\end{mydef}
+\end{definition}
 
-\begin{prop}[\highlight{Unstable fixed points}] \label{prop:unstable_fixed_points}
+\begin{proposition}[\highlight{Unstable fixed points}] \label{prop:unstable_fixed_points}
 Let $\mapping{F}{\M}{\M}$ be a descent mapping for a smooth cost function $f$ and assume that for every $x\in \M$, all the accumulation points of $\{F^{(k)}(x)\}_{k = 1,2,\ldots}$ are critical points of $f$. Let $x^*$ be a fixed point of $F$ (thus $x^*$ is a critical point of $f$ because $x^*$ is an accumulation point of $\{F^{(k)}(x^*)\} = \{x^*\}$). Assume that $x^*$ is not a local minimum of $f$. Further assume that there is a compact neighborhood $\mathcal{U}$ of $x^*$ where, for every critical point $y$ of $f$ in $\mathcal{U}$, $f(y) = f(x^*)$. Then $x^*$ is an unstable point for $F$.
-\end{prop}
+\end{proposition}
 
 \begin{remark}
 The conditions on $F$ in Prop. \ref{prop:unstable_fixed_points} are satisfied by any method in the class of Algo. \ref{algo:ALS}. As for the conditions on the critical points of $f$, it holds for example when $f$ is real analytic by Lojasiewicz inequality (Prop. \ref{prop:Lojasiewicz_inequality}). For a critical point $x^*$ of $f$, there exists a neighborhood $V$ of $x^*$, and constants $\mu\in[0,1)$ and $c>0$ such that for all $x\in V$
@@ -1137,9 +1137,9 @@ Since $V\subseteq \R^n$, there exists an open ball $\bb_{x^*}(r)\subseteq V$ for
 \end{equation*}
 \end{remark}
 
-\begin{prop}[\highlight{Capture Theorem}] \label{prop:capture_theorem}
+\begin{proposition}[\highlight{Capture Theorem}] \label{prop:capture_theorem}
 Let $\mapping{F}{\M}{\M}$ be a descent mapping for a smooth cost function $f$ and assume that for every $x\in \M$, all the accumulation points of $\{F^{(k)}(x)\}_{k = 1,2,\ldots}$ are critical points of $f$. Let $x^*$ be a local minimizer and an isolated critical point of $f$. Assume further that $\underset{x\rightarrow x^*}{Lt} dist(F(x),x) = 0$. Then $x^*$ is an asymptotically stable point of $F$.
-\end{prop}
+\end{proposition}
 
 \begin{remark}
 The additional condition on $dist(F(x),x)$ is Prop. \ref{prop:capture_theorem} is not satisfied by every instance of Algo. \ref{algo:ALS} because the line-search framework in Line 4 does not put any restriction on the step length. The distance condition is satisfied, for example, when $\eta_k$ is selected such that $\|\eta_k\|\le c\|\grad f(x_k)\|$ for some constant $c$ and $x_{k+1}$ is selected as the Armijo point.
@@ -1154,7 +1154,7 @@ For a SPD matrix $B\in \R^{n\times n}$, we denote by $\genst$ the \highlight{gen
 
 \subsubsection{Metric Independent Notions}
 
-\begin{prop}
+\begin{proposition}
 The generalized Stiefel manifold $\genst$ is an embedded submanifold of $\realmat{n}{p}$ of dimension $np-p(p+1)/2$. The tangent space at $X\in \genst$ is given by 
 \begin{align}\label{eqn:tangent_space_genst_1}
 T_X\genst &= \{Z\in\realmat{n}{p}:\,Z^TBX + X^TBZ = 0\}.
@@ -1164,7 +1164,7 @@ An equivalent formulation of the tangent space is
 T_X\genst &= \{X\Omega + \XperpB K:\, \Omega \in \Skew,K\in\realmat{(n-p)}{p}\},
 \end{align}
 where $\XperpB$ satisfies the relations: $\XperpB^TB\XperpB = I_{n-p}$, and $\XperpB^T BX = 0$.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 Consider the mapping $\mapping{F}{\realmat{n}{p}}{\Sym}$ defined by $F(X) = X^TBX - I_p$ such that $\genst = F^{-1}(0)$. We show that $0$ is a regular value of $F$. We compute the directional derivative of $F$ at $X$ in the direction of $Z\in\realmat{n}{p}$
@@ -1191,13 +1191,13 @@ Every $Z\in\realmat{n}{p}$ can be represented as $Z = X\Omega+\XperpB K$ for arb
 This shows that $T_X\genst\subseteq S$. Note that $S$ is a subspace of $\realmat{n}{p}$ of dimension $np-p(p+1)/2$ containing a subspace of the same dimension, then $T_X\genst = S$.
 \end{proof}
 
-\begin{prop}
+\begin{proposition}
 The map $R^{\text{polar}}$ defined by 
 \begin{equation}
 \polarRetr(\xi_X) = (X+\xi_Z)(I_p + \xi_X^TB\xi_X)^{-1/2},
 \end{equation}
 is a retraction on $\genst$.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 We show that Def. \ref{def:retraction} holds for $\polarRetr$ at $X\in \genst$. We check the first condition of the definition
@@ -1248,13 +1248,13 @@ Setting $t = 0$ in the above expression, the second expression vanishes and we h
 \end{equation*}
 \end{proof}
 
-\begin{prop}
+\begin{proposition}
 The map $R^{\text{QR}}$ defined by 
 \begin{equation}
 \qrRetr(\xi_X) = B^{-1/2}qf(B^{1/2}(X+\xi_X))
 \end{equation}
 is a retraction on $\genst$, where $qf(\cdot)$ denotes the Q-factor of the QR factorization of the matrix in parentheses.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 For $X\in\genst$, we have
@@ -1279,7 +1279,7 @@ D\qrRetr(0)[\xi_X] = B^{-1/2}Dqf(B^{1/2}X)[B^{1/2}\xi_X] = B^{-1/2}B^{1/2}\xi_X 
 
 \subsubsection{Metric Dependent Notions}
 
-\begin{prop}[\highlight{Preconditioned Riemannian Metric}] \label{prop:preconditioned_metric}
+\begin{proposition}[\highlight{Preconditioned Riemannian Metric}] \label{prop:preconditioned_metric}
 The metric $\bar{g}$ on $\realmat{n}{p}$ defined for any $X\in \realmat{n}{p}$ as
 \begin{equation*}
 \bar{g}_X(\bar{\xi}_X,\bar{\eta}_X) := \innerproduct{\bar{\xi}_X}{\bar{\eta}_X}_M = Tr(\bar{\xi}_X^TM\bar{\eta}_X),
@@ -1288,19 +1288,19 @@ is a Riemannian metric on $\realmat{n}{p}$, where $M\in\realmat{n}{n}$ is some c
 \begin{equation}
 g_X(\xi_X,{\eta}_X) := \innerproduct{{\xi}_X}{{\eta}_X}_M = Tr({\xi}_X^TM{\eta}_X).
 \end{equation}
-\end{prop}
+\end{proposition}
 
 \begin{remark}
 Classically, the metric employed for the generalized Stiefel manifold corresponds to $M = B$. However, as we shall see, various operations required for Riemannian optimization require products with $M^{-1}$ which might be very costly when we use $M = B$. In such situations preconditioning $B$, such that convergence rate is preserved and $M^{-1}$ products are made efficient, can help.
 \end{remark}
 
-\begin{prop}
+\begin{proposition}
 The normal space, i.e., the orthogonal complement of the tangent space, at $X\in\genst$ is given by
 \begin{equation}
 (T_X\genst)^\perp = \{M^{-1}BXS:\, S\in\Sym \}.
 \end{equation}
 Consequently, the dimension of the normal space is $p(p+1)/2$.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 Suppose $S = \{M^{-1}BXS:\, S\in\Sym \}$ for $X\in\genst$. Then for any $\zeta\in S$ and $\eta\in T_X\genst$, i.e., $\zeta = M^{-1}BXS$ for some $S\in \Sym$ and $\eta = X\Omega+\XperpB K$ for some $\Omega\in \Skew$ and $K\in \realmat{(n-p)}{p}$. Then
@@ -1320,7 +1320,7 @@ Let $A,B\in\realmat{p}{p}$ be given. The equation $AX+XB = C$ has a unique solut
 Suppose $G =X^TX$ is the Gram matrix of $X$. Then $G\succ 0$ iff $X$ has full rank.
 \end{lemma}
 
-\begin{prop}
+\begin{proposition}
 The orthogonal projections w.r.t. $g_X$ (Prop. \ref{prop:preconditioned_metric}) on $(T_X\genst)^\perp$ and on $T_X\genst$ are:
 \begin{equation}\label{eqn:normal_projector}
 \perpProj_X(\xi) = M^{-1}BXS_{\xi}
@@ -1333,7 +1333,7 @@ where $\xi\in \realmat{n}{p}$, and $S_\xi\in \Sym$ is the solution of the follow
 \begin{equation*}
 (X^TBM^{-1}BX)S_\xi + S_\xi (X^TBM^{-1}BX) = X^TB\xi + (X^TB\xi)^T.
 \end{equation*}
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 From the representations of $T_X\genst$ and $(T_X\genst)^\perp$, we can write any vector $\xi\in \realmat{n}{p}$ in terms of unique $\Omega_\xi\in \Skew$, $K\in \realmat{(n-p)}{p}$ and $S_\xi\in \Sym$ such that
@@ -1385,12 +1385,12 @@ For the special case $M = B$, the orthogonal projections are given by
 \end{align*}
 \end{remark}
 
-\begin{prop}
+\begin{proposition}
 Let $\mapping{f}{\genst}{\R}$ be smooth function, and let $\bar{f}$ be a smooth extension of $f$ to $\realmat{n}{p}$. Then
 \begin{equation}
 \grad f(X) = \Proj_X(M^{-1}\nabla \bar{f}(X)).
 \end{equation}
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 We know that $\grad f(X) = \Proj_X(\grad\bar{f}(X))$. Note that $\grad\bar{f}(X)\neq\nabla\bar{f}(X)$ because $\bar{f}$ is defined on $\realmat{n}{p}$ endowed with a non-standard inner product. Then for any $\xi_X\in T_X\genst$
@@ -1400,7 +1400,7 @@ Tr(\grad\bar{f}(X)^TM\xi_X) = g_X(\grad\bar{f}(X), \xi_X) = D\bar{f}(X)\xi_X \ov
 where $(*)$ holds because directional derivative is independent of metric. Thus $\grad\bar{f}(X) = M^{-1}\nabla\bar{f}(X)$.
 \end{proof}
 
-\begin{prop}[\highlight{Product Manifold}]
+\begin{proposition}[\highlight{Product Manifold}]
 Let $B_1,\ldots,B_k$ be SPD matrices, where $B_i\in\realmat{n_i}{n_i}$, and denote $d = d_1+\ldots+d_k$. Suppose that on each $\igenst{i}$ the metric is defined by a constant SPD matrix $M_i$. The product manifold $\igenst{1}\times\ldots\times\igenst{k}$ is a Riemannian submanifold of $\realmat{n_1}{p}\times\ldots\times\realmat{n_k}{p}$ endowed with the product metric (sum of metric values on each product component). The product manifold $\igenst{1}\times\ldots\times\igenst{k}$ can be viewed as a Riemannian submanifold of $\realmat{n}{p}$ endowed by the metric defined by the $n\times n$ matrix
 \begin{equation*}
 M = 
@@ -1411,7 +1411,7 @@ M_1 & & \\
 \end{array}\right].
 \end{equation*}
 The tangent space of the product manifold is the product of the tangent spaces of each manifold. The retraction and vector transport, and orthogonal projection on the tangent space is stacking the operations performed separably on each manifold on top of each other. The Riemannian gradient of a smooth function $f$ on the product manifold is the orthogonal projection to the tangent spaces after pre-mulitplying by $M^{-1}$.
-\end{prop}
+\end{proposition}
 
 % \newpage
 

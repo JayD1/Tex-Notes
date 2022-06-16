@@ -1,0 +1,263 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cancel}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Real Analysis},
+    pdfpagemode=FullScreen,
+}
+
+
+\author{Jayadev Naram}
+\title{Real Analysis} 
+
+\begin{document}
+
+\date{}
+\maketitle
+\tableofcontents
+% \newpage
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{axiom}[theorem]{Axiom}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\h}{\mathcal{H}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Dist}{\mathcal{D}}
+\newcommand{\perpProj}{\mathcal{P}^\perp}
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\Sprod}{\mathbb{S}_{xy}}
+\newcommand{\highlight}[1]{\underline{\textit{\textbf{#1}}}}
+\newcommand{\mapping}[3]{#1:#2\rightarrow #3}
+\newcommand{\doubt}{\highlight{[??]}}
+% \newcommand{\bigvert}[2]{#1{\raisebox{-.5ex}{$|$}_{#2}}}
+\newcommand{\bigvert}[2]{\left.#1\right|_{#2}}
+\newcommand{\sdnn}[1]{${#1}$}
+\newcommand{\bsdnn}[1]{$\boldsymbol{#1}$}
+\newcommand{\ifthen}[2]{\textbf{(#1)}\boldsymbol{\implies}\textbf{(#2)}}
+\newcommand{\bsdn}[1]{\boldsymbol{#1}}
+\newcommand{\forward}{$(\implies)$\ }
+\newcommand{\converse}{$(\impliedby)$\ }
+\newcommand{\Lt}[1]{\underset{#1\rightarrow 0}{Lt}}
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\dparder}[2]{\dfrac{\partial #1}{\partial x_{#2}}}
+\newcommand{\fparder}[2]{\frac{\partial #1}{\partial x_{#2}}}
+\newcommand{\parder}[2]{\partial #1/\partial x_{#2}}
+\newcommand{\parop}[1]{\dfrac{\partial}{\partial x_{#1}}}
+\newcommand{\innerproduct}[2]{\langle #1, #2 \rangle}
+\newcommand{\metric}[2]{[#1, #2]}
+\newcommand{\genst}{St_B(n,p)}
+\newcommand{\igenst}[1]{St_{B_{#1}}(n_{#1},p)}
+\newcommand{\realmat}[2]{\R^{#1\times #2}}
+\newcommand{\Skew}{\mathcal{S}_{skew}(p)}
+\newcommand{\Sym}{\mathcal{S}_{sym}(p)}
+\newcommand{\XperpB}{X_{B^\perp}}
+\newcommand{\polarRetr}{R^{polar}_X}
+\newcommand{\qrRetr}{R^{QR}_X}
+\newcommand{\vectransport}{\mathcal{T}}
+\newcommand{\grad}{\text{grad}\,}
+\newcommand{\hess}{\text{Hess}\,}
+
+\section{The Real Numbers}
+
+\begin{table*}[ht]
+    \begin{center}
+    \begin{tabular}{l|l}
+    $\R$ & Set of all real numbers\\ 
+    $\mathbb{C}$ & Set of all complex numbers\\ 
+    $\mathbb{N}$ & Set of all natural numbers\\ 
+    $\mathbb{Q}$ & Set of all rational numbers\\ 
+    $\R-\mathbb{Q}$ & Set of all irrational numbers\\ 
+    \end{tabular}
+    \caption{Standard notation for various sets.}
+    \end{center}
+\end{table*}
+    
+\begin{definition}
+    A subset $A$ of $\R$ is said to be \highlight{bounded above} if there is some $x\in \R$ such that $a\le x$ for all $a\in A$. Any such number $x$ is called an \highlight{upper bound} for $A$. 
+\end{definition}
+
+\begin{axiom}[The Least Upper Bound Axiom or The Completeness Axiom]
+    Any nonempty set of real numbers with an upper bound has a least upper bound.
+\end{axiom}
+
+\begin{definition}\label{def:supremum}
+    Let $A\subseteq \R$ be a nonempty set that is bounded above. Then the \highlight{supremum} of the set, denoted by $\sup A$, is the least upper bound, i.e., $\sup A = s\in \R$ such that
+    \begin{enumerate}[(i)]
+        \item $s$ is an upper bound for $A$;
+        \item if $x$ is any upper bound for $A$, then $s\le x$.
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}
+    If $A\subseteq \R$ is unbounded above, then $\sup A = +\infty$ and if $A = \emptyset$, then $\sup A = -\infty$ as every real number is an upper bound for $A$.
+\end{remark}
+
+\begin{proposition}[Characterization of the Supremum]\label{prop:char_sup}
+    Let $A\subseteq \R$ be a nonempty set that is bounded above. Then the following statements about $s = \sup A$ are all equivalent:
+    \begin{enumerate}[(a)]
+        \item if $x$ is any upper bound for $A$, then $s\le x$;
+        \item if $y<s$, then we must have $y<a\le s$ for some $a\in A$;
+        \item for every $\varepsilon>0$, there is an $a\in A$ such that $a>s-\varepsilon$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    (a)$\implies$(b)\ Suppose for some $y<s$, there is no $a\in A$ such that $y<a\le s$. Then for all $a\in A$, we have $a\le y<s$. But then $y$ is an upper bound with $y<s$ which contradicts (a). 
+
+    \noindent(b)$\implies$(c) Consider an arbitrary $y\in\R$ such that $y<s$. Setting $\varepsilon = s-y$ and using (b) we have that there is some $a\in A$ such that $s-\varepsilon = y<a$. 
+
+    \noindent(c)$\implies$(a) Let $x$ be an upper bound for $A$, i.e., $a\le x$ for all $a\in A$ and suppose that $x<s$. By taking $\varepsilon = s-x$ and applying (c), there must be some $a\in A$, such that $s-\varepsilon = x<a$ which is a contradiction that $x$ is an upper bound for $A$. Then $s\le x$.
+\end{proof}
+
+\begin{theorem}
+    If $A$ is a nonmepty subset of $\R$ that is bounded below, then $A$ has a greatest lower bound called the \highlight{infimum} of $A$ which is denoted by $\inf A$, i.e., there is a number $m\in \R$ satisfying:
+    \begin{enumerate}[(i)]
+        \item $m$ is a lower bound for $A$;
+        \item if $x$ is a lower bound for $A$, then $x\le m$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    Conisder the set $-A = \{-a\;:\;a\in A\}$ which is bounded above as $A$ is bounded below. By the completeness axiom, $-A$ must have a least upper bound $m = \sup (-A)$. Note that $-m = -\sup (-A)$ then the greatest lower bound for $A$, so that $\inf A = -\sup (-A)$.  
+\end{proof}
+
+\begin{remark}
+    As we have established that $\inf A = -\sup (-A)$, we have $\inf A = -\infty$ if $A$ is unbounded below, and $\inf \emptyset = +\infty$. In case a set $A$ is both bounded above and bounded below, we simply say that $A$ is \highlight{bounded}.
+\end{remark}
+
+\begin{proposition}[Characterization of the Infimum]
+    Let $A\subseteq \R$ be a nonempty set that is bounded below. Then the following statements about $m = \inf A$ are all equivalent:
+    \begin{enumerate}[(a)]
+        \item if $x$ is any lower bound for $A$, then $x\le m$;
+        \item if $y>m$, then we must have $m\le a< y$ for some $a\in A$;
+        \item for every $\varepsilon>0$, there is an $a\in A$ such that $a<m+\varepsilon$.
+    \end{enumerate}
+\end{proposition}
+
+\noindent Proof similar to that of Prop. \ref{prop:char_sup}.
+
+\begin{proposition}
+    Let $A$ be a bounded subset of $\R$ containing at least two points. Then
+    \begin{enumerate}[(a)]
+        \item $-\infty<\inf A<\sup A<+\infty$.
+        \item If $B$ is a nonempty subset of $A$, then $\inf A\le \inf B\le\sup B\le \sup A$.
+        \item If $B$ is the set of all upper bounds for $A$, then $B$ is nonmepty, bounded below and $\inf B = \sup A$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    (a) The boundedness of $A$ implies that $-\infty < \inf A\le \sup A<+\infty$. Since there are at least two points in $A$, $\inf A\neq \sup A$.
+
+    \noindent (b) and (c) trivally hold from the definitions of infimum and supremum.
+\end{proof}
+
+\begin{definition}
+    A sequence $(x_n)$ of real numbers is said to \highlight{converge} to $x\in \R$ if, for every $\varepsilon>0$, there is a positive integer $N$ such that 
+    \begin{equation*}
+        n\ge N \implies |x_n-x|\le \varepsilon.
+    \end{equation*}
+    In this case, we call $x$ the limit of the sequence $(x_n)$ and write $x = \lim_{n\rightarrow \infty} x_n$.
+\end{definition}
+
+\begin{proposition}
+    Let $A$ be a nonempty subset of $\R$ that is bounded above. Then there is a sequence $(x_n)$ of elements of $A$ that converges to $\sup A$.
+\end{proposition}
+
+\begin{proof}
+    Using Prop. \ref{prop:char_sup}(c), we set $\varepsilon_n = 1/n$ and $y_n = \sup A-\varepsilon_n$. Then for all $n\in N$, there exists an element $x_n\in A$ such that $x_n>\sup A -\varepsilon = y_n$. But then $|x_n-\sup A|<|s-y_n| = \varepsilon_n = 1/n$. This shows that $\lim_{n\rightarrow \infty} |x_n-\sup A| = 0$, i.e., $\lim_{n\rightarrow \infty} x_n = \sup A$.
+\end{proof}
+
+\begin{lemma}[Archimedean property in $\R$]\label{lemma:archimedean_property}
+    If $x$ and $y$ are positive real numbers, then there is some positive integer $n$ such that $nx>y$.
+\end{lemma}
+
+\begin{proof}
+    Suppose that no such $n$ existed, i.e., suppose that $nx\le y$ for all $n\in \mathbb{N}$. Then $A = \{nx\;:\;n\in \mathbb{N}\}$ is bounded above by $y$, and so $s = \sup A$ is finite. Now, since $s-x<s$, we must have some element of $A$ in between, i.e., $s-x<nx\le s$ for some $n\in \mathbb{N}$. But then $s<(n+1)x\in A$ which is a contradiction, hence there is some $n\in\mathbb{N}$ such that $nx>y$.
+\end{proof}
+
+\begin{theorem}
+    If $a$ and $b$ are real numbers with $a<b$, then there is a rational number $r\in \mathbb{Q}$ with $a<r<b$.
+\end{theorem}
+
+\begin{proof}
+    We set $x = b-a>0$, $y = 1$, and apply Lemma \ref{lemma:archimedean_property} to get a positive integer $q$ such that $q(b-a)>1$, i.e., $qb>qa+1$. But if $qa$ and $qb$ differ by more than $1$, there must be some integer in between, i.e., there is some $p\in \mathbb{Z}$  with $qa<p<qb$. Thus, $a<\dfrac{p}{q}<b$.
+    % rasagna is good girlllllllllllllllllllllll
+    % next em rayali????
+    % kise puchoo ki aisa
+    % behh 
+\end{proof}
+
+\begin{corollary}
+    If $a$ and $b$ are real numbers with $a<b$, then there is also an irrational number $x\in \R-\mathbb{Q}$ with $a<x<b$.
+\end{corollary}
+
+\begin{proof}
+    We set $x = \dfrac{1}{\sqrt{2}}(b-a)>0$, $y = 1$, and apply Lemma \ref{lemma:archimedean_property} to get a positive integer $q$ such that $\dfrac{1}{\sqrt{2}}qb>\dfrac{1}{\sqrt{2}}qa+1$. But then there is some $p\in \mathbb{Z}$  with $\dfrac{1}{\sqrt{2}}qa<p<\dfrac{1}{\sqrt{2}}qb$. Thus, $a<\dfrac{\sqrt{2}p}{q}<b$.
+\end{proof}
+
+\begin{corollary}
+    Given $a<b$, there are, in fact, infinitely many distinct rationals between $a$ and $b$. The same goes for irrationals, too.
+\end{corollary}
+
+\begin{proof}
+    
+\end{proof}
+
+\begin{remark}
+    The least upper bound axiom holds in $\mathbb{Z}$ since for any nonempty set that is bounded above, there exists a least upper bound which is the maximum value of the set itself. But this axiom does not hold in $\mathbb{Q}$. Consider the set $A = \{p/q\in \mathbb{Q}\;:\; p^2<2q^2\}$. This is bounded above in $\mathbb{Q}$ as $2$ is an upper bound. But $\sup A = \sqrt{2}\notin \mathbb{Q}$ so $A$ has not least upper bound in $\mathbb{Q}$. 
+\end{remark}
+
+\begin{proposition}
+    The following statements are all equivalent:
+    \begin{enumerate}[(a)]
+        \item (The least upper bound property). Any nonempty set of real numbers with an upper bound has a least upper bound.
+        \item A monotone, bounded sequence of real numbers converges.
+        \item (The nested interval propoerty). If $(I_n)$ is a sequence of closed, bounded, nonempty intervals in $\R$ with $I_1\supset I_2\supset\cdots$, then $\cap_{n=1}^\infty I_n \neq \emptyset$. If, in addition, length$(I_n)\rightarrow 0$, then $\cap_{n=1}^\infty I_n$ contains precisely one point.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    (a)$\implies$(b) Let $(x_n)\subset \R$ be monotone and bounded. We first suppose that $(x_n)$ is increasing. Now, since $(x_n)$ is bounded, we may set $x = \sup_n x_n\in \R$. Suppose $\varepsilon>0$, then from (a) we must have $x_N>x-\varepsilon$ for some $N$. But then, for any $n\ge N$, we have $x-\varepsilon<x_N\le x_n\le x$, i.e., $|x-x_n|<\varepsilon$ for all $n\ge N$. Consequently, $(x_n)$ converges and $x = \sup_n x_n = \lim_{n\rightarrow \infty} x_n$. Finally, if $(x_n)$ is decreasing, consider the increasing sequence $(-x_n)$. From the previous arguments, $(-x_n)$ converges to $\sup_n(-x_n) = -\inf_n x_n$. It then follows that $(x_n)$ converges to $\inf_n x_n$.
+
+    \noindent(b)$\implies$(c) Let $I_n = [a_n,b_n]$. Then $I_n\supset I_{n+1}$ means that $a_n\le a_{n+1}\le b_{n+1}\le b_n$ for all $n$. Then from (b), we have $a=\lim_{n\rightarrow \infty} a_n = \sup_n a_n$ and $b=\lim_{n\rightarrow \infty} b_n = \inf_n b_n$ both exist and satisfy $a\le b$. Thus we must have $\cap_{n=1}^\infty I_n = [a,b]$. Finally, if $b_n-a_n =$ length$(I_n)\rightarrow 0$, then $a = b$ and so $\cap_{n=1}^\infty I_n = \{a\}$.
+    
+    \noindent(c)$\implies$(a) Let $A$ be a nonempty subset of $\R$ that is bounded above. Specifically, let $a_1\in A$ and let $b_1$ be an upper bound for $A$. For later reference, set $I_1 = [a_1,b_1]$. Now consider the point $x_1 = (a_1+b_1)/2$. If $x_1$ is an upper bound for $A$, we set $I_2 = [a_1,x_1]$; otherwise, there is an element $a_2\in A$ with $a_2>x_1$. In this case, set $I_2 = [a_2,b_1]$. In either event, $I_2$ is a closed subinterval of $I_1$ of the form $[a_2,b_2]$, where $a_2\in A$ and $b_2$ is an upper bound for $A$. Moreover, length$(I_2)\le$ length$(I_1)/2$. We now start the process all over again, using $I_2$ in the place of $I_1$, and obtain $I_3 = [a_3,b_3]\supset I_2$, where $a_3\in A$ and $b_3$ is an upper bound for $A$, with length$(I_3)\le$ length$(I_2)/2\le$ length$(I_1)/4$. By induction, we get a sequence of nested clsoed intervals $I_n = [a_n,b_n]$, where $a_n\in A$ and $b_n$ is an upper bound for $A$, with length$(I_n)\le$ length$(I_1)/2^{n-1}\rightarrow 0$ as $n\rightarrow \infty$. The single point $b\in \cap_{n=1}^\infty I_n$ is the least upper bound for $A$ since $b = \sup_n a_n = \inf_n b_n$. 
+\end{proof}
+
+\begin{thebibliography}{9}
+    \bibitem{carothers2000real} 
+    Carothers, N.-L. Real analysis. Cambridge University Press, 2000.
+\end{thebibliography}
+        
+\end{document}

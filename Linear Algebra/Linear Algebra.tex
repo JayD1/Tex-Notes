@@ -32,10 +32,10 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{mydef}{Definition}
+\newtheorem{definition}{Definition}
 \newtheorem{remark}{Remark}
-\newtheorem{note}{Note}
-\newtheorem{prop}{Proposition}
+\newtheorem{remark}{remark}
+\newtheorem{proposition}{Proposition}
 
 \newcommand{\highlight}[1]{\underline{\textbf{#1}}}
 \newcommand{\Field}[1]{\mathbb{#1}}
@@ -45,7 +45,7 @@
 
 \subsection{Dimension}\label{sec:dimension}
 
-\begin{mydef}\label{def:field}
+\begin{definition}\label{def:field}
     A \highlight{field} is a set $\Field{F}$ together with two binary operations $\{+,\cdot\}$ on $\Field{F}$ called addition and multiplication respectively. To every pair $\alpha,\beta\in\Field{F}$, there corresponds an element $\alpha+\beta,\alpha\cdot \beta\in \Field{F}$, called the sum and product respectively. These operations satisfy the following axioms called the field axioms. For any $\alpha, \beta, \gamma\in\Field{F}$,
 
     \begin{enumerate}[i)]
@@ -56,13 +56,13 @@
         \item (Additive inverses) For every $\alpha\in\Field{F}$, there exists an element in $\Field{F},$ denoted $-\alpha$, called the additive inverse of $\alpha$, such that $\alpha+(-\alpha)=0$.
         \item (Multiplicative inverses) For every $\alpha\neq 0$ in $\Field{F}$, there exists an element in F, denoted by $\alpha^{-1}$ or $\dfrac{1}{\alpha}$, called the multiplicative inverse of $\alpha$, such that $\alpha\cdot \alpha^{-1} = 1$.
     \end{enumerate}
-\end{mydef}
+\end{definition}
 
 
 
 From now on we call the elements of a field as scalars.
 
-\begin{mydef}\label{def:vector_space}
+\begin{definition}\label{def:vector_space}
     A \highlight{vector space} over a field $\Field{F}$ is a set V together with two operations addition and scalar multiplication. To every pair $x,y\in V$, there corresponds an element $x+y\in V$, called the sum of x and y and to every pair $x\in V$ and $\alpha\in\Field{F}$, there corresponds an element $\alpha x\in V$. These operations satisfy the following axioms. For any $x, y, z\in V$ and $\alpha,\beta\in\Field{F}$ any scalars,
     \begin{enumerate}[i)]
         \item (Commutative Law of Addition) $x + y = y + x$.
@@ -75,11 +75,11 @@ From now on we call the elements of a field as scalars.
         b) With respect to scalar addition, $(\alpha + \beta)x = \alpha x+\beta x$.
         \item $1x = x$ for every vector x.
     \end{enumerate}
-\end{mydef}
+\end{definition}
 
 
 
-\begin{mydef}\label{def:lin_dep}
+\begin{definition}\label{def:lin_dep}
     A set $\{x_1,\cdots,x_n\}$ of vectors is \highlight{linearly dependent} if there exists a corresponding set $\{a_i\}$ of scalars, not all zero, such that $\Sigma_i\alpha_ix_i=0$, in other words, 
     \begin{equation}
         \sum_{i=1}^{n}\alpha_ix_i=0 \implies \exists\, k \in \{1,\cdots,n\}\text{ such that } \alpha_k\neq 0.
@@ -89,16 +89,16 @@ From now on we call the elements of a field as scalars.
         \sum_{i=1}^{n}\alpha_ix_i=0 \implies \alpha_i = 0\,\forall \, i \in \{1,\cdots,n\},
     \end{equation}
     then the set is \highlight{linearly independent}.
-\end{mydef}
+\end{definition}
 
-\begin{note}\label{note:zero_vector}
+\begin{remark}\label{note:zero_vector}
     For a set of vectors $\{x_1,\cdots,x_n\}$ if $x_k = 0$ for some $k,1\le k\le n,$ then $\sum_{i=1}^n\alpha_ix_i=0\implies \alpha_k\neq 0$. Thus $\{x_1,\cdots,x_n\}$ is linearly dependent if atleast one of the vectors is a zero vector.
-\end{note}
+\end{remark}
 
 
-\begin{mydef}\label{def:linear_combination}
+\begin{definition}\label{def:linear_combination}
     A vector x is said to be a \highlight{linear combination} of the set of vectors $\{x_1,\cdots,x_n\}$, if $x = \sum_{i=1}^{n}\alpha_ix_i$.
-\end{mydef}
+\end{definition}
 
 
 \begin{lemma}\label{lemma:lin_dep}
@@ -123,9 +123,9 @@ From now on we call the elements of a field as scalars.
     where atleast one $\beta_i$ is non zero. Thus by Definition \ref{def:lin_dep}, we see that $x_1,\cdots,x_n$ is linearly dependent.
 \end{proof}
 
-\begin{mydef}\label{def:basis}
+\begin{definition}\label{def:basis}
     A \highlight{basis} in a vector space V is a set $X\subset V$ of linearly independent vectors such that every vector in V is a linear combination of elements of X. A vector space V is \highlight{finite-dimensional} if it has a finite basis.
-\end{mydef}
+\end{definition}
 
 \begin{remark}\label{remark:basis_uniqness}
     Every vector x in V can be expressed in one and only way as a linear combination of basis vectors, since if $x = \sum_i\alpha_ix_i = \sum_i\beta_ix_i$, then we have $\sum_i(\alpha_i-\beta_i)x_i=0$ and now by linear independence of $\{x_i\}$ we conclude that $\alpha_i = \beta_i,\,\forall\,i$.
@@ -204,9 +204,9 @@ From now on we call the elements of a field as scalars.
     Let $S = \{x_1,\cdots,x_n\}$ and $T = \{y_1,\cdots,y_m\}$ both be bases for V. Consider S to be the basis and T as a linearly independent set of vectors in V, then it follows from Lemma \ref{lemma:basis-lin_indep} that $m\le n$. Now by reversing the above argument we have $n\le m$, thus $m=n$.
 \end{proof}
 
-\begin{mydef}\label{def:dimension}
+\begin{definition}\label{def:dimension}
     The \highlight{dimension} of a finite-dimensional vector space V is the number of elements in a basis of V.
-\end{mydef}
+\end{definition}
 
 \begin{corollary}\label{cor:lin_dep}
     Every set of $n + 1$ vectors in an n-dimensional vector space
@@ -220,9 +220,9 @@ V is linearly dependent.
 
 \subsection{Subspaces}\label{sec:subspaces}
 
-\begin{mydef}\label{def:subspace}
+\begin{definition}\label{def:subspace}
     A non-empty subset M of a vector space V is a \highlight{subspace} or a \highlight{linear manifold} if $x,y\in M$, then $\alpha x+\beta y\in M$, for any scalars $\alpha,\beta$.
-\end{mydef}
+\end{definition}
 
 \begin{remark}\label{remark:subspace}
     Any subspace M must contain the zero vector since if $x\in M$, then $0x\in M$, i.e, $0\in M$.
@@ -250,9 +250,9 @@ V is linearly dependent.
     Now notice that since $M^*$ is a smallest subspace containing S, for every collection of elements in S, their linear combination belong to $M^*$, so every element of $M'$ belongs to $M^*$. Thus $M' = M^*$.
 \end{proof}
 
-\begin{mydef}\label{def:span}
+\begin{definition}\label{def:span}
     The \highlight{span} of an arbitrary subset S of a vector spacae, denoted by span(S), is the smallest subspace containing S or equivalently the subspace containing all the linear combinations of elements of S.
-\end{mydef}
+\end{definition}
 
 \begin{remark}\label{remark:basis_span}
     In this new terminology, we see that a basis X for a vector space V is a set whose span is V, i.e, span(X) = V. 
@@ -275,13 +275,13 @@ V is linearly dependent.
     Follows from Theorem \ref{thm:subspace_dim} and Lemma \ref{lemma:basis-lin_indep} (Section \ref{sec:dimension}).
 \end{proof}
 
-\begin{mydef}\label{def:complement}
+\begin{definition}\label{def:complement}
     Let H and K be any two subspaces of V, then by H+K we mean the subspace spanned by H and K together, i.e, $H+K = $ span$(\{X_H,X_K\})$, where $X_H$ and $X_K$ are bases of H and K respectively. We shall say that a subspace K of a vector space V is a \highlight{complement} of a subspace H if $$H\cap K=\{0\}\text{ and }H + K = V.$$
-\end{mydef}
+\end{definition}
 
-\begin{note}\label{note:complement}
+\begin{remark}\label{note:complement}
     Consider a non-trivial subspace M of V, i.e, $\{0\}\subset M\subset V$. Let N be a complement of M. Then pick nonzero elements $m,n$ from M and N respectively. Then consider a basis X of N including $n$. Define a new set $X'=X\cup\{n+m\}\setminus\{n\}$ and notice that span$(X') = N' \neq N$ and $M\cap N' = \{0\}$. So $N'$ is another complement of M, different from N. Therefore, for any non-trivial subspace M of V, i.e, $\{0\}\subset M\subset V$, there exists more than one complement.
-\end{note}
+\end{remark}
 
 \begin{theorem}\label{thm:dim_complement}
     If M is an m-dimensional subspace in an n-dimensional vector space V, then every complement of M has dimension $n - m$.
@@ -295,12 +295,12 @@ V is linearly dependent.
 
 \subsection{Isomorphism}\label{sec:isomorphism}
 
-\begin{mydef}\label{def:isomorphism}
+\begin{definition}\label{def:isomorphism}
     Consider two vector spaces U and V over the same field. We say U is \highlight{isomorphic} to V if there is a bijection T between U and V which preserves linear relations, i.e, 
     $$\forall x_1,x_2\in U,\;T(\alpha_1 x_1+\alpha_2 x_2) = \alpha_1 T(x_1)+\alpha_2 T(x_2).
     $$
     In other words, U and V are \highlight{isomorphic} if there is an isomorphism (such as T) between them.
-\end{mydef}
+\end{definition}
 
 \begin{theorem}\label{thm:F^n_isomorphism}
     Every n-dimensional vector space V over a field $\Field{F}$ is isomorphic to $\Field{F}^n$.
@@ -316,16 +316,16 @@ V is linearly dependent.
 
 \subsection{Direct Sum}\label{sec:direct_sum}
 
-\begin{mydef}\label{def:direct_sum}
+\begin{definition}\label{def:direct_sum}
     If U and V are vector spaces (over the same field), then the \highlight{direct sum} of U and V is the vector space W, denoted by $U\,\oplus\, V$, whose elements are all the ordered pairs (x, y) with x in U and y in V, with the linear operations defined by
     $$
     \alpha_1(x_1, y_1) + \alpha_2(x_2, y_2) = (\alpha_1x_1+\alpha_2x_2,\alpha_1y_1+\alpha_2y_2).
     $$
-\end{mydef}
+\end{definition}
 
-\begin{note}\label{note:direct_sum}
+\begin{remark}\label{note:direct_sum}
     We can view the direct sum, $W = U\oplus V$ as the cartesian product $U\times V$ which is given a vector space structure, i.e, defining linear operations (vector sum and scalar multiplication). In this interpretation, it can be seen that $U\times\{0\}$ is a subspace of $U\oplus V$ since it contains vectors of the form $(x,0),x\in U$ and $(\alpha x+\beta y,0) = \alpha(x,0)+\beta(y,0).$ Also notice that $\forall\;x\in U$, the map $(x,0)\mapsto x$ is an isomorphism, thus $U\times\{0\}$ is isomorphic to U. Similarly, $\{0\}\times V$ is a subspace of $U\oplus V$ and is isomorphic to V. In regard to these isomorphisms between vector spaces, if we denote the elements of the direct sum (u,v) by $u+v$, then we may identify U, V as subspaces of $U\oplus V$.
-\end{note}
+\end{remark}
 
 \begin{theorem}\label{thm:direct_sum}
     If U and V are subspaces of a vector space W, then the following three conditions are equivalent.
@@ -376,16 +376,16 @@ V is linearly dependent.
 
 \subsection{Dual Spaces}\label{sec:dual_spaces}
 
-\begin{mydef}\label{def:linear_functional}
+\begin{definition}\label{def:linear_functional}
     A \highlight{linear functional} on a vector space V is a scalar-valued function y defined for every vector x in V, with the property that 
     $$
         y(\alpha_1x_1+ \alpha_2x_2) = \alpha_1y(x_1) + \alpha_2y(x_2),\;\forall x_1,x_2\in V,\text{ and any scalars }\alpha_1,\alpha_2.
     $$
-\end{mydef}
+\end{definition}
 
-\begin{note}\label{note:linear_functional_value_at_0}
+\begin{remark}\label{note:linear_functional_value_at_0}
     Let y be any linear functional on a vector space V, then $y(0)=0$, since $y(0)=y(0\cdot 0) = 0\cdot y(0) = 0$.
-\end{note}
+\end{remark}
 
 \begin{remark}\label{remark:dual_space}
     For any two linear functionals $y_1,y_2$ on a vector space V define $y(x)= y_1(x)+y_2(x)$. Then for any $x_1,x_2\in V$ and any scalars $\alpha_1,\alpha_2$, we have
@@ -404,7 +404,7 @@ V is linearly dependent.
     Therefore, if $y_1, y_2$ are linear functionals on V and $\alpha$ any scalar, then $y_1+y_2$ and $\alpha y_1$ are also a linear functional on V. Also note that the functional y defined as $y(x)=0\;\forall x\in V$ is a linear functional on V.
 \end{remark}
 
-\begin{mydef}\label{def:dual_space}
+\begin{definition}\label{def:dual_space}
     The \highlight{dual space} of V, denoted by $V'$, is the set of all linear functionals on V. By the Remark \ref{remark:dual_space}, we can define the following on $V'$ 
     \begin{enumerate}[i)]
         \item the addition of $y_1,y_2\in V'$ as an element $y\in V'$ (denoted by $y_1+y_2$), such that $y(x) = y_1(x)+y_2(x),\;\forall x\in V$;
@@ -412,9 +412,9 @@ V is linearly dependent.
         \item let $0\in V'$, defined as $0(x)=0\;\forall x\in V$, play the role of additive identity. 
     \end{enumerate}
     The dual space $V'$ together with i), ii), iii) forms a vector space of all linear functionals on V.
-\end{mydef}
+\end{definition}
 
-\begin{note}[Change in Notation]\label{note:notation_linear_functional}
+\begin{remark}[Change in Notation]\label{note:notation_linear_functional}
     We make a change in notation of representing the output of linear functionals. Suppose y is a linear functional on a vector space V and x is any vector in V, then instead of denoting the output of y when x is given as input as $y(x)$ we represent it with $[x,y]$. So from now on $[x,y]\equiv y(x)$. In terms of the symbol $[x, y]$ the defining property of a linear functional is 
     \begin{equation}\label{eqn:linear_functional_def}
         [\alpha_1x_1+\alpha_2x_2,y]=\alpha_1[x_1,y]+\alpha_2[x_2,y],
@@ -424,7 +424,7 @@ V is linearly dependent.
         [x,\alpha_1y_1+\alpha_2y_2]=\alpha_1[x,y_1]+\alpha_2[x,y_2].
     \end{equation}
     The two relations together are expressed by saying that $[x, y]$ is a \highlight{bilinear} \highlight{functional} of the vectors x in V and y in $V'$.
-\end{note}
+\end{remark}
 
 
 \begin{lemma}\label{lemma:dual_basis}
@@ -501,19 +501,19 @@ V is linearly dependent.
     Now we prove that the map is a bijection. Notice that since the map $x_0\mapsto z_0$ is one-to-one and linear, we can say that the range set of this map is a subspace of $V''$ of dimension equal to $dim(V)$. But now applying Theorem \ref{thm:dual_basis}, we see that the dimension of $V''$ is equal to the dimension of $V'$, which is again equal to the dimension of V, i.e, $dim(V'')=dim(V')=dim(V)$, which makes the map, onto. Therefore, the map $x_0\mapsto z_0$ is isomorphism from $V$ to $V''$.
 \end{proof}
 
-\begin{note}\label{note:reflexive}
+\begin{remark}\label{note:reflexive}
     The Theorem \ref{thm:reflexive} not just shows that $V$ and $V''$ are isomorphic, but more importantly it shows that the natural correspondence $x_0\mapsto z_0$, defined by $z_0(y) = [x_0, y] = y(x_0)$ for every $y$ in $V'$, is an isomorphism. This property of vector spaces is called \highlight{reflexivity}.
     
     Therefore, \textbf{every finite-dimensional vector space is reflexive.}
-\end{note}
+\end{remark}
 
-\begin{note}[Change in notation]\label{note:reflexive_notation}
+\begin{remark}[Change in notation]\label{note:reflexive_notation}
     For finite-dimensional vector spaces we shall identify $V''$ with V (by the natural isomorphism), and we shall say that the element $z_0$ of $V''$ is the same as the element $x_0$ of V whenever $z_0(y) = [x_0, y]$ $\forall y\in V'$. In this language it is very easy to express the relation between a basis $X$ for V and the dual basis of its dual basis for $V''$; the symmetry of the relation $[x_i, y_j] = \delta_{ij}$ shows that $X''=X$. 
-\end{note}
+\end{remark}
 
-\begin{mydef}\label{def:annihilator}
+\begin{definition}\label{def:annihilator}
     The \highlight{annihilator} $S^0$ of any subset S of a vector space V (S need not be a subspace)is the set of all vectors y in $V'$ such that $[x,y]$ is identically zero $\forall x\in S$.
-\end{mydef}
+\end{definition}
 
 \begin{remark}\label{remark:annihilator}
     Notice that $\{0\}^0=V'$, since $\forall y\in V', [0,y]=0$. Similarly, $V^0=\{0\}(\subset V')$, since the only linear functional that is identically zero on every vector of V is zero functional. If V is finite-dimensional and S contains a nonzero vector, so that $S\neq\{0\}$, then by Corollary \ref{cor:dual_basis}, we have $S^0\neq V'$.
@@ -569,13 +569,13 @@ V is linearly dependent.
 
 \subsection{Quotient Spaces}
 
-\begin{mydef}\label{def:coset}
+\begin{definition}\label{def:coset}
     Let M be a subspace of a vector space V and $x$ is any vector in V. Then, by $x+M$ we denote the following set:
     $$
         x+M = \{x+m\;|\;\forall m\in M\}.
     $$
     Each set of the form $x+M$ is called \highlight{coset} of M in V.
-\end{mydef}
+\end{definition}
 
 \begin{remark}\label{remark:coset_1}
     Notice that if $x\in M$, then $x+M=M$.
@@ -585,7 +585,7 @@ V is linearly dependent.
     Let $x\neq y$ be any two vectors in V. Then $x+M=y+M\Leftrightarrow x-y\in M$. In other words, $x+M=y+M$ doesn't necessarily imply that $x=y$. With regard to this fact, from now on we drop the element x and simply refer a coset of M as a set $\mathcal{H}$, then a set $\mathcal{H}$ is a coset of M if there exists atleast one $x\in V$ such that $\mathcal{H}=x+M$.
 \end{remark}
 
-\begin{mydef}\label{def:coset_addition}
+\begin{definition}\label{def:coset_addition}
     For any two cosets of M, $\mathcal{H}$ and $\mathcal{K}$, we define addition of cosets as the following:
     $$
         \mathcal{H}+\mathcal{K} = \{u+v\;|\;\forall u\in \mathcal{H}, v\in \mathcal{K}\}.
@@ -599,7 +599,7 @@ V is linearly dependent.
         \alpha\mathcal{H}=\{\alpha u\;|\;\forall u\in M\}
     $$
     and for $\alpha=0$, we define $0\cdot\mathcal{H}=\mathcal{M}$.
-\end{mydef}
+\end{definition}
 
 \begin{lemma}[Coset Operations]\label{lemma:coset_operations}
     Let M be a subspace of V. Then, 

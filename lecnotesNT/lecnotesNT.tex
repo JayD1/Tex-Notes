@@ -19,18 +19,18 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{mydef}{Definition}
+\newtheorem{definition}{Definition}
 \newtheorem*{remark}{Remark}
-\newtheorem*{prop}{Proposition}
+\newtheorem*{proposition}{Proposition}
 \newcommand{\leg}[2]{\big(\frac{#1}{#2}\big)}
 \newcommand{\modp}[2]{#1(mod\;#2)}
 	
-\begin{mydef}[Binary Operation]
+\begin{definition}[Binary Operation]
 A binary operation on a set S is a function from $S\times{S}$ to $S$.
 \\* Eg: $A:\mathbb{Z}\times{\mathbb{Z}} \to \mathbb{Z}$, i.e, $(a,b) \mapsto a+b$
-\end{mydef}
+\end{definition}
 
-\begin{mydef}[Domain]
+\begin{definition}[Domain]
 A domain is triple $(D,+,\cdot), where\, \vert{D}\vert > 1 \;and\; + \;and\; \cdot \;are\; two\; operations\; on\; D\; such\; that\;{:}$
 \begin{enumerate}[i)]
 	\item $a+b = b+a \;and\; a\cdot{b} = b\cdot{a}, \forall\, a,b \in D$
@@ -41,11 +41,11 @@ A domain is triple $(D,+,\cdot), where\, \vert{D}\vert > 1 \;and\; + \;and\; \cd
 	\item $a\cdot{b} = 0 \implies either\;a\, = 0\;or\;b= 0$
 \end{enumerate}
 Eg: $(\mathbb{Z},+,\cdot) \;and\; (\mathbb{R}[X],+,\cdot), where\; \mathbb{R}[X]$ is the Set of real polynomials
-\end{mydef}
+\end{definition}
 
-\begin{mydef}[Field]
+\begin{definition}[Field]
 If every non-zero elements of a domain D has an inverse, i.e, units are $D-\{0\}$, then D is called a field.
-\end{mydef}
+\end{definition}
 
 \section*{Division Algorithm}
 
@@ -111,18 +111,18 @@ $where\;r(X) = 0\,\; or\; deg(r(X)) \le deg(b(X))) $
 \end{flushright}
 \end{proof}
 
-\begin{mydef}[Unit]
+\begin{definition}[Unit]
 The multiplicatively invertible elements in a domain are caleed units of a domain.
 \\* Eg: Units in $\mathbb{Z} = \{\pm 1\}$ and Units in $\mathbb{R}[X] = \{c\mid c \in \mathbb{R}-\{0\}\}$
-\end{mydef}
+\end{definition}
 
-\begin{mydef}[Prime]
+\begin{definition}[Prime]
 a is prime if $a = uv \implies$ either u or v is a unit, but not both.
-\end{mydef}
+\end{definition}
 
-\begin{mydef}[Associate]
+\begin{definition}[Associate]
 b is an associate of a if $a\mid b \; and \; b\mid a$ or equivalently $a = ub$, where u is a unit.
-\end{mydef}
+\end{definition}
 
 \begin{theorem}
 If x is a prime and u is a unit, then ux is also a prime.
@@ -132,17 +132,17 @@ If x is a prime and u is a unit, then ux is also a prime.
 Suppose $ux=st$. Since u is a unit, $x=(u^{-1}s)t$. But we know, x is a prime, then either of $u^{-1}s \; or \; t$ is a unit. If t is unit, proof is completed. Else $u^{-1}s$ must be a unit. We know that the product of two units is again a unit. So is $uu^{-1}s$, i.e, s is a unit.
 \end{proof}
 
-\begin{mydef}[Greatest Common Divisor]
+\begin{definition}[Greatest Common Divisor]
 d is said to be gcd of a and b if $d\mid a\;and\;d\mid b$ and every common divisor c of a and b must divide d, i.e, if $c\mid a\;and\;c\mid b$, then $c\mid d$. It is written as d = (a,b).
-\end{mydef}
+\end{definition}
 
 \begin{remark}
 If d is a gcd a and b and then an associate of d is also a gcd of a and b, i.e, if u is a unit, then $d = (a,b) = ud$.
 \end{remark}
 
-\begin{mydef}
+\begin{definition}
 If a and b $\in\; \mathbb{Z}$, then we define $$a\mathbb{Z}+b\mathbb{Z} = \{ax+by\mid x, y\in\mathbb{Z}\}$$
-\end{mydef}
+\end{definition}
 
 \begin{remark}
 It can be seen that $a,b \in a\mathbb{Z}+b\mathbb{Z}$ and if $s_{1} \;and\; s_{2} \in a\mathbb{Z}+b\mathbb{Z}$ then $s_{1}x+s_{2}y \in a\mathbb{Z}+b\mathbb{Z},\; \forall x,y \in\mathbb{Z}$. Therefore $a\mathbb{Z}+b\mathbb{Z} \cap \mathbb{N} \neq \emptyset$.
@@ -185,12 +185,12 @@ This way, we get some $q_{j}$ which is an associate of $p_{r}$. WLOG, we can ass
 \end{align*}
 \end{proof}
 
-\begin{mydef}[$\mathbb{Z}\lbrack\omega\rbrack$]
+\begin{definition}[$\mathbb{Z}\lbrack\omega\rbrack$]
 $\mathbb{Z}\lbrack\omega\rbrack = \{a+b\omega\mid a,b\in \mathbb{Z}\} \subset \mathbb{C}$, where $\omega  = \frac{-1\pm i\sqrt{3}}{2}$.
 \begin{center}
 and $N(\alpha) = {\alpha}\bar{\alpha}.$ \\
 \end{center}
-\end{mydef}
+\end{definition}
 
 \begin{remark}
 If $\alpha = a+b\omega,$ then 
@@ -206,9 +206,9 @@ N(a+b\omega) &= (a+b\omega)(\overline{a+b\omega}) \\
 The only element whose norm is 0 is 0.
 \end{remark}
 
-\begin{prop}
+\begin{proposition}
 $\alpha \in \mathbb{Z}[\omega]$ is a unit iff $N(\alpha) = 1$.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 Suppose $N(\alpha) = 1$, then ${\alpha}\overline{\alpha} = 1$. Therefore $\alpha$ is a unit in $\mathbb{Z}[\omega]$. \\
@@ -264,13 +264,13 @@ Let $\delta = \alpha-\beta\gamma$, then $\delta\overline{\beta} = \alpha\overlin
 If $\alpha, \beta \in \mathbb{Z}[\omega]$, then $\exists\;\delta \in \mathbb{Z}[\omega], \alpha\mathbb{Z}[\omega]+\beta\mathbb{Z}[\omega] = \delta\mathbb{Z}[\omega],\\ \text{ where }\delta = (\alpha,\beta).$
 \end{theorem}
 
-\begin{mydef}[]
+\begin{definition}[]
 If $a,b,m\in\mathbb{Z}$ and $m\neq0$, we say thata is congruent to b modulo m if  $m\mid b-a$. This relation is written $a\equiv b\;(m).$
-\end{mydef}
+\end{definition}
 
-\begin{mydef}[$\mathbb{Z}_{n},\;+_{n},\;\cdot_{n}$]
+\begin{definition}[$\mathbb{Z}_{n},\;+_{n},\;\cdot_{n}$]
 -FILL IN-
-\end{mydef}
+\end{definition}
 
 \begin{theorem}
 If $a\in\mathbb{Z}_n-\{0\}$ is a unit iff $(a,n)=1.$
@@ -287,10 +287,10 @@ Now let $(a,n)=1$, then $\exists\,u,v\in\mathbb{Z},\;au+nv=1$. By Division Algor
 Therefore, a is a unit in $\mathbb{Z}_n.$
 \end{proof}
 
-\begin{mydef}
+\begin{definition}
 We define $U_n$ to be the set of all units in $\mathbb{Z}_n$ and $\phi(n)$ to be the cardinality of $U_n$, where $\phi_n$ is called Euler totient function, i.e, $$U_n=\{a\in\mathbb{Z}_n-\{0\}\mid (a,n)=1\},\;\phi(n)=\vert U_n\vert.$$
 We define $\phi(1)=1.$
-\end{mydef}
+\end{definition}
 
 \begin{remark}
 If $n=p,$ p is prime, then every element is relatively prime to p, i.e, $U_p=\mathbb{Z}_p-\{0\}=\{1,2,\cdots,p-1\}$. And also $(\mathbb{Z}_p,+_p,\cdot_p)$ is a field. If $n=p^t,\;\phi(n)=p^{t-1}(p-1).$ If $n=pq,\;\phi(n)=(p-1)(q-1).$
@@ -324,9 +324,9 @@ But\;n\mid r^{\phi(n)}-&1,\;then\;n\mid a^{\phi(n)}-1\\
 \end{proof}
 \textbf{Notation:} ${\mathbb{Z}_p}^x=\mathbb{Z}_p-\{0\}\;and\;{\mathbb{Z}_p}^{x^2}$ to be set of elements in ${\mathbb{Z}_p}^x$ which are square. Here p is a prime.
 
-\begin{prop}
+\begin{proposition}
 $\vert {\mathbb{Z}_p}^{x^2}\vert=\frac{p-1}{2}$, therefore $\exists\,u\in{\mathbb{Z}_p}^x$ which is a non-sqaure. Then $u{\mathbb{Z}_p}^{x^2}$ will be the set of all non-square in ${\mathbb{Z}_p}^x$.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 First, we prove that $\vert {\mathbb{Z}_p}^{x^2}\vert=\frac{p-1}{2}$. Consider the following mapping:
@@ -360,13 +360,13 @@ But u is a non-square, which is a contradiction. Therefore, this mapping is not 
 From the above proposition it can be concluded that $${\mathbb{Z}_p}^x=u{\mathbb{Z}_p}^{x^2}\oplus {\mathbb{Z}_p}^{x^2}.$$
 \end{remark}
 
-\begin{mydef}
+\begin{definition}
 We define a mapping such that,
 \begin{align*}
 \mathbb{Z}&\rightarrow\mathbb{Z}_n \\
 x&\mapsto\bar{x},\bar{x}=\modp{x}{n}
 \end{align*}
-\end{mydef}
+\end{definition}
 
 \begin{theorem}
 The following properties hold for $x,\,y\in\mathbb{Z}$:
@@ -471,7 +471,7 @@ We know, $\sum_{d\mid n}\phi(d)=n$ and $n=\sum_{d\mid n}|G_d|$, hence $|G_d|$ is
 $(\mathbb{Z}_p-\{0\},\cdot_p)$ is cyclic group in $F=(\mathbb{Z}_p-\{0\},+,\cdot_p)$.
 \end{corollary}
 
-\begin{mydef}[Legendre Symbol]
+\begin{definition}[Legendre Symbol]
 Let $c\in\mathbb{Z},\;p$ is an odd prime. Then we define:
 \[   
 \leg{c}{p} = 
@@ -481,7 +481,7 @@ Let $c\in\mathbb{Z},\;p$ is an odd prime. Then we define:
       -1, &\quad\text{otherwise}\\ 
      \end{cases}
 \]
-\end{mydef}
+\end{definition}
 
 
 \begin{theorem}

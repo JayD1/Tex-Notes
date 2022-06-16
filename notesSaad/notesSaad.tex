@@ -28,9 +28,9 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{mydef}{Definition}
+\newtheorem{definition}{Definition}
 \newtheorem*{remark}{Remark}
-\newtheorem{prop}{Proposition}
+\newtheorem{proposition}{Proposition}
 
 \section{Introduction}
 
@@ -102,14 +102,14 @@ If $W^TAV$ is non-singular, then $\tilde{x}=x_0+V(W^TAV)^{-1}W^Tr_0.$
 
 Non-singularity of A is not sufficient condition for non-singularity of $W^TAV$.
 
-\begin{prop}
+\begin{proposition}
 Let $A,\;\mathcal{L}\;and\;\mathcal{K}$ satisfy either one of the two following conditions:
 \begin{enumerate}[i.]
 \item A is SPD and $\mathcal{L}=\mathcal{K}$, or
 \item A is non-singular and $\mathcal{L}=A\mathcal{K}$.
 \end{enumerate}
 Then $B=W^TAV$ is non-singular for any bases V and W of $\mathcal{K}\;and\;\mathcal{L}$.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 Consider case(i). Since $\mathcal{L}=\mathcal{K}$, then $W=VG$, where G is a non-singular $m\times m$ matrix. Then $B=W^TAV={G^T}V^TAV$. Since A is SPD, so is $V^TAV$ and since G is non-singular, B is non-singular. \\
@@ -148,11 +148,11 @@ Let A be an arbitrary square matrix and assume that $\mathcal{L}=A\mathcal{K}.$ 
 $$\tilde{x}=\underset{x\in x_0+\mathcal{K}}{\arg\min}\|b-Ax\|_2$$
 \end{corollary}
 
-\begin{prop}
+\begin{proposition}
 Let $\tilde{x}$ be the approximate solution obtained from a projection process onto $\mathcal{K}$ orthogonally to $\mathcal{L}=A\mathcal{K}$, and let $\tilde{r} = b-A\tilde{x}$. Then,
 $$\tilde{r}=(I-P)r_0,$$
 where P denotes the orthogonal projector onto $\mathcal{K}$.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 Let $r_0=b-Ax_0$, then
@@ -166,11 +166,11 @@ $$Pr_0=A\delta \implies \tilde{r}=(I-P)r_0$$
 It follows from the above that $\Vert \tilde{r}\Vert_2 \le \Vert r_0\Vert_2.$ Therefore, this class of methods can be termed as \textbf{Residual Projection Methods}.
 \end{proof}
 
-\begin{prop}
+\begin{proposition}
 Let $\tilde{x}$ be the approximate solution obtained from an orthogonal projection process onto $\mathcal{K}$, and let $\tilde{d} = x_*-\tilde{x}$. Then,
 $$\tilde{d}=(I-P_A)d_0,$$
 where $P_A$ denotes the projector onto $\mathcal{K}$, which is orthogonal with respect to A-inner product.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 Let $d_0=x_*-x_0$ be the initial error, and let $\tilde{d}=x_*-\tilde{x}$, where $\tilde{x}=x_0+\delta$ is the approximate solution resulting from the projection step. We know that residual of the approximate solution is orthogonal to $\mathcal{K}$, i.e, $\tilde{r}=A\tilde{d}=A(d_0-\delta)$, $\tilde{r}\perp \mathcal{K}$.
@@ -301,9 +301,9 @@ We define Krylov Subspace to be
 $$\mathcal{K}_m(A,v)=span\{v,Av,A^2v,\cdots,A^{m-1}v\}.$$
 Then, $x=p(A)v,\;\forall\;x\in\mathcal{K}_m\text{, where }deg(p)<m.$
 
-\begin{mydef}[Minimal Polynomial of a vector]
+\begin{definition}[Minimal Polynomial of a vector]
 Monic polynomial of least degree such that $p(A)v=0$ is called minimal polynomial of v and degree of such polynomial is called grade$(\mu)$.
-\end{mydef}
+\end{definition}
 
 \begin{theorem}
 Let $\mu$ be the grade of v. Then $\mathcal{K}_\mu$ is invariant under A and $\mathcal{K}_\mu = \mathcal{K}_m\;\forall\;m\ge\mu.$
@@ -352,11 +352,11 @@ Arnoldi's procedure is an algorithm for building an orthogonal basis of the Kryl
 \end{algorithmic}
 \end{algorithm}
 
-\begin{prop}
+\begin{proposition}
 Denote by $V_m=[v_1,v_2,\cdots,v_m]_{n\times m}\;and\;\bar{H}_m,\;the\;(m+1)\times m$ Hessenberg matrix whose non-zero entries $h_{ij}$ are defined by the above algorithm and by $H_m$ the matrix obtained from $\bar{H}_m$ by removing the last row. Then,
 $$AV_m=V_mH_m+w_me^T_m=V_{m+1}\bar{H}_m,$$
 $$V^T_mAV_m=H_m.$$
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 From lines 6,8 we have, $w_j = Av_j - h_{ij}v_i$ and $w_j=v_{j+1}h_{j+1,j}.$
@@ -396,7 +396,7 @@ where $y_m$ can be found by imposing orthogonality constraint that $$V^T_m(b-Ax_
 \end{algorithmic}
 \end{algorithm}
 
-\begin{prop}
+\begin{proposition}
 The residual vector of the approximate solution $x_m$ computed by the FOM Algorithm is such that 
 $$r_m=b-Ax_m=-h_{m+1,m}e^T_my_mv_{m+1}$$
 and, therefore,
@@ -411,7 +411,7 @@ r_m&=b-Ax_m \\
 &= r_0 - V_mV^T_mr_0 - h_{m+1,m}e^T_my_mv_{m+1}=-h_{m+1,m}e^T_my_mv_{m+1}.
 \end{align*}
 \end{proof}
-\end{prop}
+\end{proposition}
 
 \subsection{Variation 1: Restarted FOM}
 
@@ -520,11 +520,11 @@ r_m = b-Ax_m &= -h_{m+1,m}e^T_my_mv_{m+1} \\
 
 Since the residual vectors is a scalar multiple of $v_{m+1}$ and since the $v_i$'s are no longer orthogonal, IOM and DIOM are not orthogonal projection techniques. They can however be viewed as oblique projection techniques onto $\mathcal{K}_m$ orthogonally to an artificially constructed subspace.
 
-\begin{prop}
+\begin{proposition}
 IOM and DIOM are mathematically equivalent to projection process onto $\mathcal{K}_m$ and orthogonally to
 $$\mathcal{L}_m=span\{z_1,z_2,\cdots,z_m\},$$
 $$where\;z_i=v_i-(v_i,v_{m+1})v_{m+1},\;i=1,2,\cdots,m.$$
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 From the construction of $\mathcal{L}_m,\;v_{m+1}$ is orthogonal to $\mathcal{L}_m$ and we know the final residue $r_m$ is a scalar multiple of $v_{m+1}$, hence the approximate solution $x_m\in\mathcal{K}_m$ and residue vector $r_m\perp\mathcal{L}_m$.  
@@ -618,14 +618,14 @@ This gives the following algorithm, which we call as direct version of Lanczos a
 
 Observe that the residual vector for this algorithm is in the direction of $v_{m+1}.$ Therefore, the residual vectors are orthogonal to each other as in FOM. Likewise, the vectors $p_i$ are A-orhogonal or conjugate to each other.
 
-\begin{prop}
+\begin{proposition}
 Let $r_m=b-Ax_m,\;and\;p_m,m=0,1,\cdots,$ be the residual vectors and auxiliary vectors produced by D-Lanczos algorithm. Then,
 \begin{enumerate}[i)]
 \item Each residual vector $r_m$ is such that $r_m=\sigma_{m}v_{m+1}$, where $\sigma_m$ is a certain scalar. As a result, the residual vectors are orthogonal to each other.
 \item The auxiliary vectors $p_i$ form an A-conjuagte set, i.e,
 $$(Ap_i,p_j)=0,\;for\;i\neq j.$$
 \end{enumerate}
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 The first part is immediate consequence of the following relation:
@@ -718,12 +718,12 @@ T_m =
 $$
 \end{remark}
 
-\begin{prop}
+\begin{proposition}
 Let $A_m=(P^T_mP_m)^{-1}$, then $A_{m+1}=\left[ \begin{array}{cc}
 \tilde{A}_m & \lambda_{m+1}e_m \\
 \lambda_{m+1}e^T_m & 1\\
 \end{array} \right]$, where $\tilde{A}_m=A_m+\lambda^2_{m+1}e_me^T_m.$
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 First notice that from the above factorization of $L_m$ that, 
@@ -759,10 +759,10 @@ $A_{m+1}=\left[ \begin{array}{cc}
 \end{array} \right]$, where $\tilde{A}_m=A_m+\lambda^2_{m+1}e_me^T_m.$
 \end{proof}
 
-\begin{prop}
+\begin{proposition}
 The $r_j$ vectors obtained in the Conjugate Gradient algorithm follow the following recurrence relation:
 $$Ar_j=\hat{\beta}_jr_{j-1}+(\alpha_{j+1})r_j+\hat{\beta}_{j+1}r_{j+1}.$$ 
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 We know, $r_m=b-Ax_m=c_mv_{m+1}=\{-\beta_{m+1}(e^T_my_m)\}v_{m+1}$, where  $y_m=T^{-1}_m(\beta_0e_1).$ Then $e^T_my_m=e^T_mL^{-T}_mD^{-1}_mL^{-1}_m(\beta_0e_1)$. Now we evaluate the value of $e^T_my_m$. It can be seen that 
@@ -804,7 +804,7 @@ Here we show the convergence of CG Algorithm using Chebyshev polynomials.
 
 \subsection{Real Chebyshev Polynomials}
 
-\begin{mydef}
+\begin{definition}
 The Chebyshev polynomial of the first kind of degree k is defined by:
 \[   
 C_k(t) = 
@@ -813,16 +813,16 @@ C_k(t) =
        cosh[k\,cosh^{-1}(t)], &\quad\text{otherwise.}\\
      \end{cases}
 \]
-\end{mydef}
+\end{definition}
 
 It can be seen that $C_0(t)=1,\;C_1(t)=t,$ can be easily extended by the following trigonometric relation
 $$cos[(k+1)\theta]+cos[(k-1)\theta]=2cos\theta\,cosk\theta.$$
 This also shows the important three-term recurrence relation
 $$C_{k+1}(t)=2tC_k(t)-C_{k-1}(t).$$
 
-\begin{prop}
+\begin{proposition}
 If $|t|>1$, then $C_k(t)=\frac{1}{2}\bigg[\Big(t+\sqrt{t^2-1}\Big)^k+\Big(t+\sqrt{t^2-1}\Big)^{-k}\bigg]$
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 $\text{We know, }C_k(t) = cosh[k\,cosh^{-1}(t)],|t|>1,\;cosh\,\theta=\frac{1}{2}\big(e^\theta+e^{-\theta}\big).$ Then,
@@ -903,9 +903,9 @@ $$\text{Therefore, }\|x_*-x_m\|_A\le 2\bigg[\dfrac{\sqrt{\kappa}-1}{\sqrt{\kappa
 
 A $\in \mathbb{R}^{n \times n}$ is SPD and define $W=[w_1\;w_2\;\cdots\;w_k],\;w_i\in\mathbb{R}^n$ are linearly independent vectors. Let $v_1\in\mathbb{R}^n$ be a unit vector such that $W^Tv_1=0.$
 
-\begin{prop}
+\begin{proposition}
 Let W and A be defined as above, then $W^TAW$ is SPD.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 Let $x\in\mathbb{R}^k$. We know that the columns of W are linearly independent, hence $Wx=0 \Leftrightarrow x=0.$ Let $y=Wx$, then $x^TW^TAWx=y^TAy\ge 0$ (since A is SPD).
@@ -931,9 +931,9 @@ $$\sigma_{j+1}v_{j+1}=Bv_j-\sigma_jv_{j-1}-\rho_jv_j.$$
 
 It can also be seen that $W^TB=0.$
 
-\begin{prop}
+\begin{proposition}
 Let W and $v_{j+1}$ be defined as above. Then $W^Tv_{j+1}=0\;\forall\;j=1,2,\cdots.$
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 We prove by induction on j. It is clear from the definition that $W^Tv_1=0.$ Now assume that the propsition is true till $j-1$, i.e, $W^Tv_{k+1}=0\;\forall\;k=1,2,\cdots,j.$ Now we prove for $k=j+1.$ 
@@ -989,13 +989,13 @@ r_j &= r_0-\|r_0\|_2V_jT_j(T^{-1}_je_1)-\|r_0\|_2\sigma_{j+1}v_{j+1}e^T_j(T^{-1}
 
 Let $T_j=L_jD_jL^T_j$ and define $P_j\equiv [p_0\;p_1\;\cdots\;p_{j-1}]=(-W\Delta_j+V_j)L^{-T}_j\Lambda_j$, where $\Lambda_j=\text{diag}\{c_0,c_1,\cdots,c_{j-1}\}.$
 
-\begin{prop}
+\begin{proposition}
 The approximate solution $x_j$, the residual $r_j$ and the descent direction $p_j$ satisfy the following recurrence relations:
 \begin{align*}
 x_j=x_{j-1}+\alpha_{j-1}p_{j-1},\;r_j=r_{j-1}-\alpha_{j-1}Ap_{j-1},\;p_j=r_j+\beta_{j-1}p_{j-1}-W\hat{\mu}_j,
 \end{align*}
 for some $\alpha_{j-1},\beta_{j-1},\hat{\mu}_j.$ Thus $\mathcal{K}_{k,j}(A,W,r_0)=\text{span}\{W,p_0,p_1,\cdots,p_{j-1}\}$.
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 Let $\hat{\zeta}_j=\|r_0\|_2(L_jD_j\Lambda_j)^{-1}e_1$. We know,
@@ -1014,9 +1014,9 @@ $$p_{j-1}-\beta_{j-2}p_{j-2}=-W\hat{\mu}_{j-1}+c_{j-1}v_j,$$
 where $\hat{\mu}_{j-1}=c_{j-1}\hat{v}_j\;and\;\beta_{j-2}=-c_{j-1}u_{j-1,j}/c_{j-2}.$
 \end{proof}
 
-\begin{prop}
+\begin{proposition}
 The vectors $p_j$ are A-orthogonal to each other, i.e, $P^T_jAP_j$ is diagonal. In addition, they are also A-orthogonal to all $w_i$'s, i.e, $W^TAP_j=0.$
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 \begin{align*}
@@ -1029,10 +1029,10 @@ Consider,
 $$W^TAP_j=W^T(V_jT_j+\sigma_{j+1}v_{j+1}e^T_j)L^{-T}_j\Lambda_j=0.$$
 \end{proof}
 
-\begin{prop}
+\begin{proposition}
 The coefficients in Delfated-CG satisfy the relations
 $$\alpha_j=\dfrac{(r_j,r_j)}{(Ap_j,p_j)},\quad \hat{\mu}_j=(W^TAW)^{-1}Ar_j,\quad \beta_j=\dfrac{(r_{j+1},r_{j+1})}{(r_j,r_j)}.$$
-\end{prop}
+\end{proposition}
 
 \begin{proof}
 From the orthogonality constraints on residuals, $r^T_{j-1}r_j=0.$ Then,
