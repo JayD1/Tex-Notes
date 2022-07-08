@@ -1,0 +1,110 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cancel}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Theory of Optimization},
+    pdfpagemode=FullScreen,
+}
+
+
+\author{Jayadev Naram}
+\title{Theory of Optimization} 
+
+\begin{document}
+
+\date{}
+\maketitle
+\tableofcontents
+\newpage
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{corollary}{Corollary}[theorem]
+
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{assume}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\h}{\mathcal{H}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Dist}{\mathcal{D}}
+\newcommand{\perpProj}{\mathcal{P}^\perp}
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\Sprod}{\mathbb{S}_{xy}}
+\newcommand{\highlight}[1]{\underline{\textit{\textbf{#1}}}}
+\newcommand{\mapping}[3]{#1:#2\rightarrow #3}
+\newcommand{\doubt}{\highlight{[??]}}
+% \newcommand{\bigvert}[2]{#1{\raisebox{-.5ex}{$|$}_{#2}}}
+\newcommand{\bigvert}[2]{\left.#1\right|_{#2}}
+\newcommand{\sdnn}[1]{${#1}$}
+\newcommand{\bsdnn}[1]{$\boldsymbol{#1}$}
+\newcommand{\ifthen}[2]{\textbf{(#1)}\boldsymbol{\implies}\textbf{(#2)}}
+\newcommand{\bsdn}[1]{\boldsymbol{#1}}
+\newcommand{\forward}{$(\implies)$\ }
+\newcommand{\converse}{$(\impliedby)$\ }
+\newcommand{\Lt}[1]{\underset{#1\rightarrow 0}{Lt}}
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\dparder}[2]{\dfrac{\partial #1}{\partial x_{#2}}}
+\newcommand{\fparder}[2]{\frac{\partial #1}{\partial x_{#2}}}
+\newcommand{\parder}[2]{\partial #1/\partial x_{#2}}
+\newcommand{\parop}[1]{\dfrac{\partial}{\partial x_{#1}}}
+\newcommand{\innerproduct}[2]{\langle #1, #2 \rangle}
+\newcommand{\metric}[2]{[#1, #2]}
+\newcommand{\genst}{St_B(n,p)}
+\newcommand{\igenst}[1]{St_{B_{#1}}(n_{#1},p)}
+\newcommand{\realmat}[2]{\R^{#1\times #2}}
+\newcommand{\Skew}{\mathcal{S}_{skew}(p)}
+\newcommand{\Sym}{\mathcal{S}_{sym}(p)}
+\newcommand{\XperpB}{X_{B^\perp}}
+\newcommand{\polarRetr}{R^{polar}_X}
+\newcommand{\qrRetr}{R^{QR}_X}
+\newcommand{\vectransport}{\mathcal{T}}
+\newcommand{\grad}{\text{grad}\,}
+\newcommand{\hess}{\text{Hess}\,}
+
+\section{Unconstrained Minimization}
+
+Let $\R^n$ denote the $n$-dimensional Euclidean real vector space with the inner product defined for any $x,y\in \R^n$ as $\innerproduct{x}{y} = x^Ty = \sum_{i=1}^n x_i y_i$, where $x = [x_1,\ldots, x_n]^T$ and $y = [y_1,\ldots, y_n]^T$ are the coordinates of $x$ and $y$ respectively. Let the norm and the metric on $\R^n$ be defined as $\|x\| = \sqrt{\innerproduct{x}{x}}$ and $d(x,y) = \|x-y\|$, respectively.
+
+
+
+% \newpage
+
+% \begin{thebibliography}{9}
+% \bibitem{Rockafellar} 
+%     Rockafellar, R.T. Theory of Optimization. Princeton University Press, 1972.
+    
+% \bibitem{Fenchel}
+%     Fenchel, W. Convex Cones, Sets, and Functions. Princeton University, 1953.
+    
+    
+% \end{thebibliography}
+    
+
+\end{document}

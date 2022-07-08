@@ -946,6 +946,26 @@ At this point, the normal cone map definition only helps in simplfying notation 
     Thus, by Theorem \ref{thm:convex_function_second_order}, $g$ is convex for each $y\in C$ and $z\in \R^n$ iff $\innerproduct{z}{\text{Hess}\ f(y+\lambda z)z}\ge 0$ for every $z\in \R^n$ and $y\in C$.
 \end{proof}
 
+\begin{remark}[Euclidean Norm and distance]\label{remark:euclidean_norm_distance}
+    Consider the Euclidean norm on $\R^n$ 
+    \begin{equation*}
+        \|x\| = \innerproduct{x}{x}^{1/2} = (x_1^2+\ldots+x_n^2)^{1/2}.
+    \end{equation*}
+    Suppose $x,y\in \R^n$ and $0\le\lambda\le 1$. Then
+    \begin{equation*}
+        \|(1-\lambda)x+\lambda y\| \le (1-\lambda)\|x\| + \lambda \|y\|,
+    \end{equation*}
+    which shows the convexity of Euclidean norm. Next, consider the Euclidean distance on $\R^n$
+    \begin{equation*}
+        d(x,y) = \|x-y\|.
+    \end{equation*}
+    Suppose $(x,y),(x^\prime,y^\prime)\in \R^{2n}$ and $0\le \lambda\le 1$. Then
+    \begin{equation*}
+        d((1-\lambda)(x,y) + \lambda (x^\prime,y^\prime)) = \|(1-\lambda)x -(1-\lambda) y + \lambda x^\prime -\lambda y^\prime\| \le (1-\lambda) d(x,y) + \lambda d(x^\prime,y^\prime),
+    \end{equation*}
+    which shows the convexity of Euclidean distance.
+\end{remark}
+
 \begin{definition}
     For a set $C$ in $\R^n$ the \highlight{indicator function} $\delta_C(x)$ of $C$ is defined as 
     \begin{equation*}
@@ -994,7 +1014,7 @@ At this point, the normal cone map definition only helps in simplfying notation 
     The convexity of these functions (in Def. \ref{def:support_function}, \ref{def:gauge_function} and \ref{def:distance_function}) on $\R^n$ could be verified now directly, but we shall wait until the next section, where the convexity can be shown to follow from general principles.
 \end{remark}
 
-\begin{theorem}
+\begin{theorem}\label{thm:convex_level_sets}
     For any convex function $f$ and any $\alpha\in [-\infty,+\infty]$, the level sets $\{x\;:\;f(x)<\alpha\}$ and $\{x\;:\;f(x)\le\alpha\}$ are convex.
 \end{theorem}
 
@@ -1352,6 +1372,20 @@ At this point, the normal cone map definition only helps in simplfying notation 
         (Ah)(y) = \inf\{h(x)\;:\;Ax = y\} = \inf \{h(A^{-1}y)\} \overset{(\dagger)}{=} h(A^{-1}y) = (hA^{-1})(y),
     \end{equation*}
     where we used the uniqueness of $A^{-1}y$ in $(\dagger)$.
+\end{proof}
+
+\newpage 
+
+\section{Topological Properties}
+
+\subsection{Relative Interiors of Convex Sets}
+
+\begin{proposition}
+    Let $f$ be a real-valued continuous convex function on $\R^n$. Then $\{x\;:\;f(x)<\alpha\}$ is an open convex level set and $\{x\;:\;f(x)\le \alpha\}$ is a closed convex level set in $\R^n$.
+\end{proposition}
+
+\begin{proof}
+    The level sets can be written as $f^{-1}(I)$ and $f^{-1}(C)$ respectively, where $I = (\alpha,\infty)$ and $C = [\alpha,\infty)$ are open and closed set in $\R$. Then by continuity of $f$, we have that $f^{-1}(I)$ is open and $f^{-1}(C)$ is closed in $\R^n$. The convexity of the level sets follows from Theorem \ref{thm:convex_level_sets}. 
 \end{proof}
 
 \section*{Convex Cones - Fenchel Notes}
