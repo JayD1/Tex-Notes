@@ -1,0 +1,175 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cancel}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={General Notes},
+    pdfpagemode=FullScreen,
+}
+
+
+\author{Jayadev Naram}
+\title{General Notes} 
+
+\begin{document}
+
+\date{}
+\maketitle
+\tableofcontents
+\newpage
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{assume}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\h}{\mathcal{H}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\Pspace}{\mathbb{P}}
+\newcommand{\Dist}{\mathcal{D}}
+\newcommand{\perpProj}{\mathcal{P}^\perp}
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\Sprod}{\mathbb{S}_{xy}}
+\newcommand{\highlight}[1]{\underline{\textit{\textbf{#1}}}}
+\newcommand{\mapping}[3]{#1:#2\rightarrow #3}
+\newcommand{\doubt}{\highlight{[??]}}
+% \newcommand{\bigvert}[2]{#1{\raisebox{-.5ex}{$|$}_{#2}}}
+\newcommand{\bigvert}[2]{\left.#1\right|_{#2}}
+\newcommand{\sdnn}[1]{${#1}$}
+\newcommand{\bsdnn}[1]{$\boldsymbol{#1}$}
+\newcommand{\ifthen}[2]{\textbf{(#1)}\boldsymbol{\implies}\textbf{(#2)}}
+\newcommand{\bsdn}[1]{\boldsymbol{#1}}
+\newcommand{\forward}{$(\implies)$\ }
+\newcommand{\converse}{$(\impliedby)$\ }
+\newcommand{\Lt}[1]{\underset{#1\rightarrow 0}{Lt}}
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\dparder}[2]{\dfrac{\partial #1}{\partial x_{#2}}}
+\newcommand{\fparder}[2]{\frac{\partial #1}{\partial x_{#2}}}
+\newcommand{\parder}[2]{\partial #1/\partial x_{#2}}
+\newcommand{\parop}[1]{\dfrac{\partial}{\partial x_{#1}}}
+\newcommand{\innerproduct}[2]{\langle #1, #2 \rangle}
+\newcommand{\metric}[2]{[#1, #2]}
+\newcommand{\genst}{St_B(n,p)}
+\newcommand{\igenst}[1]{St_{B_{#1}}(n_{#1},p)}
+\newcommand{\realmat}[2]{\R^{#1\times #2}}
+\newcommand{\Skew}{\mathcal{S}_{skew}(p)}
+\newcommand{\Sym}{\mathcal{S}_{sym}(p)}
+\newcommand{\XperpB}{X_{B^\perp}}
+\newcommand{\polarRetr}{R^{polar}_X}
+\newcommand{\qrRetr}{R^{QR}_X}
+\newcommand{\vectransport}{\mathcal{T}}
+\newcommand{\grad}{\mathrm{grad}\,}
+\newcommand{\hess}{\mathrm{Hess}\,}
+\newcommand{\trace}{\mathrm{tr}}
+
+\section{Inequalities for the Wasserstein Mean of Positive Definite Matrices}
+
+\begin{definition}
+    Let $\Pspace$ be the space of $n\times n$ complex positive definite matrices. The \highlight{Bures-} \highlight{Wasserstein distance} on $\Pspace$ is the metric defined as 
+    \begin{equation}\label{eqn:bw_dist}
+        d(A,B) = \Big[\trace(A+B) - 2\trace(A^{1/2}BA^{1/2})^{1/2} \Big]^{1/2}.
+    \end{equation}
+\end{definition}
+
+\begin{definition}
+    Let $A_1,\ldots, A_m$ be given positive definite matrices and let $w = (w_1,\ldots, w_m)$ be a vector of weights, i.e., $w_j\ge 0$ and $\sum_{j=1}^m w_j = 1$. Then the \highlight{(weighted) Wasserstein mean}, or the \highlight{Wasserstein barycentre} of $A_1,\ldots,A_m$ is defined as 
+    \begin{equation}\label{eqn:wasserstein_barycentre}
+        \Omega(w; A_1,\ldots,A_m) = \underset{X\in\Pspace}{\arg\min}\sum_{j=1}^m w_j d^2(X,A_j).
+    \end{equation}
+\end{definition}
+
+\begin{remark}
+    The function defined on $\Pspace$ by the sum on the right hand side of \eqref{eqn:wasserstein_barycentre} has a unique minimizer. 
+\end{remark}
+
+\begin{remark}
+    The Wasserstein barycentre $\Omega$ defined in \eqref{eqn:wasserstein_barycentre} is the unique positive definite solution of the equation 
+    \begin{equation}
+        X = \sum_{j=1}^m w_j(X^{1/2}A_jX^{1/2})^{1/2}.
+    \end{equation}
+    Consider the special case $m = 2$, writing $(A_1,A_2) = (A,B)$ and $(w_1,w_2) = (1-t, t)$, where $0\le t\le 1$. We rewrite the above equation as
+    \begin{align*}
+        &\qquad\ \ \, X = (1-t) (X^{1/2}AX^{1/2})^{1/2} + t (X^{1/2}BX^{1/2})^{1/2} \\
+        &\implies X^{1/4} X^{1/2} X^{1/4} = X^{1/4} ((1-t)A^{1/2}+tB^{1/2}) X^{1/4}\\
+        &\implies X^{1/2} = (1-t)A^{1/2}+tB^{1/2}\\
+        &\implies X = ((1-t)A^{1/2}+tB^{1/2})^2.
+    \end{align*}
+    Thus, we obtained an explicit formula for $\Omega$. Denoting this by $A\diamondsuit_t B$ we have
+    \begin{equation}\label{eqn:bw_geodesic}
+        A\diamondsuit_t B = (1-t)^2 A + t^2 B + t(1-t)[(AB)^{1/2}+(BA)^{1/2}].
+    \end{equation}
+    The metric $d$ in \eqref{eqn:bw_dist} is the distance corresponding to an underlying metric on $\Pspace$, and \eqref{eqn:bw_geodesic} is an equation for the geodesic segment between two points $A$ and $B$ in the manifold $\Pspace$. The special choice $t=1/2$ gives the midpoint of this geodesic. This is denoted by 
+    \begin{equation}\label{eqn:wasserstein_mean_midpoint}
+        A\diamondsuit B = \dfrac{1}{4} [A+B+(AB)^{1/2}+(BA)^{1/2}],
+    \end{equation}
+    and can be thought of as the \highlight{Wasserstein mean} of $A$ and $B$.
+\end{remark}
+
+\begin{definition}
+    The \highlight{Cartan metric} 
+    \begin{equation}\label{eqn:cartan_metric}
+        \delta(A,B) = \|\log A^{-1/2}BA^{-1/2}\|_2,
+    \end{equation}
+    where $\|\cdot\|_2$ is the Forbenius norm on matrices. The \highlight{weighted Cartan mean} (or the \highlight{weighted} \highlight{geometric mean}) of $A_1,\ldots, A_m$ is defined as
+    \begin{equation}\label{eqn:cartan_mean}
+        G(w;A_1,\ldots,A_m) = \underset{X\in\Pspace}{\arg\min} \sum_{j=1}^m w_k\delta^2(X,A_j).
+    \end{equation}
+\end{definition}
+
+\begin{remark}
+    The (unique) solution of this minimization problem is also the positive definite solution of the equation
+    \begin{equation}
+        \sum_{j=1}^m w_j\log (X^{-1/2}A_j X^{-1/2}) = 0.
+    \end{equation}
+    Analogous to \eqref{eqn:bw_geodesic} the equation of the geodesic segment joining $A$ and $B$ with respect to the metric $\delta$ is 
+    \begin{equation}\label{eqn:cartain_geodesic}
+        A\#_t B = A^{1/2}(A^{-1/2}B A^{-1/2})^t A^{1/2}, \qquad 0\le t\le 1.
+    \end{equation}
+    This is also the $t$-weighted geometric mean of $A$ and $B$. When $t = 1/2$, this reduces to 
+    \begin{equation}\label{eqn:cartain_mean_midpoint}
+        A\# B = A^{1/2}(A^{-1/2}B A^{-1/2})^{1/2} A^{1/2},
+    \end{equation}
+    and is called the geometric mean of $A$ and $B$.
+\end{remark}
+
+% \newpage
+
+% \begin{thebibliography}{9}
+% \bibitem{Rockafellar} 
+%     Rockafellar, R.T. Theory of Optimization. Princeton University Press, 1972.
+    
+% \bibitem{Fenchel}
+%     Fenchel, W. Convex Cones, Sets, and Functions. Princeton University, 1953.
+    
+    
+% \end{thebibliography}
+    
+
+\end{document}
