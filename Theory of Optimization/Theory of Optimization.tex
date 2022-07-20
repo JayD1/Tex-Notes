@@ -110,7 +110,7 @@ The problem \eqref{eqn:unconst_opt} is called as the unconstrained minimization 
         f(x^*)\le f(x).
     \end{equation}
     % 
-    The global or local minimum $x^*$ is said to be \highlight{strict} if the corresponding inequality given above is strict for $x\neq x^*$.
+    The global or local minimum $x^*$ is said to be \highlight{strict} if the corresponding inequality given above is strict for $x\neq x^*$. The vector $x^*$ with $\nabla f(x^*) = 0$ is referred to as a \highlight{stationary point}. 
 \end{definition}
 
 \begin{proposition}[Necessary Optimality Conditions]
@@ -140,6 +140,46 @@ The problem \eqref{eqn:unconst_opt} is called as the unconstrained minimization 
         0\le\dfrac{f(x^*+\alpha d) - f(x^*)}{\alpha^2} = \frac{1}{2}d^T\nabla^2 f(x^*)d + \frac{o(\alpha^2)}{\alpha^2}.
     \end{equation*}
     Taking the limit $\alpha\rightarrow 0$ and using the fact that $\lim_{\alpha\rightarrow 0} o(\alpha^2)/\alpha^2 = 0$, we obtain $d^T\nabla^2 f(x^*)d\ge 0$, showing that $\nabla^2 f(x^*)$ is positive semidefinite.
+\end{proof}
+
+\begin{remark}
+    Suppose for a function $\mapping{f}{\R^n}{\R}$, the point $x^*$ is a local minimum of $f$ along every line that passes through $x^*$, i.e., the function 
+    \begin{equation*}
+        g(\alpha) = f(x^*+\alpha d)
+    \end{equation*}
+    is minimized at $\alpha = 0$ for all $d\in \R^n$. Then 
+    \begin{equation*}
+        0 = \bigvert{\dfrac{dg}{d\alpha}}{\alpha = 0} = \nabla f(x^*)^T d = 0,\quad \forall\ d\in \R^n.
+    \end{equation*}
+    This shows that $\nabla f(x^*) = 0$, i.e., first order necessary condition is satisfied at $x^*$. This only shows that $x^*$ is a stationary point and it need not be a local minimum of $f$. For example, consider $f(y,z) = (z-py^2)(z-qy^2)$, where $0<p<q$. Here $(0,0)$ is one such stationary point that minimizes $f$ along every line passing through it but $(0,0)$ is not a local minimum of $f$.
+\end{remark}
+
+\begin{proposition}[Second Order Sufficient Optimality Conditions]
+    Let $\mapping{f}{\R^n}{\R}$ be twice continuously differentiable over an open set $U$. Suppose that a vector $x^*\in U$ satisfies the conditions
+    \begin{equation*}
+        \nabla f(x^*) = 0, \qquad \nabla^2 f(x^*) \succeq 0.
+    \end{equation*}
+    Then, $x^*$ is a strict unconstrained local minimum of $f$. In particular, there exists a scalar $\gamma>0$ and $\varepsilon>0$ such that for all $x\in \R^n$ with $\|x-x^*\|<\varepsilon$, we have 
+    \begin{equation*}
+        f(x)\ge f(x^*) + \dfrac{\gamma}{2}\|x^*-x\|^2.
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    Denote by $\lambda>0$ the smallest eigenvalue of $\nabla^2 f(x^*)$. Then we have 
+    \begin{equation*}
+        d^T \nabla^2 f(x^*) d\ge \lambda \|d\|^2,\qquad \forall\ d\in \R^n.
+    \end{equation*}
+    Using this relation, the hypothesis $\nabla f(x^*) = 0$, and the second order Taylor expansion, we have for all $d$
+    \begin{align*}
+        f(x^*+d) -f(x^*) &= \nabla f(x^*)^T d + \frac{1}{2}d^T \nabla^2 f(x^*)d + o(\|d\|^2) \\
+        &\ge \dfrac{\lambda}{2}\|d\|^2 + o(\|d\|^2) \\
+        &= \bigg(\dfrac{\lambda}{2} + \dfrac{o(\|d\|^2)}{\|d\|^2}\bigg) \|d\|^2.
+    \end{align*}
+    Choose any $\varepsilon>0$ and $\gamma>0$ such that for all $d\in \R^n$ with $\|d\|<\varepsilon$,
+    \begin{equation*}
+        \dfrac{\lambda}{2} + \dfrac{o(\|d\|^2)}{\|d\|^2}\ge \dfrac{\gamma}{2}.
+    \end{equation*}
 \end{proof}
 
 % \newpage
