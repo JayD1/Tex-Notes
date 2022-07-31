@@ -378,7 +378,7 @@ By convention, the dimension of $\emptyset$ is $-1$, and affine sets of dimensio
     Enlarging the given affinely independent sets if necessary, we can reduce the question to the case when $m=n$. Then, there exists a unique one-to-one linear transformation $A$ on $\R^n$ carrying the basis $b_1-b_0,\ldots,b_n-b_0$ of $\R^n$ onto the basis $b_1^\prime-b_0^\prime,\ldots,b_n^\prime-b_0^\prime$. The desired affine transformation is then given by $Tx = Ax + a$, where $a = b_0^\prime - Ab_0$.
 \end{proof}
 
-\begin{corollary}
+\begin{corollary}\label{cor:affine_sets_one_to_one_map}
     Let $M_1$ and $M_2$ be any two affine sets in $\R^n$ of the same dimension. Then there exists a one-to-one affine transformation $T$ on $\R^n$ such that $TM_1 = M_2$.
 \end{corollary}
 
@@ -489,7 +489,7 @@ The proof is same as that of Prop. \ref{prop:affine_hull_affine_comb} with the a
     The dimension of an affine hull or simplex as already defined agrees with its dimension as a convex set.
 \end{remark}
 
-\begin{theorem}
+\begin{theorem}\label{thm:convex_set_dimension_simplices}
     The dimension of a convex set $C$ is the maximum of the dimensions of the various simplices included in $C$.
 \end{theorem}
 
@@ -1385,9 +1385,146 @@ At this point, the normal cone map definition only helps in simplfying notation 
 \end{proposition}
 
 \begin{proof}
-    The level sets can be written as $f^{-1}(I)$ and $f^{-1}(C)$ respectively, where $I = (\alpha,\infty)$ and $C = [\alpha,\infty)$ are open and closed set in $\R$. Then by continuity of $f$, we have that $f^{-1}(I)$ is open and $f^{-1}(C)$ is closed in $\R^n$. The convexity of the level sets follows from Theorem \ref{thm:convex_level_sets}. 
+    The level sets can be written as $f^{-1}(I)$ and $f^{-1}(C)$ respectively, where $I = (\alpha,\infty)$ is open and $C = [\alpha,\infty)$ is closed in $\R$. Then by continuity of $f$, we have that $f^{-1}(I)$ is open and $f^{-1}(C)$ is closed in $\R^n$. The convexity of the level sets follows from Theorem \ref{thm:convex_level_sets}. 
 \end{proof}
 
+We shall denote by $\mathbb{B}$ the \highlight{Euclidean unit ball} in $\R^n$:
+\begin{equation*}
+    \mathbb{B} = \{x\;:\;\|x\|\le 1\} = \{x\;:\; d(x,0)\le 1\}.
+\end{equation*}
+% This is a closed convex set as it is a level set of Euclidean norm, which is continuous and convex. Similarly, the interior of $\mathbb{B}$ ($\mathrm{int}\ \mathbb{B}$) is the set $\{x\;:\;\|x\|<1\}$ is an open convex set. 
+For any $a\in \R^n$, the ball with radius $\varepsilon>0$ and center $a$ is given by $a+\varepsilon \mathbb{B}$. For any set $C$ in $\R^n$, the set of points $x$ whose distance from $C$ does not exceed $\varepsilon$ is 
+\begin{equation*}
+    \{x\;:\;\exists\ y\in C, d(x,y)\le \varepsilon\} = \bigcup \{y+\varepsilon \mathbb{B}\;:\;y\in C\} = C + \varepsilon \mathbb{B}.
+\end{equation*}
+
+\begin{proposition}\label{prop:closure_interior_formulae}
+    Let $C$ be a subset of $\R^n$. Then the closure $\mathrm{cl}\ C$ and interior $\mathrm{int}\ C$ of $C$ can be expressed as 
+    \begin{enumerate}[(i)]
+        \item $\mathrm{int}\ C = \{x\;:\; \exists\ \varepsilon>0,x+\varepsilon \mathbb{B}\subseteq C\}\equiv C_0,$ 
+        \item $\mathrm{cl}\ C = \bigcap \{C+\varepsilon \mathbb{B}\;:\; \varepsilon>0\} \equiv C^0$. 
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    \begin{enumerate}[(i)]
+        \item \converse Suppose $x\in C_0$, so that for some $\varepsilon >0$, we have $x+\varepsilon\mathbb{B} \subseteq C$. Then $x+\varepsilon (\mathrm{int}\ \mathbb{B})\subseteq C$, hence $x\in \mathrm{int}\ C$. 
+
+        \forward Suppose $x\in \mathrm{int}\ C$, so that for some $2 \varepsilon > 0$, we have $\{y\;:\;d(x,y)<2\varepsilon\}\subseteq C$. Then $x+\varepsilon \mathbb{B}\subseteq C$, which shows that $x\in C_0$. This shows that $C_0 = \mathrm{int}\ C$.
+
+        \item \converse Suppose $x\in C^0$, so that for every $\varepsilon>0$, we have $x\in C+\varepsilon \mathbb{B}$. Then for every $\varepsilon>0$, $x\in C+\varepsilon (\mathrm{int}\ \mathbb{B})$. This means that there is some $y\in C$ for every $\varepsilon>0$ such that $x\in y+\varepsilon(\mathrm{int}\ \mathbb{B})$, hence $x\in \mathrm{cl}\ C$.
+
+        \forward Suppose $x\in \mathrm{cl}\ C$, so that for every $2\varepsilon>0$, there is a $y\in C$ such that $d(x,y)<2\varepsilon$. Then for every $\varepsilon>0$, there is a $y\in C$ such that $x\in y+\varepsilon\mathbb{B}$, i.e., $x\in C+\varepsilon\mathbb{B}$. Hence $x\in C^0$. This shows that $C^0 = \mathrm{cl}\ C$.    
+    \end{enumerate}
+\end{proof}
+
+\begin{definition}
+    The \highlight{relative interior} of a convex set $C$ in $\R^n$, which we denote by $\mathrm{ri}\ C$, is defined as the interior which results when $C$ is regarded as a subset of its affine hull $\mathrm{aff}\ C$, i.e.,
+    \begin{equation*}
+        \mathrm{ri}\ C = \{x\in \mathrm{aff}\ C\;:\; \exists\ \varepsilon>0, (x+\varepsilon \mathbb{B})\cap (\mathrm{aff}\ C)\subseteq C\}.
+    \end{equation*}
+    The set difference $(\mathrm{cl}\ C) - (\mathrm{ri}\ C)$ is called the \highlight{relative boundary} of $C$. Naturally, $C$ is said to be \highlight{relatively open} if $\mathrm{ri}\ C = C$.
+\end{definition}
+
+\begin{remark}
+    A pitfall to be noted is that, while inclusion $C_1\subseteq C_2$ implies $\mathrm{cl}\ C_1\subseteq \mathrm{cl}\ C_2$ and $\mathrm{int}\ C_1\subseteq \mathrm{int}\ C_2$, it does not in general imply $\mathrm{ri}\ C_1\subseteq \mathrm{ri}\ C_2$. For example, if $C_2 = \{(x_1,x_2)\;:\;|x_1|\le 1,|x_2|\le 1\}$ is a rectangle in $\R^2$ and $C_1 = \{(x_1,x_2)\;:\;x_1 = 1,|x_2|\le 1\}$ is an edge of $C_2$. Then $\mathrm{ri}\ C_1 = \{(x_1,x_2)\;:\;x_1 = 1,|x_2|< 1\}$ and $\mathrm{ri}\ C_2 = \{(x_1,x_2)\;:\;|x_1|< 1,|x_2|<1\}$, which are both non-empty but disjoint.
+\end{remark}
+
+\begin{remark}
+    For an $n$-dimensional convex set of $\R^n$, $\mathrm{aff}\ C = \R^n$ by definition, so $\mathrm{ri}\ C = \mathrm{int}\ C$. An affine set is relatively open by definition. Every affine set is at the same time closed. This is clear from the fact that an affine set is an intersection of hyperplanes (Thm. \ref{thm:affine_set_representation}), and every hyperplane $H$ can be expressed as a level set of a continuous function.
+\end{remark}
+
+\begin{remark}\label{remark:simplying_ri_cl}
+    Closures and relative interiors are preserved under one-to-one affine transformations of $\R^n$ onto itself as such a transformation preserves affine hulls and is continuous in both directions. One should keep this in mind as a useful device for simplfying proofs. For example, if $C$ is an $m$-dimensional convex set in $\R^n$, there exists by Cor. \ref{cor:affine_sets_one_to_one_map} a one-to-one affine transformation $T$ of $\R^n$ onto itself which carries $\mathrm{aff}\ C$ onto the subspace 
+    \begin{equation*}
+        L = \{x = (\xi_1,\ldots,x_n)\;:\;\xi_{m+1} = \ldots = \xi_{n} = 0\}.
+    \end{equation*}
+    This $L$ can be regarded as a copy of $\R^n$. It is often possible in this manner to reduce a question about general convex sets to the case where the convex set is of full dimension, i.e., has the whole space as its affine hull.
+\end{remark}
+
+\begin{theorem}\label{thm:rel_int_line_seg}
+    Let $C$ be a convex set in $\R^n$. Let $x\in \mathrm{ri}\ C$ and $y\in \mathrm{cl}\ C$. Then $(1-\lambda)x+\lambda y$ belongs to $\mathrm{ri}\ C$ (and hence in particular to $C$) for $0\le \lambda <1$.
+\end{theorem}
+
+\begin{proof}
+    In view of Remark \ref{remark:simplying_ri_cl}, we can limit attention to the case where $C$ is $n$-dimensional, so that $\mathrm{ri}\ C = \mathrm{int}\ C$. Let $0\le \lambda<1$. We must show that $(1-\lambda)x+\lambda y+\varepsilon \mathbb{B}\subseteq C$ for some $\varepsilon>0$. We have $y\in C+\varepsilon\mathbb{B}$ for every $\varepsilon>0$, so that 
+    \begin{equation*}
+        (1-\lambda)x+\lambda y+\varepsilon \mathbb{B}\subseteq (1-\lambda)x+\lambda (C+\varepsilon\mathbb{B})+\varepsilon \mathbb{B} = (1-\lambda)[x +\varepsilon(1+\lambda)(1-\lambda)^{-1}\mathbb{B}]+\varepsilon C.
+    \end{equation*}
+    When $\varepsilon$ is sufficiently small, $x +\varepsilon(1+\lambda)(1-\lambda)^{-1}\mathbb{B}\subseteq C$, since $x\in\mathrm{int}\ C$, so that 
+    \begin{equation*}
+        (1-\lambda)x+\lambda y+\varepsilon \mathbb{B}\subseteq (1-\lambda)C+\varepsilon C = C.
+    \end{equation*}
+\end{proof}
+
+\begin{theorem}
+    Let $C$ be any convex set in $\R^n$. Then $\mathrm{cl}\ C$ and $\mathrm{ri}\ C$ are convex sets in $\R^n$ having the same affine hull, and hence the same dimension, as $C$. (In particular, if $C\neq \emptyset$ then $\mathrm{ri}\ C \neq \emptyset$.)
+\end{theorem}
+
+\begin{proof}
+    By the convexity of $C$ and $\mathbb{B}$, the set $C+\varepsilon\mathbb{B}$ is convex for any $\varepsilon$. The intersection of the collection of these sets for $\varepsilon>0$ is $\mathrm{cl}\ C$, hence it is convex. The affine hull of $\mathrm{cl}\ C$ is atleast as large as that of $C$, and since $\mathrm{cl}\ C\subseteq \mathrm{aff}\ C$ it must actually coincide with $\mathrm{aff}\ C$.
+
+    The convexity of $\mathrm{ri}\ C$ is a corollary of the preceding theorem (take $y$ to be in $\mathrm{ri}\ C$). To complete the proof, it is enough to show that, in the case where $C$ is $n$-dimensional with $n>0$, the interior of $C$ is not empty. An $n$-dimensional convex set contains an $n$-dimensional simplex (Thm. \ref{thm:convex_set_dimension_simplices}). We shall show that such a simplex $S$ has non-empty interior. Applying an affine transformation if necessary, we can assume that the vertices of $S$ are the vectors $(0,\ldots,0)$, $(1,0,\ldots, 0)$, $\ldots$, $(0,\ldots, 0, 1)$ so that
+    \begin{align*}
+        S &= \{(\xi_1,\ldots, \xi_n)\;:\;\xi_{j}\ge 0, \xi_0+\xi_1+\ldots+\xi_n = 1\}\\
+        &= \{(\xi_1,\ldots, \xi_n)\;:\;\xi_{j}\ge 0, \xi_1+\ldots+\xi_n \le 1\}.
+    \end{align*}
+    But this simplex does have a non-empty interior, namely 
+    \begin{equation*}
+        \mathrm{int}\ S = \{(\xi_1,\ldots, \xi_n)\;:\;\xi_{j}> 0, \xi_1+\ldots+\xi_n < 1\}.
+    \end{equation*}
+    Hence $\mathrm{int}\ C\neq \emptyset$ as claimed.
+\end{proof}
+
+\begin{remark}
+    For any set $C$ in $\R^n$, convex or not, the laws
+    \begin{equation*}
+        \mathrm{cl}\ (\mathrm{cl}\ C) = \mathrm{cl}\ C,\qquad \mathrm{ri}\ (\mathrm{ri}\ C) = \mathrm{ri}\ C
+    \end{equation*}
+    are valid. However, under convexity, the next theorem shows the validity of the complementary laws.
+\end{remark}
+
+\begin{theorem}
+    For any convex set $C$ in $\R^n$, $(i)\ \mathrm{cl}\ (\mathrm{ri}\ C) = \mathrm{cl}\ C$ and $(ii)\ \mathrm{ri}\ (\mathrm{cl}\ C) = \mathrm{ri}\ C$.
+\end{theorem}
+
+\begin{proof}
+    \begin{enumerate}[(i)]
+        \item \forward Trivially, $\mathrm{cl}\ (\mathrm{ri}\ C) \subseteq \mathrm{cl}\ C$, since $\mathrm{ri}\ C\subseteq C$.
+        
+        \converse Given any $y\in \mathrm{cl}\ C$ and any $x\in \mathrm{ri}\ C$ (such an $x$ exists by the last theorem when $C\neq \emptyset$), the line segment between $x$ and $y$ lies entirely in $\mathrm{ri}\ C$ except perhaps for $y$ (Thm. \ref{thm:rel_int_line_seg}). Then by Prop. \ref{prop:closure_interior_formulae}(ii), $y\in \mathrm{cl}\ (\mathrm{ri}\ C)$.
+
+        \item \converse The inclusion $\mathrm{ri}\ (\mathrm{cl}\ C)\supseteq \mathrm{ri}\ C$ holds, since $\mathrm{cl}\ C\supseteq C$ and the affine hulls of $\mathrm{cl}\ C$ and $C$ coincide.
+        
+        \forward Now let $z\in \mathrm{ri}\ (\mathrm{cl}\ C)$. We shall show that $z\in \mathrm{ri}\ C$. Let $x$ be any point of $\mathrm{ri}\ C$. (We can suppose that $x\neq z$, for otherwise $z\in \mathrm{ri}\ C$ trivially.) Consider the line through $x$ and $z$. For values $\mu>1$ with $\mu-1$ sufficiently small, the point
+        \begin{equation*}
+            y = (1-\mu) x+ \mu z = z - (\mu-1)(x-z)
+        \end{equation*}
+        on this line still belongs to $\mathrm{ri}\ (\mathrm{cl}\ C)$ and hence to $\mathrm{cl}\ C$. For such a $y$, we can express $z$ in terms of $(1-\lambda)x+\lambda y$ with $0<\lambda <1$ (specifically with $\lambda=1/\mu$). By Thm. \ref{thm:rel_int_line_seg}, $z\in \mathrm{ri}\ C$.
+    \end{enumerate}
+\end{proof}
+
+\begin{corollary}
+    Let $C_1$ and $C_2$ be convex sets in $\R^n$. Then $\mathrm{cl}\ C_1 = \mathrm{cl}\ C_2$ iff $\mathrm{ri}\ C_1 = \mathrm{cl}\ C_2$. These conditions are equivalent to the condition that $\mathrm{ri}\ C_1\subseteq C_2\subseteq \mathrm{cl}\ C_1$.
+\end{corollary}
+
+\begin{corollary}
+    If $C$ is a convex set in $\R^n$, then every open set which meets $\mathrm{cl}\ C$ also meets $\mathrm{ri}\ C$.
+\end{corollary}
+
+\begin{proof}
+    
+\end{proof}
+
+\begin{corollary}
+    If $C_1$ is a convex subset of the relative boundary of a non-empty convex set $C_2$ in $\R^n$, then $\mathrm{dim}\ C_1<\mathrm{dim}\ C_2$.
+\end{corollary}
+
+\begin{proof}
+    Suppose $C_1$ had the same dimension as $C_2$. Since $C_1\subseteq \mathrm{cl}\ C_2-\mathrm{ri}\ C_2\subseteq\mathrm{cl}\ C_2\subseteq\mathrm{aff}\ C_2$. But then $\mathrm{aff}\ C_1 = \mathrm{aff}\ C_2$ which implies that $C_1$ has an interior point relative to $\mathrm{aff}\ C_2$. Such point could not be in $\mathrm{cl}\ (\mathrm{ri}\ C_2)$, since $\mathrm{ri}\ C_2$ is disjoint from $C_1$, and hence it could not be in $\mathrm{cl}\ (\mathrm{ri}\ C_2) = \mathrm{cl}\ C_2$ which leads to a contradiction.
+\end{proof}
+
+\newpage
 \section*{Convex Cones - Fenchel Notes}
 
 \subsection*{Cones}
