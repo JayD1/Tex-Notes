@@ -1,0 +1,391 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cancel}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta, 
+    citecolor=magenta,     
+    urlcolor=blue,
+    pdftitle={Information Theory},
+    pdfpagemode=FullScreen,
+}
+
+
+\author{Jayadev Naram}
+\title{Information Theory} 
+
+\begin{document}
+
+\date{}
+\maketitle
+\tableofcontents
+% \newpage
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{assume}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\red}[1]{{\color{red}#1}}
+
+\newcommand{\independent}{\perp\!\!\!\!\perp} 
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\barl}{\bar{\ell}}
+\newcommand{\barL}{\bar{L}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\h}{\mathcal{H}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Dist}{\mathcal{D}}
+\newcommand{\perpProj}{\mathcal{P}^\perp}
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\Sprod}{\mathbb{S}_{xy}}
+\newcommand{\highlight}[1]{\textsl{\textbf{#1}}}
+\newcommand{\mapping}[3]{#1:#2\rightarrow #3}
+\newcommand{\doubt}{\highlight{[??]}}
+% \newcommand{\bigvert}[2]{#1{\raisebox{-.5ex}{$|$}_{#2}}}
+\newcommand{\bigvert}[2]{\left.#1\right|_{#2}}
+\newcommand{\sdnn}[1]{${#1}$}
+\newcommand{\bsdnn}[1]{$\boldsymbol{#1}$}
+\newcommand{\ifthen}[2]{\textbf{(#1)}\boldsymbol{\implies}\textbf{(#2)}}
+\newcommand{\bsdn}[1]{\boldsymbol{#1}}
+\newcommand{\forward}{$(\implies)$}
+\newcommand{\converse}{$(\impliedby)$}
+\newcommand{\Lt}[1]{\underset{#1\rightarrow 0}{Lt}}
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\dparder}[2]{\dfrac{\partial #1}{\partial x_{#2}}}
+\newcommand{\fparder}[2]{\frac{\partial #1}{\partial x_{#2}}}
+\newcommand{\parder}[2]{\partial #1/\partial x_{#2}}
+\newcommand{\parop}[1]{\dfrac{\partial}{\partial x_{#1}}}
+\newcommand{\innerproduct}[2]{\langle #1, #2 \rangle}
+\newcommand{\genst}{St_B(n,p)}
+\newcommand{\igenst}[1]{St_{B_{#1}}(n_{#1},p)}
+\newcommand{\realmat}[2]{\R^{#1\times #2}}
+\newcommand{\Skew}{\mathcal{S}_{skew}(p)}
+\newcommand{\Sym}{\mathcal{S}_{sym}(p)}
+\newcommand{\XperpB}{X_{B^\perp}}
+\newcommand{\polarRetr}{R^{polar}_X}
+\newcommand{\qrRetr}{R^{QR}_X}
+\newcommand{\vectransport}{\mathcal{T}}
+\newcommand{\grad}{\text{grad}\,}
+\newcommand{\hess}{\text{Hess}\,}
+
+\nocite{*}
+
+\section{Entropy}
+
+\begin{definition}
+    The \highlight{uncertainity or entropy} of a discrete random variable $U$ that takes values in the set $\mathcal{U}$ (also called alphabet $\mathcal{U}$) is defined as 
+    \begin{equation*}
+        H(U) = -\sum_{u\in \mathcal{U}} P_U(u) \log_b P_U(u),
+        % H(U) = -\sum_{u\in \text{supp}(P_U)} P_U(u) \log_b P_U(u),
+    \end{equation*}
+    where $P_U(\cdot)$ denotes the probability mass function of the random variable $U$.
+    % , and the 
+\end{definition}
+
+\begin{remark}
+    It should be noted that when $P_U(u) = 0$, the corresponding term does not contribute to entropy because $\lim_{t\downarrow 0} t\log_b t = 0$. In view of this result, one can equivalently define entropy on the support of $P_U$ which is defined as
+    \begin{equation*}
+        \text{supp}(P_U) = \{u\;:\; P_U(u)>0 \} \subseteq \mathcal{U}.
+    \end{equation*}
+\end{remark}
+
+\begin{remark}
+    Entropy does not depend on different possible values that $U$ can take on, but only on the probabilities of these values.
+\end{remark}
+
+\begin{definition}
+    If $U$ is binary with two possible values $u_1$ and $u_2$, such that $\Prob[U = u_1] = p$ and $\Prob[U = u_2] = 1-p$, then 
+    \begin{equation*}
+        H(U) = H_b(p) = -p\log_2 p -(1-p)\log_2 (1-p), p\in[0,1],
+    \end{equation*}
+    where $H_b(\cdot)$ is called the \highlight{binary entropy function}.
+\end{definition}
+
+\begin{lemma}[IT Inequality]
+    For any base $b>1$ and any $\xi > 0$, 
+    \begin{equation*}
+        \bigg(1-\dfrac{1}{\xi}\bigg)\log_b e \le \log_b \xi \le (\xi-1) \log_b e,
+    \end{equation*}
+    with equalities on both sides hold iff $\xi = 1$.
+\end{lemma}
+
+\begin{theorem}
+    If $U$ has $r$ possible values, then 
+    \begin{equation*}
+        0 \le H(U)\le \log r,
+    \end{equation*}
+    where 
+    \begin{align*}
+        H(U) = 0\quad &\iff \exists\ u\in\mathcal{U}, P_U(u) = 1, \\
+        H(U) = \log r &\iff \forall\ u\in\mathcal{U}, P_U(u) = \dfrac{1}{r}.
+    \end{align*}
+\end{theorem}
+
+\begin{definition}
+    The \highlight{conditional entropy} of the random variable $X$ given the event $Y = y$ is defined as 
+    \begin{equation*}
+        H(X|Y = y) = -\sum_{x\in \mathcal{X}} P_{X|Y}(x|y) \log P_{X|Y}(x|y) = -\E\Big[\log P_{X|Y}(X|Y)\Big| Y = y \Big],
+    \end{equation*}
+    where the conditional probability distribution is given by
+    \begin{equation*}
+        P_{X|Y}(x|y) = \dfrac{P_{X,Y}(x,y)}{P_Y(y)}.
+    \end{equation*}
+\end{definition}
+
+\begin{corollary}
+    If $X$ has $r$ possible values, then 
+    \begin{equation*}
+        0 \le H(X|Y = y)\le \log r,
+    \end{equation*}
+    where 
+    \begin{align*}
+        H(X|Y = y) = 0\quad &\iff \exists\ x\in\mathcal{X}, P_{X|Y}(x|y) = 1, \\
+        H(X|Y = y) = \log r &\iff \forall\ x\in\mathcal{X}, P_{X|Y}(x|y) = \dfrac{1}{r}.
+    \end{align*}
+\end{corollary}
+
+\begin{definition}
+    The \highlight{conditional entropy} of the random variable $X$ given the random variable $Y$ is defined as 
+    \begin{align*}
+        H(X|Y) &= \sum_{y\in \mathcal{Y}} P_{Y}(y) H(X|Y = y)\\
+        &= \E_Y\big[H(X|Y = y)\big] \\
+        &= -\sum_{x\in \mathcal{X},y\in \mathcal{Y}} P_{X,Y}(x,y) \log P_{X|Y}(x|y)\\
+        &= -\E\Big[\log P_{X|Y}(X|Y) \Big].
+    \end{align*}
+\end{definition}
+
+\begin{corollary}
+    If $X$ has $r$ possible values, then 
+    \begin{equation*}
+        0 \le H(X|Y)\le \log r,
+    \end{equation*}
+    where 
+    \begin{align*}
+        H(X|Y) = 0\quad &\iff \exists\ x\in\mathcal{X}, \forall\ y\in \mathcal{Y}, P_{X|Y}(x|y) = 1, \\
+        H(X|Y) = \log r &\iff \forall\ x\in\mathcal{X}, \forall\ y\in \mathcal{Y}, P_{X|Y}(x|y) = \dfrac{1}{r}.
+    \end{align*}
+\end{corollary}
+
+\begin{remark}
+    Generally, $H(X|Y)\neq H(Y|X)$.
+\end{remark}
+
+\begin{theorem}[Conditioning Reduced Uncertainity]
+    For any two discrete random variables $X$ and $Y$,
+    \begin{equation*}
+        H(X|Y)\le H(X),
+    \end{equation*}
+    where equality holds iff $X$ and $Y$ are independent, i.e., $X \independent Y$.
+\end{theorem}
+
+\begin{remark}
+    The conditioning reduces entropy-rule only applies to random variables, but not to events. In particular,
+    \begin{equation*}
+        H(X|Y = y) \lesseqgtr H(X).
+    \end{equation*}
+    \red{To understand why this is the case, consider the following example}.
+\end{remark}
+
+\begin{theorem}[Chain Rule]
+    Let $X_1,\ldots,X_n$ be $n$ discrete random variables. Then 
+    \begin{align*}
+        H(X_1,\ldots,X_n) = H(X_1) + H(X_2|X_1) + \ldots + H(X_n | X_1,\ldots,X_{n-1})= \sum_{k=1}^n H(X_k|X^{(k-1)}),
+    \end{align*}
+    where $X^{(k-1)} = X_{1_k-1}$.
+\end{theorem}
+
+\begin{definition}
+    The \highlight{mutual information} between the random variables $X$ and $Y$ is given by
+    \begin{equation*}
+        I(X;Y) = H(X) - H(X|Y).
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    Notice that 
+    \begin{align*}
+        H(X,Y) = H(X) + H(Y|X) &= H(Y) + H(X|Y) \\
+        \implies\hspace{2cm} H(X) - H(X|Y) &= H(Y) - H(Y|X) \\
+        \implies\hspace{3.55cm} I(X;Y) &= I(Y;X).
+    \end{align*}
+\end{remark}
+
+\begin{remark}
+    When $X\independent Y$, we have $I(X;Y) = 0$. And also that $I(X;X) = H(X)$.
+\end{remark}
+
+\begin{remark}
+    From the chain rule it follows that 
+    \begin{equation*}
+        H(X|Y) = H(X,Y) - H(X),
+    \end{equation*}
+    and thus we obtain 
+    \begin{equation*}
+        I(X;Y) = H(X) + H(Y) - H(X,Y).
+    \end{equation*}
+\end{remark}
+
+\begin{remark}
+    The mutual information can be expressed as follows.
+    \begin{align*}
+        I(X;Y) &= H(X) - H(X|Y) \\
+        &= \E\big[-\log P_X(X)\big] - \E\big[ P_{X|Y}(X|Y) \big] \\
+        &= \E\bigg[\log \dfrac{P_{X|Y}(X|Y)}{P_X(X)} \bigg] \\
+        &= \E\bigg[\log \dfrac{P_{X,Y}(X,Y)}{P_X(X)P_Y(Y)} \bigg] \\
+        &= \sum_{x\in\mathcal{X}, y\in\mathcal{Y}}P_{X,Y}(x,y) \log \dfrac{P_{X,Y}(x,y)}{P_X(x)P_Y(y)}. \\
+    \end{align*}
+\end{remark}
+
+\begin{theorem}
+    Let $X$ and $Y$ be two random variables. Then
+    \begin{equation*}
+        0\le I(X;Y) \le \min\{H(X),H(Y)\}.
+    \end{equation*}
+    where equality holds on the left-hand side iff $P_{X,Y} = P_XP_Y$, i.e.,  iff $X\independent Y$, and equality holds on the right-hand side iff $X$ determines $Y$ or vice versa.
+\end{theorem}
+
+\begin{theorem}[Chain Rule]
+    Let $X, Y_1,\ldots,Y_n$ be $n+1$ discrete random variables. Then 
+    \begin{align*}
+        I(X; Y_1,\ldots,Y_n) = I(X; Y_1) + I(X; Y_2|Y_1) + \ldots + I(X; Y_n | Y_1,\ldots,Y_{n-1})= \sum_{k=1}^n I(X; Y_k|Y^{(k-1)}).
+    \end{align*}
+\end{theorem}
+
+\begin{remark}
+    \red{Comments on Notation of Entropy and Mutual Information.}
+\end{remark}
+
+\begin{theorem}[Uniqueness of the Definition of Entropy]
+    
+\end{theorem}
+
+\section{Relative Entropy}
+
+\section{Typicality}
+
+\begin{definition}
+    We say that a sequence of random variables $\{X_n\}$ \highlight{converges in probability} to a random variable $X$ if for all $\varepsilon > 0$, we have 
+    \begin{equation*}
+        \lim_{n\rightarrow \infty} \Prob\big[ |X_n - X| > \varepsilon \big] = 0.
+    \end{equation*}
+\end{definition}
+
+\begin{lemma}[Markov Inequality]
+    Let $X$ be a nonnegtaive random variable of finite mean $\E[X]<\infty$. Then for all $a>0$, we have
+    \begin{equation*}
+        \Prob[X\ge a] \le \dfrac{\E[X]}{a}.
+    \end{equation*}
+\end{lemma}
+
+\begin{lemma}[Chebyshev Inequality]
+    Let $X$ be a random variable with finite mean $\mu$ and finite variance $\sigma^2$. Then for all $\varepsilon>0$, we have
+    \begin{equation*}
+        \Prob[|X-\mu|\ge \varepsilon] \le \dfrac{\sigma^2}{\varepsilon}.
+    \end{equation*}
+\end{lemma}
+
+\begin{lemma}[Weak Law of Large Numbers]
+    Let $\{Z_n\}$ be a sequence of independent and identically distributed (i.i.d.) random variables with mean $\mu$ an variance $\sigma^2$. Let 
+    \begin{equation*}
+        S_n = \dfrac{1}{n}\sum_{k=1}^n Z_k
+    \end{equation*}
+    be the sample mean. Then $\{S_n\}$ converges in probability to $\mu$. In particular, 
+    \begin{equation*}
+        \Prob[|S_n-\mu|\ge \varepsilon] \le \dfrac{\sigma^2}{n\varepsilon^2}.
+    \end{equation*}
+\end{lemma}
+
+\begin{definition}[Type]
+    Let $x^{(n)}$ be a sequence of $n$ elements drawn from a finite-cardinality alphabet $\mathcal{X}$. The \highlight{empirical probability mass function} of $x^{(n)}$, also referred to as its \highlight{type}, is defined for $x\in \mathcal{X}$ as
+    \begin{equation*}
+        \pi(x|x^{(n)}) = \dfrac{|\{i\in [n]\;:\;x_i = x\}|}{n}, 
+    \end{equation*}
+    where $[n] = \{1,\ldots, n\}$.
+\end{definition}
+
+\begin{theorem}
+    Let $\{X_n\}$ be an i.i.d.~sequence of random variables with $X_i\sim P_X(x_i)$. Then $\forall\ x\in\mathcal{X}$ and for all $\varepsilon>0$, we have
+    \begin{equation*}
+        \lim_{n\rightarrow 0} \Prob[|\pi(x|X^{(n)}) - P_X(x)| > \varepsilon] = 0, 
+    \end{equation*}
+    or in other words, $\{\pi(x|X^{(n)})\}$ converges in probability to $P_X(x)$ for all $x\in\mathcal{X}$.
+\end{theorem}
+
+\begin{definition}[Typical Set]
+    The \highlight{set of $\varepsilon$-typical $n$-sequences} for a random variable $X\sim P_X$ and $\varepsilon \in (0,1)$ (simply typical set) is defined as
+    \begin{equation*}
+        \mathcal{T}^{(n)}_\varepsilon (X) = \{x^{(n)}\;:\; |\pi(x|x^{(n)}) - P_X(x)| \le \varepsilon P_X(x), \forall\ x\in\mathcal{X}\}.
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    For an element $x\in\mathcal{X}$ which has $P_X(x)$ cannot be a part of typical sequence. Suppose such an $x$ belonged to a sequence $x^{(n)}$, then $\pi(x|x^{(n)}) > 0$. Consequently, we have $|\pi(x|x^{(n)}) - P_X(x)| = \pi(x|x^{(n)}) > 0 = \varepsilon P_X(x)$ for all $\varepsilon > 0$, which shows that $x^{(n)}$ is not a typical sequence.
+\end{remark}
+
+\begin{lemma}[Typical Average Lemma]
+    Consider a typical sequence $x^{(n)}\in \mathcal{T}^{(n)}_\varepsilon (X)$. Then for any \highlight{nonnegtaive} function $g(\cdot)$ on $\mathcal{X}$, we have 
+    \begin{equation*}
+        (1-\varepsilon) \E[g(X)] \le \dfrac{1}{n} \sum_{k=1}^{n} g(x_k) \le (1+\varepsilon) \E[g(X)].
+    \end{equation*}
+\end{lemma}
+
+
+\section{Source Coding}
+
+\section{Joint Typical}
+
+\begin{definition}[Joint Type]
+    Let $(x^{(n)}, y^{(n)})$ be a sequence of a pair of $n$ length sequences from a finite-cardinality alphabet $(\mathcal{X},\mathcal{Y})$. The \highlight{joint empirical probability mass function} of $(x^{(n)}, y^{(n)})$, also referred to as its \highlight{joint type}, is defined for $x\in \mathcal{X}$ as
+    \begin{equation*}
+        \pi(x,y|x^{(n)}, y^{(n)}) = \dfrac{|\{i\in [n]\;:\;(x_i,y_i) = (x,y)\}|}{n}.
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    The $X$-marginal of $X,Y$-joint empirical probability mass function is the $X$-empirical probability mass function.
+\end{remark}
+
+\begin{definition}[Jointly Typical Set]
+    The \highlight{set of $\varepsilon$-jointly typical $n$-sequences} for a random variable $(X,Y)\sim (P_X,P_Y)$ and $\varepsilon \in (0,1)$ (simply jointly typical set) is defined as
+    \begin{equation*}
+        \mathcal{T}^{(n)}_\varepsilon (X,Y) = \{(x^{(n)},y^{(n)})\;:\; |\pi(x,y|x^{(n)},y^{(n)}) - P_{X,Y}(x,y)| \le \varepsilon P_{X,Y}(x,y), \forall\ x\in\mathcal{X}, y\in\mathcal{Y}\}.
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    If $(x^{(n)},y^{(n)})\in \mathcal{T}_\varepsilon^{(n)}(X,Y)$, then $x^{(n)}\in \mathcal{T}_\varepsilon^{(n)}(X)$ and $y^{(n)}\in \mathcal{T}_\varepsilon^{(n)}(Y)$.
+\end{remark}
+
+\section{Channel Coding}
+
+\bibliographystyle{unsrt}
+\bibliography{ref}
+
+\end{document}

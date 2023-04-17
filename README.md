@@ -6,6 +6,7 @@
 - [Functional Analysis Project Report](../../raw/build/FA%20Project%20Report.pdf)
 - [General Notes](../../raw/build/General%20Notes.pdf)
 - [Iterative Methods](../../raw/build/notesSaad.pdf)
+- [Information Theory](../../raw/build/Information%20Theory.pdf)
 - [Linear Algebra](../../raw/build/Linear%20Algebra.pdf)
 - [Number Theory Lecture Notes](../../raw/build/lecnotesNT.pdf)
 - [Riemannian Preconditioning](../../raw/build/Riemannian%20Preconditioning%20Notes.pdf)
