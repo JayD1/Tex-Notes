@@ -374,6 +374,32 @@
     \end{align*}
 \end{proof}
 
+\begin{theorem}[Data Processing Inequality]
+    Let $X,Y,Z$ be random variables that form a Markov chain, denoted by $X - Y - Z$, i.e., $X\independent Z\, |\, Y$. Then 
+    \begin{equation*}
+        I(X;Z) \le I(X;Y).
+    \end{equation*}
+\end{theorem}
+
+\begin{proof}[Proof 1]
+    We start by considering
+    \begin{align*}
+        I(X;Z) &= H(X) - H(X|Z) \\
+        &\le H(X) - H(X|Z,Y) \quad\text{(conditioning reduces entropy),} \\
+        &= H(X) - H(X|Y) \,\qquad(\text{since }X\independent Z\,|\,Y), \\
+        &= I(X;Y).
+    \end{align*}
+\end{proof}
+
+\begin{proof}[Proof 2]
+    Another way of proving the inequality is to start by considering the following mutual information
+    \begin{align*}
+        I(X;Y,Z) &= I(X;Y) + \underbrace{I(X;Z|Y)}_{ = 0} \\
+        &= I(X;Z) + \underbrace{I(X;Y|Z)}_{\ge 0} \\
+       \implies I(X;Z) &\le I(X;Y).
+    \end{align*}
+\end{proof}
+
 \begin{remark}
     Sometimes it is convenient to use another notation for entropy and mutual information, which is explicit in the probability mass functions these quantities depend on. Sometimes, we shall write $H(X)$ as $H(P_X)$ and $I(X;Y)$ as $I(P_X, P_{Y|X}).$    
 \end{remark}
@@ -403,6 +429,38 @@
 \begin{remark}
     Mutual Information and Relative Entropy.
 \end{remark}
+
+\begin{definition}
+    Conditional Divergence.
+\end{definition}
+
+\begin{remark}
+    Conditional divergence as divergence of product of pmfs.
+\end{remark}
+
+\begin{theorem}
+    Chain rule.
+\end{theorem}
+
+\begin{theorem}
+    Conditioning increases divergence.
+\end{theorem}
+
+\begin{theorem}
+    Data Processing for Divergence.
+\end{theorem}
+
+\begin{theorem}
+    Data Processing for divergence implies Data Processing for mutual information.
+\end{theorem}
+
+\begin{proof}[Interpretation]\renewcommand{\qedsymbol}{}
+    
+\end{proof}
+
+\begin{theorem}
+    Golden Formula.
+\end{theorem}
 
 \begin{definition}
     Variational Distance.
@@ -525,15 +583,16 @@
 
 \section{Channel Coding}
 
-\begin{thebibliography}{9}
-    % \bibitem{Rockafellar} 
-    %     Rockafellar, R.T. Convex Analysis. Princeton University Press, 1972.
+\bibliographystyle{unsrt}
+\bibliography{ref}
+
+% \begin{thebibliography}{9}
+%     % \bibitem{Rockafellar} 
+%     %     Rockafellar, R.T. Convex Analysis. Princeton University Press, 1972.
         
-    % \bibitem{Fenchel}
-    %     Fenchel, W. Convex Cones, Sets, and Functions. Princeton University, 1953.
-        
-        
-    \end{thebibliography}
+%     % \bibitem{Fenchel}
+%     %     Fenchel, W. Convex Cones, Sets, and Functions. Princeton University, 1953.
+% \end{thebibliography}
         
     
 \end{document}
