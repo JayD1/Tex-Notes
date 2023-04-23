@@ -6,6 +6,7 @@
 \usepackage[english]{babel}
 \usepackage{amsthm}
 \usepackage{amsfonts}
+\usepackage{mathrsfs}
 \usepackage{mathtools}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -50,6 +51,10 @@
 \newcommand{\red}[1]{{\color{red}#1}}
 
 \newcommand{\independent}{\perp\!\!\!\!\perp} 
+\newcommand{\divergence}[2]{\mathscr{D} \left(#1\|#2\right)} 
+\newcommand{\supp}[1]{\text{supp}\left( #1 \right)}
+\newcommand{\YgX}{{Y|X}}
+\newcommand{\XY}{{X,Y}}
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\A}{\mathcal{A}}
@@ -335,7 +340,7 @@
     \end{equation*}
 \end{remark}
 
-\begin{remark}
+\begin{remark}\label{remark:mututal_information_as_relative_entropy}
     The mutual information can be expressed as follows.
     \begin{align*}
         I(X;Y) &= H(X) - H(X|Y) \\
@@ -374,7 +379,7 @@
     \end{align*}
 \end{proof}
 
-\begin{theorem}[Data Processing Inequality]
+\begin{theorem}[Data Processing Inequality (DPI)]
     Let $X,Y,Z$ be random variables that form a Markov chain, denoted by $X - Y - Z$, i.e., $X\independent Z\, |\, Y$. Then 
     \begin{equation*}
         I(X;Z) \le I(X;Y).
@@ -411,56 +416,156 @@
 \section{Relative Entropy and Variational Distance}
 
 \begin{definition}
-    Relative Entropy.
+    Let $P$ and $Q$ be two probability mass functions over the same finite (or countably infinite) alphabet $\X$. The relative entropy or Kullback-Leibler divergence between $P$ and $Q$ is defined as 
+    \begin{equation*}
+        \divergence{P}{Q} = \sum_{x\in\X} P(x) \log \dfrac{P(x)}{Q(x)} = \E_P\left[ \log \dfrac{P(x)}{Q(x)} \right].
+    \end{equation*}
 \end{definition}
 
 \begin{remark}
-    Unboundedness of Relative Entropy.
+    Note that $\divergence{P}{Q} = \infty$ if there exists an $x\in \text{supp}(P)$ such that $Q(x) = 0$. So, strictly speaking, we should defined relative entropy as follows:
+    \begin{equation*}
+        \divergence{P}{Q} = \begin{cases}
+            \sum_{x\in\supp{P}} P(x) \log \dfrac{P(x)}{Q(x)} \quad\text{if }\supp{P} \subseteq \supp{Q}, \\
+            \infty \hspace{4.3cm} \text{otherwise}.
+        \end{cases}
+    \end{equation*}
 \end{remark}
 
 \begin{theorem}[Gibbs' Inequality]
-    Nonnegativity of Relative Entropy.
+    \begin{equation*}
+        \divergence{P}{Q} \ge 0,
+    \end{equation*}
+    where equality holds iff $P(x) = Q(x)\ \forall\ x\in \X$.
 \end{theorem}
 
+\begin{proof}
+    In the case when $\supp{P}\not\subseteq \supp{Q}$, we have $\divergence{P}{Q} = \infty > 0$ trivially. So, we assume that $\supp{P}\subseteq \supp{Q}$. Then, 
+    \begin{align*}
+        -\divergence{P}{Q} &= \sum_{x\in\supp{P}} P(x) \log \dfrac{Q(x)}{P(x)} \\
+        &\le \log \left(\sum_{x\in\supp{P}} P(x) \dfrac{Q(x)}{P(x)}\right) \le 0.
+    \end{align*}
+    Equality holds in both the inequalities iff $\dfrac{Q(x)}{P(x)} = 1$ and $\supp{P} = \supp{Q}$, i.e., $P(x) = Q(x)$ for all $x\in\X$.
+\end{proof}
+
 \begin{remark}
-    Relative Entropy is not a Norm.
+    Relative Entropy is not a norm as it is not symmetric and does not satisfy triangle inequality.
 \end{remark}
 
 \begin{remark}
-    Mutual Information and Relative Entropy.
+    From Remark \ref{remark:mututal_information_as_relative_entropy}, it can be see that mutual information is the relative entropy between the joint $P_{X,Y}$ and the product of its marginals:
+    \begin{equation*}
+        I(X;Y) = \divergence{P_{X,Y}}{P_XP_Y}.
+    \end{equation*}
 \end{remark}
 
 \begin{definition}
-    Conditional Divergence.
+    The conditional divergence between two discrete probability distributions $P_\YgX$ and $Q_\YgX$ is defined as
+    \begin{equation*}
+        \divergence{P_\YgX}{Q_\YgX | P_X} = \sum_{x\in\mathcal{X}} P_X(x) \divergence{P_{Y|X=x}}{Q_{Y|X=x}}.
+    \end{equation*}
 \end{definition}
 
 \begin{remark}
-    Conditional divergence as divergence of product of pmfs.
+    The conditional divergence can be represented in terms of divergence as follows:
+    \begin{align*}
+        \divergence{P_\YgX}{Q_\YgX | P_X} &= \sum_{x}P_{X}(x) \divergence{P_{Y|X=x}}{Q_{Y|X=x}} \\
+            & = \sum_{x}P_{X}(x) \sum_{y} P_{\YgX = x} (y) \log{\frac{P_{\YgX = x}(y)}{Q_{\YgX = x}(y)}} \\
+            & = \sum_{x, y} P_{X}(x) P_{\YgX = x} (y) \log{\frac{P_{\YgX = x}(y) P_X(x)}{Q_{\YgX = x}(y) P_X(x)}} \\
+            & = \divergence{P_\YgX P_X}{Q_\YgX P_X}.
+    \end{align*}
 \end{remark}
 
-\begin{theorem}
-    Chain rule.
+\begin{theorem}[Chain Rule]
+    $\divergence{P_{X,Y}}{Q_{X,Y}} = \divergence{P_\YgX}{Q_\YgX | P_X} + \divergence{P_X}{Q_X}$.
 \end{theorem}
 
-\begin{theorem}
-    Conditioning increases divergence.
-\end{theorem}
-
-\begin{theorem}
-    Data Processing for Divergence.
-\end{theorem}
-
-\begin{theorem}
-    Data Processing for divergence implies Data Processing for mutual information.
-\end{theorem}
-
-\begin{proof}[Interpretation]\renewcommand{\qedsymbol}{}
+\begin{proof}
+    \begin{align*}
+        \divergence{P_{X,Y}}{Q_{X,Y}} &= \sum_{\XY} P_\YgX (y) P_X(x) \log{\frac{P_{\YgX = x}(y) P_X(x)}{Q_\YgX(y) Q_X(x)} \frac{P_X(x)}{P_X(x)}} \\
+            &= \sum_{\XY} P_\YgX (y) P_X(x) \log{\frac{P_{\YgX = x}(y) }{Q_{\YgX=x}(y)}} + \sum_{\XY} P_{\YgX=x} (y) P_X(x) \log{ \frac{P_X(x)}{Q_X(x)}} \\
+            &= \divergence{P_\YgX}{Q_\YgX | P_X} + \divergence{P_X}{Q_X}.
+    \end{align*}
+\end{proof}
     
+\begin{theorem}[Conditioning Increases Divergence]
+    Given $P_\YgX, Q_\YgX$ and $P_X$, let $P_Y = P_{Y|X} P_X$ and $Q_Y = Q_{Y|X}P_X$, as represented by the diagram. 
+    \begin{figure*}[ht]
+        \centering
+        \includegraphics[width=0.3\linewidth]{Conditional_Divergence.png}
+        \label{fig:Conditional_Divergence}
+    \end{figure*}
+
+    \noindent Then $\divergence{P_Y}{Q_Y}\le \divergence{P_\YgX}{Q_\YgX |P_X}$, with equality iff $\divergence{P_{X|Y}}{Q_{X|Y} |P_Y} = 0$.  
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+    \divergence{P_{X,Y}}{Q_{X,Y}}  &= \divergence{P_\YgX}{Q_\YgX |P_X} +  \underbrace{\divergence{P_X}{P_X}}_{ = 0} \\
+        &= \underbrace{\divergence{P_{X|Y}}{Q_{X|Y} |P_Y}}_{\geq 0}  + \divergence{P_Y}{Q_Y}\\
+    \implies \divergence{P_Y}{Q_Y} &\le \divergence{P_\YgX}{Q_\YgX |P_X}.
+\end{align*}
+\end{proof}
+
+\begin{theorem}[DPI for Divergence]
+    Given $P_\YgX, P_X$ and $Q_X$, let $P_Y = P_{Y|X} P_X$ and $Q_Y = P_{Y|X}Q_X$, as represented by the diagram. 
+    \begin{figure*}[ht]
+        \centering
+        \includegraphics[width=0.3\linewidth]{DPI_Divergence.png}
+        \label{fig:DPI_Divergence}
+    \end{figure*}
+
+    \noindent Then $\divergence{P_Y}{Q_Y}\le \divergence{P_X}{Q_X}$, with equality iff $\divergence{P_{X|Y}}{Q_{X|Y} |P_Y} = 0$.
+\end{theorem}
+
+\begin{proof}
+    \begin{align*}
+        \divergence{P_{X,Y}}{Q_{X,Y}}  &= \underbrace{\divergence{P_\YgX}{Q_\YgX |P_X}}_{=0} +  \divergence{P_X}{Q_X} \\
+            &= \underbrace{\divergence{P_{X|Y}}{Q_{X|Y} |P_Y}}_{\geq 0}  + \divergence{P_Y}{Q_Y}\\
+        \implies \divergence{P_Y}{Q_Y} &\le \divergence{P_X}{Q_X}.
+    \end{align*}    
 \end{proof}
 
 \begin{theorem}
-    Golden Formula.
+    DPI for Divergence implies DPI for Mutual Information.
 \end{theorem}
+
+\begin{proof}
+    Now suppose we consider a Markov chain $X - Y - Z$ over discrete random variables. Then notice that 
+    \begin{align*}
+        P_{Z|X} = P_{Z|X,Y} P_{Y|X} {=} \textcolor{red}{P_{Z|Y}} P_{Y|X}, \quad P_Z = \textcolor{red}{P_{Z|Y}} P_Y.
+    \end{align*}
+    We apply DPI for divergence on $P_{Z|Y}, P_{Y|X=x}$ and $P_{Y}$ to get
+    \begin{align}
+        \divergence{P_{Y|X = x}}{P_{Y}}\ \ge \divergence{P_{Z|X = x}}{P_{Z}} \implies &\ \E_X \big[\divergence{P_{Y|X = x}}{P_{Y}}\big]\ \ge \E_X\big[\divergence{P_{Z|X = x}}{ P_{Z}}\big] \nonumber \\
+        \implies &\ \divergence{P_{Y|X}}{P_{Y} | P_X}\ \ge \divergence{P_{Z|X}}{ P_{Z} | P_X}.\label{eqn:dpi}
+    \end{align}
+    Now consider the mutual information
+    \begin{align*}
+        I(X;Z) &= \divergence{P_{X,Z}}{P_X P_Z} \\
+        &= \divergence{P_{Z|X}}{P_Z | P_X} \\
+        &\le \divergence{P_{Y|X}}{P_Y | P_X},\qquad \text{(using \eqref{eqn:dpi})} \\
+        &= \divergence{P_{X,Y}}{P_X P_Y} \\
+        &= I(X; Y).
+    \end{align*}
+\end{proof}
+
+\begin{theorem}[Golden Formula]
+    \begin{align*}
+        I(X;Y) = \min_{Q_{Y}} \divergence{P_{Y|X}}{Q_{Y}|P_{X}}.
+    \end{align*}
+\end{theorem}
+
+\begin{proof}
+    \begin{align*}
+        \divergence{P_{Y|X}}{Q_{Y}|P_{X}} &= \divergence{P_{Y|X}P_{X}}{Q_{Y}P_{X}} \\ 
+        &= \sum_{x,y} P_{X,Y} \log{\frac{P_{X,Y}}{Q_{Y}P_{X}} \frac{P_{Y}}{P_{Y}}} \\ 
+        &= \sum_{x,y} P_{X,Y} \log{\frac{P_{X,Y}}{P_{X}P_{Y}} + \sum_{x,y} P_{X,Y} \log{\frac{P_{Y}}{Q_{Y}}}} \\ 
+        &= \divergence{P_{X,Y}}{P_X P_Y} + \divergence{P_{Y}}{Q_Y} \\ 
+        &= I(X;Y) + \divergence{P_{Y}}{Q_Y}.
+    \end{align*}
+    We get the result by noting that $D(P_{Y}||Q_{Y}) \ge 0$ where equality holds iff $Q_{Y} = P_{Y}.$        
+\end{proof}
 
 \begin{definition}
     Variational Distance.
@@ -485,6 +590,8 @@
 \begin{definition}
     Total Variation Distance.
 \end{definition}
+
+\section{Differential Entropy}
 
 \section{Typicality}
 
