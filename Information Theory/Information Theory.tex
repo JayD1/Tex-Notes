@@ -54,6 +54,9 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\A}{\mathcal{A}}
 \newcommand{\M}{\mathcal{M}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\barl}{\bar{\ell}}
 \newcommand{\barL}{\bar{L}}
@@ -128,13 +131,49 @@
     where $H_b(\cdot)$ is called the \highlight{binary entropy function}.
 \end{definition}
 
-\begin{lemma}[IT Inequality]
-    For any base $b>1$ and any $\xi > 0$, 
+\begin{definition}
+    Let $f$ be a function from a convex set $C$ to $\R$. Then $f$ is said to be convex on $C$ if for every $x,y\in C$ and $0\le\lambda \le 1$,
     \begin{equation*}
-        \bigg(1-\dfrac{1}{\xi}\bigg)\log_b e \le \log_b \xi \le (\xi-1) \log_b e,
-    \end{equation*}
-    with equalities on both sides hold iff $\xi = 1$.
+        f((1-\lambda)x+\lambda y) \le (1-\lambda) f(x) + \lambda f(y).
+    \end{equation*} 
+    A function is said to be strictly convex if equality holds only if $\lambda = 0$ or $\lambda = 1$. A function $f$ is concave if $-f$ is convex.
+\end{definition}
+
+\begin{lemma}
+    Let $\mapping{f}{\R}{\R}$ be a twice continuously differentiable function on an open set $E$. Then $f$ is convex on $E$ iff its second derivative $f^{\prime\prime}$ is nonnegative throughout $E$. If $f^{\prime\prime}$ is positive on $E$, then $f$ is strictly convex.
 \end{lemma}
+
+\begin{remark}
+    Notice that $-\log x$ and $x\log x$ are strictly convex on $(0,\infty)$.
+\end{remark}
+
+\begin{lemma}[Jensen's Inequality]
+    Let $\mapping{f}{\R}{\R}$ be a convex function. Then 
+    \begin{equation*}
+        f\Big(\sum_{i=1}^n\lambda_i x_i\Big)\le \sum_{i=1}^n\lambda_i f(x_i),
+    \end{equation*}
+    where $\lambda_i\ge 0\ \forall\ i$, $\sum_{i=1}^n\lambda_i = 1$ and equality holds iff $x_1 = \cdots = x_n$ or $f$ is linear.
+\end{lemma}
+
+\begin{remark}
+    If $f$ is strictly convex which rules out the linearity, the equality of Jensen inequality holds iff $x_1 = \cdots = x_n$.
+\end{remark}
+
+\begin{remark}
+    Suppose $X$ is a discrete random variable over an alphabet $\mathcal{X} = \{x_1,\ldots,x_n\}$ and $f$ is a strictly convex function on $\R$. Then by setting $\lambda_i = P_X(x_i)$, we have 
+    \begin{equation*}
+        f(\E[X])\le \E[f(X)],
+    \end{equation*}
+    where equality holds iff $x_1 = \cdots = x_n$, i.e., $X$ is a constant.
+\end{remark}
+
+% \begin{lemma}[IT Inequality]
+%     For any base $b>1$ and any $\xi > 0$, 
+%     \begin{equation*}
+%         \bigg(1-\dfrac{1}{\xi}\bigg)\log_b e \le \log_b \xi \le (\xi-1) \log_b e,
+%     \end{equation*}
+%     with equalities on both sides hold iff $\xi = 1$.
+% \end{lemma}
 
 \begin{theorem}
     If $U$ has $r$ possible values, then 
@@ -147,6 +186,25 @@
         H(U) = \log r &\iff \forall\ u\in\mathcal{U}, P_U(u) = \dfrac{1}{r}.
     \end{align*}
 \end{theorem}
+
+\begin{proof}
+    Since $0\le P_U(u) \le 1$, we have 
+    \begin{equation*}
+        -P_U(u)\log_2 P_U(u) \begin{cases}
+            = 0\quad \text{if } P_U(u) = 1,\\
+            > 0\quad \text{if } 0 < P_U(u) < 1.
+        \end{cases}
+    \end{equation*}
+    Hence, $H(U) \ge 0$. Equality can only be achieved if $-P_U(u)\log_2 P_U(u) = 0$ for all $u\in \text{supp}(P_U)$, i.e., $P_U(u) = 1$ for all $u\in \text{supp}(P_U)$.
+
+    To derive the upper bound we use a trick that is quite common in information theory: We take the difference and try to show that it must be nonpositive:
+    \begin{align*}
+        H(U) - \log r &= - \sum_{u\in\U} P_U(u)\log P_U(u) - \log r \\
+        &= \sum_{u\in\U} P_U(u)\log \dfrac{1}{P_U(u) r} \\
+        &\le \log\bigg( \sum_{u\in\U} P_U(u) \dfrac{1}{P_U(u) r} \bigg) = 0,
+    \end{align*}
+    where we have used the strict concavity of $\log x$ and Jensen inequality. Equality holds iff $\dfrac{1}{P_U(u) r} = 1$ for all $u\in \U$, i.e., $P_U(u) = \dfrac{1}{r}$ for all $u\in U$.
+\end{proof}
 
 \begin{definition}
     The \highlight{conditional entropy} of the random variable $X$ given the event $Y = y$ is defined as 
@@ -197,7 +255,7 @@
     Generally, $H(X|Y)\neq H(Y|X)$.
 \end{remark}
 
-\begin{theorem}[Conditioning Reduced Uncertainity]
+\begin{theorem}[Conditioning Reduced Uncertainity]\label{thm:conditioning_reduces_entropy}
     For any two discrete random variables $X$ and $Y$,
     \begin{equation*}
         H(X|Y)\le H(X),
@@ -205,12 +263,30 @@
     where equality holds iff $X$ and $Y$ are independent, i.e., $X \independent Y$.
 \end{theorem}
 
+\begin{proof}
+    Consider the following:
+    \begin{align*}
+        H(X|Y) - H(X) &= -\sum_{x\in \X, y\in \Y} P_{X,Y}(x,y) \log P_{X|Y}(x|y) + \sum_{x\in \X, y\in \Y} P_{X,Y}(x,y) \log P_{X}(x) \\
+        &= \sum_{x\in \X, y\in \Y} P_{X,Y}(x,y) \log \dfrac{P_{X}(x)}{P_{X|Y}(x|y)} \\
+        &= \sum_{x\in \X, y\in \Y} P_{X,Y}(x,y) \log \dfrac{P_{X}(x)P_{Y}(y)}{P_{X,Y}(x,y)} \\
+        &\le \log \bigg( \sum_{x\in \X, y\in \Y} P_{X,Y}(x,y) \dfrac{P_{X}(x)P_{Y}(y)}{P_{X,Y}(x,y)}\bigg) \\
+        &= \log \bigg(\Big(\sum_{x\in \X} P_{X}(x)\Big) \Big(\sum_{y\in \Y}P_{Y}(y)\Big)\bigg) = 0,
+    \end{align*}
+    where we have used the strict concavity of $\log x$ and Jensen inequality. Equality holds iff $\dfrac{P_{X}(x)P_{Y}(y)}{P_{X,Y}(x,y)} = 1$ for all $x\in \X$ and $y\in \Y$, i.e., $X\independent Y$.
+\end{proof}
+
 \begin{remark}
     The conditioning reduces entropy-rule only applies to random variables, but not to events. In particular,
     \begin{equation*}
         H(X|Y = y) \lesseqgtr H(X).
     \end{equation*}
-    \red{To understand why this is the case, consider the following example}.
+    To understand why this is the case, consider the following example. Suppose $X,Y$ are random variables such that $P_X(x_1) = 0.4, P_X(x_2) = 0.6$, $P_{X|Y}(x_1|y_1) = 1$ and $P_{X|Y}(x_i|y_2) = 1/2, i = 1, 2$. Then we see that 
+    \begin{align*}
+        &H(X) = H_b(0.4) \approx 0.97\ \text{bits}, \\
+        &H(X|Y = y_1) = H_b(1) = 0\ \text{bits}, \\
+        &H(X|Y = y_2) = H_b(0.5) = 1\ \text{bit}.
+    \end{align*}
+    However from Theorem \ref{thm:conditioning_reduces_entropy} we know that on average the knowledge of $Y$ will reduce the uncertainity about $X$: $H(X|Y)\le H(X)$.
 \end{remark}
 
 \begin{theorem}[Chain Rule]
@@ -218,18 +294,25 @@
     \begin{align*}
         H(X_1,\ldots,X_n) = H(X_1) + H(X_2|X_1) + \ldots + H(X_n | X_1,\ldots,X_{n-1})= \sum_{k=1}^n H(X_k|X^{(k-1)}),
     \end{align*}
-    where $X^{(k-1)} = X_{1_k-1}$.
+    where $X^{(k-1)} = X_{1:k-1}$.
 \end{theorem}
 
+\begin{proof}
+    This follows directly from the chain rule for probability mass functions:
+    \begin{equation*}
+        P_{X^{(n)}} = \prod_{k=1}^n P_{X_k|X^{(k-1)}}.
+    \end{equation*}
+\end{proof}
+
 \begin{definition}
-    The \highlight{mutual information} between the random variables $X$ and $Y$ is given by
+    The \highlight{mutual information} between the random variables $X$ and $Y$ is
     \begin{equation*}
         I(X;Y) = H(X) - H(X|Y).
     \end{equation*}
 \end{definition}
 
 \begin{remark}
-    Notice that 
+    Notice that mutual information is symmetric in its arguments:
     \begin{align*}
         H(X,Y) = H(X) + H(Y|X) &= H(Y) + H(X|Y) \\
         \implies\hspace{2cm} H(X) - H(X|Y) &= H(Y) - H(Y|X) \\
@@ -238,7 +321,7 @@
 \end{remark}
 
 \begin{remark}
-    When $X\independent Y$, we have $I(X;Y) = 0$. And also that $I(X;X) = H(X)$.
+    When $X\independent Y$, we have $I(X;Y) = 0$. Additionally, $I(X;X) = H(X)$.
 \end{remark}
 
 \begin{remark}
@@ -271,6 +354,10 @@
     where equality holds on the left-hand side iff $P_{X,Y} = P_XP_Y$, i.e.,  iff $X\independent Y$, and equality holds on the right-hand side iff $X$ determines $Y$ or vice versa.
 \end{theorem}
 
+\begin{proof}
+    It follows directly from the definition of mutual information and nonnegativity of conditional entropy.
+\end{proof}
+
 \begin{theorem}[Chain Rule]
     Let $X, Y_1,\ldots,Y_n$ be $n+1$ discrete random variables. Then 
     \begin{align*}
@@ -278,15 +365,68 @@
     \end{align*}
 \end{theorem}
 
+\begin{proof}
+    From the chain rule of entropy we have
+    \begin{align*}
+        I(X; Y^{(n)}) &= H(Y^{(n)}) - H(Y^{(n)}|X) \\
+        &= \sum_{k=1}^n H(Y_k| Y^{(k-1)}) - H(Y_k| Y^{(k-1)},X) \\
+        &= \sum_{k=1}^n I(X; Y_k| Y^{(k-1)}).
+    \end{align*}
+\end{proof}
+
 \begin{remark}
-    \red{Comments on Notation of Entropy and Mutual Information.}
+    Sometimes it is convenient to use another notation for entropy and mutual information, which is explicit in the probability mass functions these quantities depend on. Sometimes, we shall write $H(X)$ as $H(P_X)$ and $I(X;Y)$ as $I(P_X, P_{Y|X}).$    
 \end{remark}
 
 \begin{theorem}[Uniqueness of the Definition of Entropy]
     
 \end{theorem}
 
-\section{Relative Entropy}
+\section{Relative Entropy and Variational Distance}
+
+\begin{definition}
+    Relative Entropy.
+\end{definition}
+
+\begin{remark}
+    Unboundedness of Relative Entropy.
+\end{remark}
+
+\begin{theorem}[Gibbs' Inequality]
+    Nonnegativity of Relative Entropy.
+\end{theorem}
+
+\begin{remark}
+    Relative Entropy is not a Norm.
+\end{remark}
+
+\begin{remark}
+    Mutual Information and Relative Entropy.
+\end{remark}
+
+\begin{definition}
+    Variational Distance.
+\end{definition}
+
+\begin{remark}
+    Trivial bounds on variational distance.
+\end{remark}
+
+\begin{remark}
+    Variational Distance is a Norm.
+\end{remark}
+
+\begin{theorem}
+    Upper bound of relative entropy in terms of variational distance and entropy.
+\end{theorem}
+
+\begin{theorem}[Pinsker Inequality]
+
+\end{theorem}
+
+\begin{definition}
+    Total Variation Distance.
+\end{definition}
 
 \section{Typicality}
 
