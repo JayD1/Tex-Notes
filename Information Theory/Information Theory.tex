@@ -55,19 +55,20 @@
 \newcommand{\supp}[1]{\text{supp}\left( #1 \right)}
 \newcommand{\YgX}{{Y|X}}
 \newcommand{\XY}{{X,Y}}
+\newcommand{\Var}{\mathbb{V}\text{ar}}
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\A}{\mathcal{A}}
 \newcommand{\M}{\mathcal{M}}
 \newcommand{\U}{\mathcal{U}}
 \newcommand{\X}{\mathcal{X}}
+\newcommand{\T}{\mathcal{T}}
 \newcommand{\Y}{\mathcal{Y}}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\barl}{\bar{\ell}}
 \newcommand{\barL}{\bar{L}}
 \newcommand{\N}{\mathcal{N}}
 \newcommand{\h}{\mathcal{H}}
-\newcommand{\T}{\mathcal{T}}
 \newcommand{\Prob}{\mathbb{P}}
 \newcommand{\Dist}{\mathcal{D}}
 \newcommand{\perpProj}{\mathcal{P}^\perp}
@@ -568,7 +569,10 @@
 \end{proof}
 
 \begin{definition}
-    Variational Distance.
+    Let $P$ and $Q$ be two probability mass functions over the same finite (or countably infinite) alphabet $\X$. The variational distance between $P$ and $Q$ is defined as 
+    \begin{equation*}
+        V(P,Q) = \sum_{x\in\X} \left|P(x) -Q(x)\right|.
+    \end{equation*}
 \end{definition}
 
 \begin{remark}
@@ -587,34 +591,54 @@
 
 \end{theorem}
 
-\begin{definition}
-    Total Variation Distance.
-\end{definition}
-
-\section{Differential Entropy}
+% \begin{definition}
+%     Total Variation Distance.
+% \end{definition}
 
 \section{Typicality}
 
 \begin{definition}
-    We say that a sequence of random variables $\{X_n\}$ \highlight{converges in probability} to a random variable $X$ if for all $\varepsilon > 0$, we have 
+    We say that a sequence of random variables $\{X_n\}$ \highlight{converges in probability} to a random variable $X$ if
     \begin{equation*}
-        \lim_{n\rightarrow \infty} \Prob\big[ |X_n - X| > \varepsilon \big] = 0.
+        \forall\ \varepsilon > 0, \delta>0, \exists\ N\in\mathbb{Z}_+ \quad \text{such that} \quad  n\ge N \implies \Prob\left[|X_n - X| > \varepsilon \right] < \delta,
+    \end{equation*}
+    or using the definition of limit, 
+    \begin{equation*}
+       \lim_{n\rightarrow \infty} \Prob\big[ |X_n - X| > \varepsilon \big] = 0, \quad \varepsilon >0.
     \end{equation*}
 \end{definition}
 
 \begin{lemma}[Markov Inequality]
     Let $X$ be a nonnegtaive random variable of finite mean $\E[X]<\infty$. Then for all $a>0$, we have
     \begin{equation*}
-        \Prob[X\ge a] \le \dfrac{\E[X]}{a}.
+        \Prob[X\ge a] \le \dfrac{\E[X]}{a},\quad a > 0.
     \end{equation*}
 \end{lemma}
 
-\begin{lemma}[Chebyshev Inequality]
-    Let $X$ be a random variable with finite mean $\mu$ and finite variance $\sigma^2$. Then for all $\varepsilon>0$, we have
+\begin{proof}
+    Fix some $a > 0$ and define 
     \begin{equation*}
-        \Prob[|X-\mu|\ge \varepsilon] \le \dfrac{\sigma^2}{\varepsilon}.
+        Y_a = \begin{cases}
+            0\quad\text{if } X<a, \\
+            a\quad\text{if } X\ge a.
+        \end{cases}
+    \end{equation*}
+    Since $X$ is nonnegative by assumption, it follows that $Y_a \le X$ or equivalently $\E[Y_a] \le \E[X]$. On other hand, we have
+    \begin{equation*}
+        \E[Y_a] = a \Prob[X \ge a] \implies \Prob[X\ge a] \le \dfrac{\E[X]}{a}. 
+    \end{equation*}
+\end{proof}
+
+\begin{lemma}[Chebyshev Inequality]
+    Let $X$ be a random variable with finite mean and finite variance. Then for all $\varepsilon>0$, we have
+    \begin{equation*}
+        \Prob[|X-\E[X]|\ge \varepsilon] \le \dfrac{\Var[X]}{\varepsilon^2},\quad \varepsilon > 0.
     \end{equation*}
 \end{lemma}
+
+\begin{proof}
+    This follows directly from applying the Markov Inequality to $(X-\mu)^2$ with $a = \varepsilon^2$. 
+\end{proof}
 
 \begin{lemma}[Weak Law of Large Numbers]
     Let $\{Z_n\}$ be a sequence of independent and identically distributed (i.i.d.) random variables with mean $\mu$ an variance $\sigma^2$. Let 
@@ -623,9 +647,21 @@
     \end{equation*}
     be the sample mean. Then $\{S_n\}$ converges in probability to $\mu$. In particular, 
     \begin{equation*}
-        \Prob[|S_n-\mu|\ge \varepsilon] \le \dfrac{\sigma^2}{n\varepsilon^2}.
+        \Prob[|S_n-\mu|\ge \varepsilon] \le \dfrac{\sigma^2}{n\varepsilon^2},\quad \varepsilon > 0.
     \end{equation*}
 \end{lemma}
+
+\begin{proof}
+    Observe that 
+    \begin{gather*}
+        \E[S_n] = \dfrac{1}{n}\sum_{k=1}^n \E\left[ Z_k \right] = \mu, \\
+        \Var\left(\dfrac{Z_k}{n}\right) = \left(\E\left[ \dfrac{Z_k}{n} - \E\left[ \dfrac{Z_k}{n} \right] \right]\right)^2 = \left(\E\left[ \dfrac{Z_k}{n} - \dfrac{\mu}{n} \right]\right)^2 = \dfrac{\left(\E\left[ Z_k - \mu \right]\right)^2}{n^2} = \dfrac{\sigma^2}{n^2}, \\
+        \Var(S_n) = \sum_{k=1}^{n} \Var\left(\dfrac{Z_k}{n}\right) = \dfrac{\sigma^2}{n},
+    \end{gather*}
+    where we used the property that variance of sum of i.i.d.~random variables is sum of variance of each random variable.
+
+    By applying Chebyshev Inequality on $S_n$ for some $\varepsilon > 0$, we get the required bound on tail probability. The convergence of $S_n$ is a direct consequence of setting $N = 1$ in the tail bound for all $\varepsilon > 0$.
+\end{proof}
 
 \begin{definition}[Type]
     Let $x^{(n)}$ be a sequence of $n$ elements drawn from a finite-cardinality alphabet $\mathcal{X}$. The \highlight{empirical probability mass function} of $x^{(n)}$, also referred to as its \highlight{type}, is defined for $x\in \mathcal{X}$ as
@@ -636,31 +672,83 @@
 \end{definition}
 
 \begin{theorem}
-    Let $\{X_n\}$ be an i.i.d.~sequence of random variables with $X_i\sim P_X(x_i)$. Then $\forall\ x\in\mathcal{X}$ and for all $\varepsilon>0$, we have
+    Let $\{X_n\}$ be an i.i.d.~sequence of random variables with $X_i\sim P_X$. Then $\forall\ x\in\mathcal{X}$ and for all $\varepsilon>0$, we have
     \begin{equation*}
-        \lim_{n\rightarrow 0} \Prob[|\pi(x|X^{(n)}) - P_X(x)| > \varepsilon] = 0, 
+        \lim_{n\rightarrow \infty} \Prob[|\pi(x|X^{(n)}) - P_X(x)| \ge \varepsilon] = 0, 
     \end{equation*}
     or in other words, $\{\pi(x|X^{(n)})\}$ converges in probability to $P_X(x)$ for all $x\in\mathcal{X}$.
 \end{theorem}
 
-\begin{definition}[Typical Set]
-    The \highlight{set of $\varepsilon$-typical $n$-sequences} for a random variable $X\sim P_X$ and $\varepsilon \in (0,1)$ (simply typical set) is defined as
+\begin{proof}
+    We can rewrite empirical pmf as 
     \begin{equation*}
-        \mathcal{T}^{(n)}_\varepsilon (X) = \{x^{(n)}\;:\; |\pi(x|x^{(n)}) - P_X(x)| \le \varepsilon P_X(x), \forall\ x\in\mathcal{X}\}.
+        \pi(x|X^{(n)}) = \sum_{k=1}^{n} \dfrac{\mathbb{I}_{[X_k =\, x]}}{n}, 
+    \end{equation*}
+    where $\mathbb{I}$ is the indicator function. Notice that
+    \begin{align*}
+        \E\left[\mathbb{I}_{[X_k =\, x]}\right] &= P_X(x), \\
+        \Var\left[ \mathbb{I}_{[X_k =\, x]} \right] &= \E\left[\left( \mathbb{I}_{[X_k =\, x]} \right)^2\right] - \left(\E\left[\mathbb{I}_{[X_k =\, x]}\right]\right)^2 \\
+        &= P_X(x) - P_X(x)^2 \\ 
+        &= P_X(x)(1-P_X(x)).
+    \end{align*}
+    Applying Weak Law of Large Numbers on $\{\pi(x|X^{(n)})\}$, we get 
+    \begin{equation*}
+        \Prob[|\pi(x|X^{(n)}) - P_X(x)|\ge \varepsilon] \le \dfrac{P_X(x)(1-P_X(x))}{n\varepsilon^2}.
+    \end{equation*}
+\end{proof}
+
+\begin{definition}[Typical Set]
+    The {set of $\varepsilon$-typical $n$-sequences} (simply typical set) for a random variable $X\sim P_X$, $n\in\mathbb{Z}_+$ and $\varepsilon \in (0,1)$ is defined as
+    \begin{equation*}
+        \T^{(n)}_\varepsilon (X) = \{x^{(n)}\;:\; |\pi(x|x^{(n)}) - P_X(x)| \le \varepsilon P_X(x), \forall\ x\in\mathcal{X}\}.
     \end{equation*}
 \end{definition}
 
 \begin{remark}
-    For an element $x\in\mathcal{X}$ which has $P_X(x)$ cannot be a part of typical sequence. Suppose such an $x$ belonged to a sequence $x^{(n)}$, then $\pi(x|x^{(n)}) > 0$. Consequently, we have $|\pi(x|x^{(n)}) - P_X(x)| = \pi(x|x^{(n)}) > 0 = \varepsilon P_X(x)$ for all $\varepsilon > 0$, which shows that $x^{(n)}$ is not a typical sequence.
+    For an element $x\in\mathcal{X}$ which has $P_X(x) = 0$ cannot be a part of typical sequence. To see why, suppose on contrary such an $x$ belonged to a sequence $x^{(n)}$, then $\pi(x|x^{(n)}) > 0$. Consequently, we have $|\pi(x|x^{(n)}) - P_X(x)| = \pi(x|x^{(n)}) > 0 = \varepsilon P_X(x)$ for all $\varepsilon > 0$, which shows that $x^{(n)}$ is not a typical sequence.
 \end{remark}
 
 \begin{lemma}[Typical Average Lemma]
-    Consider a typical sequence $x^{(n)}\in \mathcal{T}^{(n)}_\varepsilon (X)$. Then for any \highlight{nonnegtaive} function $g(\cdot)$ on $\mathcal{X}$, we have 
+    Consider a typical sequence $x^{(n)}\in \T^{(n)}_\varepsilon (X)$. Then for any {nonnegtaive} function $\mapping{g}{\X}{\R}$, we have 
     \begin{equation*}
         (1-\varepsilon) \E[g(X)] \le \dfrac{1}{n} \sum_{k=1}^{n} g(x_k) \le (1+\varepsilon) \E[g(X)].
     \end{equation*}
 \end{lemma}
 
+\begin{proof}
+    Since $x^{(n)}\in\T^{(n)}_\varepsilon$, we have
+    \begin{equation*}
+        (1-\varepsilon) P_X(x) \le \pi(x|x^{(n)}) \le (1+\varepsilon) P_X(x).
+    \end{equation*}
+    Summing the above inequality over $\X$ and multiplying by $g(x)$, we get 
+    \begin{align*}
+        \sum_{x\in\X} (1-\varepsilon) P_X(x) g(x) &\le \sum_{x\in\X} \pi(x|x^{(n)}) g(x) \le \sum_{x\in\X} (1+\varepsilon) P_X(x) g(x) \\
+        \implies (1-\varepsilon) \E[g(X)] &\le \sum_{x\in\X} \pi(x|x^{(n)}) g(x) \le (1+\varepsilon) \E[g(X)],
+    \end{align*} 
+    where we used the nonnegativity of $g$ to retain the inequality on mutliplication. We obtain the result by noting that
+    \begin{equation*}
+        \sum_{x\in\X} \pi(x|x^{(n)}) g(x) = \dfrac{1}{n} \sum_{k=1}^n g(x_k),
+    \end{equation*}
+    where $x_k$ is the $k$-th element of the sequence $x^{(n)}$.
+\end{proof}
+
+\begin{theorem}[Properties of Typical Sequence]
+    Let $X^{(n)}$ have i.i.d.~entries with $X_i\sim P_X$ and suppose $\varepsilon>0$.
+    \begin{enumerate}[(a)]
+        \item All typical sequences are essentially equiprobable:
+        \begin{equation*}
+            2^{-n(1+\varepsilon)H(X)} \le \Prob\left[X^{(n)}\in\T^{(n)}_\varepsilon\right] \le 2^{-n(1-\varepsilon)H(X)}.
+        \end{equation*}
+        \item Almost all probability mass is in the typical set: 
+        \begin{equation*}
+            \Prob\left[ X^{(n)} \notin \T^{(n)}_\varepsilon \right] \le \left(\dfrac{1}{n}\right).
+        \end{equation*}
+        \item Bounds on cardinality of typical set:
+        \begin{equation*}
+            \left(1-\dfrac{1}{n}\right) 2^{n(1-\varepsilon)H(X)} \le \left| \T^{(n)}_\varepsilon \right| \le 2^{n(1+\varepsilon)H(X)}.
+        \end{equation*}
+    \end{enumerate}
+\end{theorem}
 
 \section{Source Coding}
 
@@ -689,6 +777,8 @@
 \end{remark}
 
 \section{Channel Coding}
+
+\section{Differential Entropy}
 
 % \bibliographystyle{unsrt}
 % \bibliography{ref}
