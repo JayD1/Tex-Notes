@@ -46,6 +46,7 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
+\newtheorem*{problem*}{Problem}
 \newtheorem{remark}[theorem]{Remark}
 
 \newcommand{\red}[1]{{\color{red}#1}}
@@ -494,7 +495,6 @@
     \begin{figure*}[ht]
         \centering
         \includegraphics[width=0.3\linewidth]{images/Conditional_Divergence.png}
-        \label{fig:Conditional_Divergence}
     \end{figure*}
 
     \noindent Then $\divergence{P_Y}{Q_Y}\le \divergence{P_\YgX}{Q_\YgX |P_X}$, with equality iff $\divergence{P_{X|Y}}{Q_{X|Y} |P_Y} = 0$.  
@@ -513,7 +513,6 @@
     \begin{figure*}[ht]
         \centering
         \includegraphics[width=0.3\linewidth]{images/DPI_Divergence.png}
-        \label{fig:DPI_Divergence}
     \end{figure*}
 
     \noindent Then $\divergence{P_Y}{Q_Y}\le \divergence{P_X}{Q_X}$, with equality iff $\divergence{P_{X|Y}}{Q_{X|Y} |P_Y} = 0$.
@@ -655,7 +654,7 @@
     Observe that 
     \begin{gather*}
         \E[S_n] = \dfrac{1}{n}\sum_{k=1}^n \E\left[ Z_k \right] = \mu, \\
-        \Var\left(\dfrac{Z_k}{n}\right) = \left(\E\left[ \dfrac{Z_k}{n} - \E\left[ \dfrac{Z_k}{n} \right] \right]\right)^2 = \left(\E\left[ \dfrac{Z_k}{n} - \dfrac{\mu}{n} \right]\right)^2 = \dfrac{\left(\E\left[ Z_k - \mu \right]\right)^2}{n^2} = \dfrac{\sigma^2}{n^2}, \\
+        \Var\left(\dfrac{Z_k}{n}\right) = \E\left[\left( \dfrac{Z_k}{n} - \E\left[ \dfrac{Z_k}{n} \right]\right)^2 \right] = \E\left[\left( \dfrac{Z_k}{n} - \dfrac{\mu}{n} \right)^2\right] = \dfrac{\E\left[\left( Z_k - \mu \right)^2\right]}{n^2} = \dfrac{\sigma^2}{n^2}, \\
         \Var(S_n) = \sum_{k=1}^{n} \Var\left(\dfrac{Z_k}{n}\right) = \dfrac{\sigma^2}{n},
     \end{gather*}
     where we used the property that variance of sum of i.i.d.~random variables is sum of variance of each random variable.
@@ -737,8 +736,9 @@
     \begin{enumerate}[(a)]
         \item All typical sequences are essentially equiprobable:
         \begin{equation*}
-            2^{-n(1+\varepsilon)H(X)} \le \Prob\left[X^{(n)}\in\T^{(n)}_\varepsilon\right] \le 2^{-n(1-\varepsilon)H(X)}.
+            2^{-n(1+\varepsilon)H(X)} \le \Prob[x^{(n)}] \le 2^{-n(1-\varepsilon)H(X)},
         \end{equation*}
+        where we define $\Prob[x^{(n)}] = \prod_{i=1}^{n} P_X(x_i)$.
         \item Almost all probability mass is in the typical set: 
         \begin{equation*}
             \Prob\left[ X^{(n)} \notin \T^{(n)}_\varepsilon \right] \le \left(\dfrac{1}{n}\right).
@@ -750,7 +750,79 @@
     \end{enumerate}
 \end{theorem}
 
-\section{Source Coding}
+\begin{proof}
+    
+\end{proof}
+
+\section{Lossless Source Coding}
+
+\begin{problem*}[Refer Fig. \ref{fig:Source_Coding}]
+    The source sequence $X^{(n)}$ is encoded into an index $M$ at rate $R$ bits per source symbol, and the receiver decodes the index to find the estimate $\hat{X}^{(n)}$ of the source sequence. The lossless source coding problem is to find the lowest compression rate in bits per source symbol such that the probability of decoding error decays asymptotically to zero with the code block length $n$.
+\end{problem*}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/Source_Coding.png}
+    \caption{Block source coding scheme.}
+    \label{fig:Source_Coding}
+\end{figure}
+
+\begin{definition}
+    A discrete memoryless source (DMS), denoted by $(\X,P_X)$ and informally referred to as $X$, consists of a finite alphabet $\X$ and a probability mass function $P_X$ over $\X$ that generates i.i.d.~random symbols $\{X_i\}$ with $X_i\sim P_X$.
+\end{definition}
+
+% \begin{remark}
+%     It turns out that to compress the source effectively, we need to group source symbols in blocks, and perform processing block by block. Specifically, our scheme will map a block of $n$ source symbols into an index belonging to a set $\M$ of cardiality $|\M|$. Note that we need $\log_2 |\M|$ bits to save each index. The rate $R$ of such a fixed-length
+%     source code is $R = \log_2 |\M|n$ bits per source symbol. 
+% \end{remark}
+
+% \begin{remark}
+%     It turns out convenient to specify a family of fixed-length source codes with rate $R$, parameterized with respect to the number of symbols $n$ in each block. If we keep $R$ fixed, then the cardinality of the message set $\M$ needs to grow exponentially in $n$ as $2^{nR}$.
+% \end{remark}
+
+\begin{definition}
+    A $(2^{nR},n)$ lossless source code of rate $R$ bits per source symbol consists of 
+    \begin{itemize}
+        \item an encoder $\mapping{m}{\X^n}{[2^{nR}]}$ that assigns an index $m(x^{(n)})$, a codeword of length $nR$ bits, to each source $n$-sequence $x^{(n)}$, and
+        \item a decoder $\mapping{\hat{x}^{(n)}}{[2^{nR}]}{\X^{n}\cup \{e\}}$ that assigns an estimate $\hat{x}^{(n)}(m)\in\X^n$ or an error message $e$ to each index $m\in[2^{nR}]$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    The probability of decoding error for a $(2^{nR}, n)$ lossless source code is defined as $P^{(n)}_e = \Prob[\hat{X}^{(n)}\neq X^n]$. A rate $R$ is said to be achievable if there exists a sequence of $(2^{nR}, n)$ codes such that $\lim_{n\rightarrow \infty} P_e^{(n)} = 0$. The optimal rate $R^*$ for lossless source coding is the infimum of all achievable rates.
+\end{definition}
+
+\begin{remark}
+    The lossless source coding scheme is required to be only asymptotically error-free (lossless).
+\end{remark}
+
+\begin{theorem}[Fano's Inequality]
+    Let $X, Y$ be two random variables on $\X$ with joint probability mass function $P_{X,Y}$. Let $P_e = \Prob[X \neq Y]$. Then 
+    \begin{equation*}
+        H(X|Y) \le H_b(P_e) + P_e log|\X| \le 1 + P_e log|\X|. 
+    \end{equation*}
+\end{theorem}
+
+
+
+\begin{theorem}[Lossless Source Coding Theorem] 
+    The optimal rate for lossless source coding of a discrete memoryless source $X$ is 
+    \begin{equation*}
+        R^* = H(X).
+    \end{equation*}
+\end{theorem}
+
+\begin{proof}[Proof Sketch]\renewcommand{\qedsymbol}{}
+    To prove this theorem, we need to verify the following two statements:
+    \begin{itemize}
+        \item \textbf{Achievability.} For every $R > R^* = H(X)$ there exists a sequence of $(2^{nR}, n)$ codes with $\lim_{n\rightarrow \infty} P_e^{(n)} = 0$.
+        \item \textbf{Converse.} For every sequence of $(2^{nR}, n)$ codes with $\lim_{n\rightarrow \infty} P_e^{(n)} = 0$, the source coding rate $R \ge R^* = H(X)$.
+    \end{itemize}
+\end{proof}
+
+\begin{proof}
+
+\end{proof}
 
 \section{Joint Typical}
 
