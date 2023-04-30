@@ -63,6 +63,7 @@
 \newcommand{\M}{\mathcal{M}}
 \newcommand{\U}{\mathcal{U}}
 \newcommand{\X}{\mathcal{X}}
+\newcommand{\C}{\mathcal{C}}
 \newcommand{\T}{\mathcal{T}}
 \newcommand{\Y}{\mathcal{Y}}
 \newcommand{\E}{\mathbb{E}}
@@ -75,7 +76,7 @@
 \newcommand{\perpProj}{\mathcal{P}^\perp}
 \newcommand{\bb}{\mathbb{B}}
 \newcommand{\Sprod}{\mathbb{S}_{xy}}
-\newcommand{\highlight}[1]{\textsl{\textbf{#1}}}
+\newcommand{\highlight}[1]{\textit{\textbf{#1}}}
 \newcommand{\mapping}[3]{#1:#2\rightarrow #3}
 \newcommand{\doubt}{\highlight{[??]}}
 % \newcommand{\bigvert}[2]{#1{\raisebox{-.5ex}{$|$}_{#2}}}
@@ -139,11 +140,11 @@
 \end{definition}
 
 \begin{definition}
-    Let $f$ be a function from a convex set $C$ to $\R$. Then $f$ is said to be convex on $C$ if for every $x,y\in C$ and $0\le\lambda \le 1$,
+    Let $f$ be a function from a convex set $C$ to $\R$. Then $f$ is said to be \highlight{convex function} on $C$ if for every $x,y\in C$ and $0\le\lambda \le 1$,
     \begin{equation*}
         f((1-\lambda)x+\lambda y) \le (1-\lambda) f(x) + \lambda f(y).
     \end{equation*} 
-    A function is said to be strictly convex if equality holds only if $\lambda = 0$ or $\lambda = 1$. A function $f$ is concave if $-f$ is convex.
+    A function is said to be \highlight{strictly convex} if equality holds only if $\lambda = 0$ or $\lambda = 1$. A function $f$ is \highlight{concave} if $-f$ is convex.
 \end{definition}
 
 \begin{lemma}
@@ -154,7 +155,7 @@
     Notice that $-\log x$ and $x\log x$ are strictly convex on $(0,\infty)$.
 \end{remark}
 
-\begin{lemma}[Jensen's Inequality]
+\begin{lemma}[\highlight{Jensen's Inequality}]
     Let $\mapping{f}{\R}{\R}$ be a convex function. Then 
     \begin{equation*}
         f\Big(\sum_{i=1}^n\lambda_i x_i\Big)\le \sum_{i=1}^n\lambda_i f(x_i),
@@ -262,7 +263,7 @@
     Generally, $H(X|Y)\neq H(Y|X)$.
 \end{remark}
 
-\begin{theorem}[Conditioning Reduced Uncertainity]\label{thm:conditioning_reduces_entropy}
+\begin{theorem}[\highlight{Conditioning Reduced Uncertainity}]\label{thm:conditioning_reduces_entropy}
     For any two discrete random variables $X$ and $Y$,
     \begin{equation*}
         H(X|Y)\le H(X),
@@ -296,7 +297,7 @@
     However from Theorem \ref{thm:conditioning_reduces_entropy} we know that on average the knowledge of $Y$ will reduce the uncertainity about $X$: $H(X|Y)\le H(X)$.
 \end{remark}
 
-\begin{theorem}[Chain Rule]
+\begin{theorem}[\highlight{Chain Rule}]
     Let $X_1,\ldots,X_n$ be $n$ discrete random variables. Then 
     \begin{align*}
         H(X_1,\ldots,X_n) = H(X_1) + H(X_2|X_1) + \ldots + H(X_n | X_1,\ldots,X_{n-1})= \sum_{k=1}^n H(X_k|X^{(k-1)}),
@@ -365,7 +366,7 @@
     It follows directly from the definition of mutual information and nonnegativity of conditional entropy.
 \end{proof}
 
-\begin{theorem}[Chain Rule]
+\begin{theorem}[\highlight{Chain Rule}]
     Let $X, Y_1,\ldots,Y_n$ be $n+1$ discrete random variables. Then 
     \begin{align*}
         I(X; Y_1,\ldots,Y_n) = I(X; Y_1) + I(X; Y_2|Y_1) + \ldots + I(X; Y_n | Y_1,\ldots,Y_{n-1})= \sum_{k=1}^n I(X; Y_k|Y^{(k-1)}).
@@ -381,7 +382,7 @@
     \end{align*}
 \end{proof}
 
-\begin{theorem}[Data Processing Inequality (DPI)]
+\begin{theorem}[\highlight{Data Processing Inequality (DPI)}]
     Let $X,Y,Z$ be random variables that form a Markov chain, denoted by $X - Y - Z$, i.e., $X\independent Z\, |\, Y$. Then 
     \begin{equation*}
         I(X;Z) \le I(X;Y).
@@ -411,14 +412,14 @@
     Sometimes it is convenient to use another notation for entropy and mutual information, which is explicit in the probability mass functions these quantities depend on. Sometimes, we shall write $H(X)$ as $H(P_X)$ and $I(X;Y)$ as $I(P_X, P_{Y|X}).$    
 \end{remark}
 
-\begin{theorem}[Uniqueness of the Definition of Entropy]
+\begin{theorem}[\highlight{Uniqueness of the Definition of Entropy}]
     
 \end{theorem}
 
 \section{Relative Entropy and Variational Distance}
 
 \begin{definition}
-    Let $P$ and $Q$ be two probability mass functions over the same finite (or countably infinite) alphabet $\X$. The relative entropy or Kullback-Leibler divergence between $P$ and $Q$ is defined as 
+    Let $P$ and $Q$ be two probability mass functions over the same finite (or countably infinite) alphabet $\X$. The \highlight{relative entropy} or \highlight{Kullback-Leibler divergence} between $P$ and $Q$ is defined as 
     \begin{equation*}
         \divergence{P}{Q} = \sum_{x\in\X} P(x) \log \dfrac{P(x)}{Q(x)} = \E_P\left[ \log \dfrac{P(x)}{Q(x)} \right].
     \end{equation*}
@@ -434,7 +435,7 @@
     \end{equation*}
 \end{remark}
 
-\begin{theorem}[Gibbs' Inequality]
+\begin{theorem}[\highlight{Gibbs' Inequality}]
     \begin{equation*}
         \divergence{P}{Q} \ge 0,
     \end{equation*}
@@ -462,7 +463,7 @@
 \end{remark}
 
 \begin{definition}
-    The conditional divergence between two discrete probability distributions $P_\YgX$ and $Q_\YgX$ is defined as
+    The \highlight{conditional divergence} between two discrete probability distributions $P_\YgX$ and $Q_\YgX$ is defined as
     \begin{equation*}
         \divergence{P_\YgX}{Q_\YgX | P_X} = \sum_{x\in\mathcal{X}} P_X(x) \divergence{P_{Y|X=x}}{Q_{Y|X=x}}.
     \end{equation*}
@@ -478,7 +479,7 @@
     \end{align*}
 \end{remark}
 
-\begin{theorem}[Chain Rule]
+\begin{theorem}[\highlight{Chain Rule}]
     $\divergence{P_{X,Y}}{Q_{X,Y}} = \divergence{P_\YgX}{Q_\YgX | P_X} + \divergence{P_X}{Q_X}$.
 \end{theorem}
 
@@ -490,7 +491,7 @@
     \end{align*}
 \end{proof}
     
-\begin{theorem}[Conditioning Increases Divergence]
+\begin{theorem}[\highlight{Conditioning Increases Divergence}]
     Given $P_\YgX, Q_\YgX$ and $P_X$, let $P_Y = P_{Y|X} P_X$ and $Q_Y = Q_{Y|X}P_X$, as represented by the diagram. 
     \begin{figure*}[ht]
         \centering
@@ -508,7 +509,7 @@
 \end{align*}
 \end{proof}
 
-\begin{theorem}[DPI for Divergence]
+\begin{theorem}[\highlight{DPI for Divergence}]
     Given $P_\YgX, P_X$ and $Q_X$, let $P_Y = P_{Y|X} P_X$ and $Q_Y = P_{Y|X}Q_X$, as represented by the diagram. 
     \begin{figure*}[ht]
         \centering
@@ -544,13 +545,13 @@
     \begin{align*}
         I(X;Z) &= \divergence{P_{X,Z}}{P_X P_Z} \\
         &= \divergence{P_{Z|X}}{P_Z | P_X} \\
-        &\le \divergence{P_{Y|X}}{P_Y | P_X},\qquad \text{(using \eqref{eqn:dpi})} \\
+        &\le \divergence{P_{Y|X}}{P_Y | P_X} \tag{using \eqref{eqn:dpi}} \\
         &= \divergence{P_{X,Y}}{P_X P_Y} \\
         &= I(X; Y).
     \end{align*}
 \end{proof}
 
-\begin{theorem}[Golden Formula]
+\begin{theorem}[\highlight{Golden Formula}]
     \begin{align*}
         I(X;Y) = \min_{Q_{Y}} \divergence{P_{Y|X}}{Q_{Y}|P_{X}}.
     \end{align*}
@@ -568,7 +569,7 @@
 \end{proof}
 
 \begin{definition}
-    Let $P$ and $Q$ be two probability mass functions over the same finite (or countably infinite) alphabet $\X$. The variational distance between $P$ and $Q$ is defined as 
+    Let $P$ and $Q$ be two probability mass functions over the same finite (or countably infinite) alphabet $\X$. The \highlight{variational distance} between $P$ and $Q$ is defined as 
     \begin{equation*}
         V(P,Q) = \sum_{x\in\X} \left|P(x) -Q(x)\right|.
     \end{equation*}
@@ -586,7 +587,7 @@
     Upper bound of relative entropy in terms of variational distance and entropy.
 \end{theorem}
 
-\begin{theorem}[Pinsker Inequality]
+\begin{theorem}[\highlight{Pinsker Inequality}]
 
 \end{theorem}
 
@@ -607,7 +608,7 @@
     \end{equation*}
 \end{definition}
 
-\begin{lemma}[Markov Inequality]
+\begin{lemma}[\highlight{Markov Inequality}]
     Let $X$ be a nonnegtaive random variable of finite mean $\E[X]<\infty$. Then for all $a>0$, we have
     \begin{equation*}
         \Prob[X\ge a] \le \dfrac{\E[X]}{a},\quad a > 0.
@@ -628,7 +629,7 @@
     \end{equation*}
 \end{proof}
 
-\begin{lemma}[Chebyshev Inequality]
+\begin{lemma}[\highlight{Chebyshev Inequality}]
     Let $X$ be a random variable with finite mean and finite variance. Then for all $\varepsilon>0$, we have
     \begin{equation*}
         \Prob[|X-\E[X]|\ge \varepsilon] \le \dfrac{\Var[X]}{\varepsilon^2},\quad \varepsilon > 0.
@@ -639,7 +640,7 @@
     This follows directly from applying the Markov Inequality to $(X-\mu)^2$ with $a = \varepsilon^2$. 
 \end{proof}
 
-\begin{lemma}[Weak Law of Large Numbers]
+\begin{lemma}[\highlight{Weak Law of Large Numbers}]
     Let $\{Z_n\}$ be a sequence of independent and identically distributed (i.i.d.) random variables with mean $\mu$ an variance $\sigma^2$. Let 
     \begin{equation*}
         S_n = \dfrac{1}{n}\sum_{k=1}^n Z_k
@@ -662,7 +663,7 @@
     By applying Chebyshev Inequality on $S_n$ for some $\varepsilon > 0$, we get the required bound on tail probability. The convergence of $S_n$ is a direct consequence of setting $N = 1$ in the tail bound for all $\varepsilon > 0$.
 \end{proof}
 
-\begin{definition}[Type]
+\begin{definition}[\highlight{Type}]
     Let $x^{(n)}$ be a sequence of $n$ elements drawn from a finite-cardinality alphabet $\mathcal{X}$. The \highlight{empirical probability mass function} of $x^{(n)}$, also referred to as its \highlight{type}, is defined for $x\in \mathcal{X}$ as
     \begin{equation*}
         \pi(x|x^{(n)}) = \dfrac{|\{i\in [n]\;:\;x_i = x\}|}{n}, 
@@ -696,7 +697,7 @@
     \end{equation*}
 \end{proof}
 
-\begin{definition}[Typical Set]
+\begin{definition}[\highlight{Typical Set}]
     The {set of $\varepsilon$-typical $n$-sequences} (simply typical set) for a random variable $X\sim P_X$, $n\in\mathbb{Z}_+$ and $\varepsilon \in (0,1)$ is defined as
     \begin{equation*}
         \T^{(n)}_\varepsilon (X) = \{x^{(n)}\;:\; |\pi(x|x^{(n)}) - P_X(x)| \le \varepsilon P_X(x), \forall\ x\in\mathcal{X}\}.
@@ -707,7 +708,7 @@
     For an element $x\in\mathcal{X}$ which has $P_X(x) = 0$ cannot be a part of typical sequence. To see why, suppose on contrary such an $x$ belonged to a sequence $x^{(n)}$, then $\pi(x|x^{(n)}) > 0$. Consequently, we have $|\pi(x|x^{(n)}) - P_X(x)| = \pi(x|x^{(n)}) > 0 = \varepsilon P_X(x)$ for all $\varepsilon > 0$, which shows that $x^{(n)}$ is not a typical sequence.
 \end{remark}
 
-\begin{lemma}[Typical Average Lemma]
+\begin{lemma}[\highlight{Typical Average Lemma}]
     Consider a typical sequence $x^{(n)}\in \T^{(n)}_\varepsilon (X)$. Then for any {nonnegtaive} function $\mapping{g}{\X}{\R}$, we have 
     \begin{equation*}
         (1-\varepsilon) \E[g(X)] \le \dfrac{1}{n} \sum_{k=1}^{n} g(x_k) \le (1+\varepsilon) \E[g(X)].
@@ -731,28 +732,32 @@
     where $x_k$ is the $k$-th element of the sequence $x^{(n)}$.
 \end{proof}
 
-\begin{theorem}[Properties of Typical Sequence]
+\begin{theorem}[\highlight{Properties of Typical Sequence}]\label{thm:typicality}
     Let $X^{(n)}$ have i.i.d.~entries with $X_i\sim P_X$ and suppose $\varepsilon>0$.
     \begin{enumerate}[(a)]
-        \item All typical sequences are essentially equiprobable:
+        \item All typical sequences are essentially equiprobable: If $x^{(n)}\in\T^{(n)}_\varepsilon(X)$, then 
         \begin{equation*}
             2^{-n(1+\varepsilon)H(X)} \le \Prob[x^{(n)}] \le 2^{-n(1-\varepsilon)H(X)},
         \end{equation*}
         where we define $\Prob[x^{(n)}] = \prod_{i=1}^{n} P_X(x_i)$.
         \item Almost all probability mass is in the typical set: 
-        \begin{equation*}
+        \begin{equation*}\label{eqn:not_in_typical_set}
             \Prob\left[ X^{(n)} \notin \T^{(n)}_\varepsilon \right] \le \left(\dfrac{1}{n}\right).
         \end{equation*}
         \item Bounds on cardinality of typical set:
-        \begin{equation*}
+        \begin{equation*}\label{eqn:typical_set_cardinality}
             \left(1-\dfrac{1}{n}\right) 2^{n(1-\varepsilon)H(X)} \le \left| \T^{(n)}_\varepsilon \right| \le 2^{n(1+\varepsilon)H(X)}.
         \end{equation*}
     \end{enumerate}
 \end{theorem}
 
-\begin{proof}
-    
-\end{proof}
+% \begin{proof}
+%     \textbf{(a)}
+
+%     \noindent \textbf{(b)}
+
+%     \noindent \textbf{(c)}
+% \end{proof}
 
 \section{Lossless Source Coding}
 
@@ -763,16 +768,25 @@
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.7\linewidth]{images/Source_Coding.png}
-    \caption{Block source coding scheme.}
+    \caption{Point-to-point compression system.}
     \label{fig:Source_Coding}
 \end{figure}
 
 \begin{definition}
-    A discrete memoryless source (DMS), denoted by $(\X,P_X)$ and informally referred to as $X$, consists of a finite alphabet $\X$ and a probability mass function $P_X$ over $\X$ that generates i.i.d.~random symbols $\{X_i\}$ with $X_i\sim P_X$.
+    A \highlight{discrete memoryless source (DMS)}, denoted by $(\X,P_X)$ and informally referred to as $X$, consists of
+    \begin{itemize}
+        \item a finite alphabet $\X$ and 
+        \item a probability mass function $P_X$ over $\X$.
+    \end{itemize}
+    The source is \textit{stationary} and \textit{memoryless} in the sense that it is time-invariant and generates i.i.d.~random symbols $\{X_i\}$ with $X_i\sim P_X$.
 \end{definition}
 
+\begin{remark}
+    The prefix ``discrete memoryless'' refers to ``finite-alphabet, time-invariant and memoryless''.
+\end{remark}
+
 % \begin{remark}
-%     It turns out that to compress the source effectively, we need to group source symbols in blocks, and perform processing block by block. Specifically, our scheme will map a block of $n$ source symbols into an index belonging to a set $\M$ of cardiality $|\M|$. Note that we need $\log_2 |\M|$ bits to save each index. The rate $R$ of such a fixed-length
+%     It turns out that to compress the source effectively, we need to group source symbols in blocks, and perform processing block by block. Specifically, our scheme will map a block of $n$ source symbols into an index belonging to a set $\M$ of cardinality $|\M|$. Note that we need $\log_2 |\M|$ bits to save each index. The rate $R$ of such a fixed-length
 %     source code is $R = \log_2 |\M|n$ bits per source symbol. 
 % \end{remark}
 
@@ -781,7 +795,7 @@
 % \end{remark}
 
 \begin{definition}
-    A $(2^{nR},n)$ lossless source code of rate $R$ bits per source symbol consists of 
+    A $(2^{nR},n)$ \highlight{lossless source code} of rate $R$ bits per source symbol consists of 
     \begin{itemize}
         \item an encoder $\mapping{m}{\X^n}{[2^{nR}]}$ that assigns an index $m(x^{(n)})$, a codeword of length $nR$ bits, to each source $n$-sequence $x^{(n)}$, and
         \item a decoder $\mapping{\hat{x}^{(n)}}{[2^{nR}]}{\X^{n}\cup \{e\}}$ that assigns an estimate $\hat{x}^{(n)}(m)\in\X^n$ or an error message $e$ to each index $m\in[2^{nR}]$.
@@ -789,23 +803,41 @@
 \end{definition}
 
 \begin{definition}
-    The probability of decoding error for a $(2^{nR}, n)$ lossless source code is defined as $P^{(n)}_e = \Prob[\hat{X}^{(n)}\neq X^n]$. A rate $R$ is said to be achievable if there exists a sequence of $(2^{nR}, n)$ codes such that $\lim_{n\rightarrow \infty} P_e^{(n)} = 0$. The optimal rate $R^*$ for lossless source coding is the infimum of all achievable rates.
+    The \highlight{probability of decoding error} for a $(2^{nR}, n)$ lossless source code is defined as $P^{(n)}_e = \Prob[\hat{X}^{(n)}\neq X^n]$. A rate $R$ is said to be \highlight{achievable} if there exists a sequence of $(2^{nR}, n)$ codes such that $\lim_{n\rightarrow \infty} P_e^{(n)} = 0$. The \highlight{optimal rate} $R^*$ for lossless source coding is the infimum of all achievable rates.
 \end{definition}
 
 \begin{remark}
     The lossless source coding scheme is required to be only asymptotically error-free (lossless).
 \end{remark}
 
-\begin{theorem}[Fano's Inequality]
-    Let $X, Y$ be two random variables on $\X$ with joint probability mass function $P_{X,Y}$. Let $P_e = \Prob[X \neq Y]$. Then 
+\begin{theorem}[\highlight{Fano's Inequality}]
+    Let $X, Y$ be two random variables on $\X$ such that $\hat{X}$ is an estimator of $X$ and $X - Y - \hat{X}$. Let the error probability be defined as $P_e = \Prob[X \neq \hat{X}]$. Then 
     \begin{equation*}
-        H(X|Y) \le H_b(P_e) + P_e log|\X| \le 1 + P_e log|\X|. 
+        H(X|Y) \le H(X|\hat{X}) \le H_b(P_e) + P_e log(|\X|-1) \le 1 + P_e log|\X|. 
     \end{equation*}
 \end{theorem}
 
+\begin{proof}
+    Define the indicator random variable 
+    \begin{equation*}
+        Z = \begin{cases}
+            1\quad\text{if } \hat{X}\neq X,\\
+            0\quad\text{if } \hat{X} = X.
+        \end{cases}
+    \end{equation*}
+    Then $P_Z(1) = P_e$ and $H(Z) = H_b(P_e)$. Now we use the chain rule to derive the following:
+    \begin{align*}
+        H(X,Z|\hat{X}) &= H(X|\hat{X}) + \underbrace{H(Z|X,\hat{X})}_{=0} \\
+        &= H(Z|\hat{X}) + H(X|\hat{X},Z) \\
+        &\le H(Z) + H(X|\hat{X},Z) \\
+        &= H_b(P_e) + P_Z(0)\underbrace{H(X|\hat{X},Z = 0)}_{=0} + P_Z(1)H(X|\hat{X},Z = 1) \\
+        &\le H_b(P_e) + P_e\log(|\X|-1) \tag{since $X\neq\hat{X}$} \\
+        \implies H(X|\hat{X}) &\le H_b(P_e) + P_e\log(|\X|-1).
+    \end{align*}
+    The upper bound is obtained by upper bounding $H_b(P_e)$ and $\log(|\X|-1)$. Using the DPI for mutual information, we get the lower bound.
+\end{proof}
 
-
-\begin{theorem}[Lossless Source Coding Theorem] 
+\begin{theorem}[\highlight{Lossless Source Coding Theorem}] 
     The optimal rate for lossless source coding of a discrete memoryless source $X$ is 
     \begin{equation*}
         R^* = H(X).
@@ -821,34 +853,249 @@
 \end{proof}
 
 \begin{proof}
+    \textbf{(Achievability).} For $\varepsilon > 0$, let $R = (1+\varepsilon)H(X)$.  So for a given $n$ our coding scheme maps $n$ symbols into a $\M$ such that $|\M| = 2^{nR} = 2^{n(1+\varepsilon)H(X)}$. By the upper bound on the cardinality of the typical set in Thm. \ref{thm:typicality} \eqref{eqn:typical_set_cardinality}, we can uniquely map each typical sequence in $\T^{(n)}_\varepsilon$ to an index in $\M$. Therefore, we define the typicality coding scheme:
+    \begin{itemize}
+        \item {(Encoding).} Assign a unique index $m(x^{(n)})$ to each $x^{(n)}\in\T^{(n)}_\varepsilon$. Assign $m = 1$ to all $x^{(n)}\notin \T^{(n)}_\varepsilon$. 
+        \item {(Decoding).} Upon receiving the index $m$, the decoder returns the typical sequence corresponding to $m$, i.e., return $\hat{x}^{(n)} = x^{(n)}(m)$ for the unique $x^{(n)}(m)\in\T^{(n)}_\varepsilon$.
+    \end{itemize}
 
+    \noindent All typical sequences are recovered error-free. Thus, $P^{(n)}_\varepsilon = \Prob[X^{(n)}\notin\T^{(n)}_\varepsilon]$ which vanishes to zero as $n\rightarrow \infty$ by Thm. \ref{thm:typicality} \eqref{eqn:not_in_typical_set}. This completes the achievability proof.
+
+    \noindent \textbf{(Converse).} Given a sequence of $(2^{nR},n)$ codes with $\lim_{n\rightarrow \infty} P^{(n)}_\varepsilon = 0$, let $M$ be a random variable corresponding to the index generated by the encoder. Note that $X^{(n)} - M - \hat{X}^{(n)}$ forms a Markov chain, by Fano's Inequality, we have
+    \begin{equation*}
+        H(X^{(n)}|M) \le H(X^{(n)}|\hat{X}^{(n)}) \le 1 + P_e \log|\X^n|\le 1 + nP_e\log|\X|.
+    \end{equation*}
+    Now consider 
+    \begin{align*}
+        nR &\ge H(M) \\
+        &= I(M;X^{(n)})\tag{since $H(X^{(n)}|M) = 0$} \\
+        &= nH(X) - H(X^{(n)}|M) \\
+        &\ge nH(X) - 1 - nP_e\log|\X|\\
+        \implies R &\ge H(X) - \dfrac{1}{n} - P^{(n)}_\varepsilon\log|\X|.
+    \end{align*}
+    By taking $n\rightarrow \infty$, we conclude that $R\ge H(X)$.
 \end{proof}
 
-\section{Joint Typical}
+\section{Joint Typicality}
 
-\begin{definition}[Joint Type]
-    Let $(x^{(n)}, y^{(n)})$ be a sequence of a pair of $n$ length sequences from a finite-cardinality alphabet $(\mathcal{X},\mathcal{Y})$. The \highlight{joint empirical probability mass function} of $(x^{(n)}, y^{(n)})$, also referred to as its \highlight{joint type}, is defined for $x\in \mathcal{X}$ as
+\begin{definition}[\highlight{Joint Type}]
+    Let $(x^{(n)}, y^{(n)})$ be a pair of $n$ length sequences from a finite-cardinality alphabet $(\mathcal{X},\mathcal{Y})$. The {joint empirical probability mass function} of $(x^{(n)}, y^{(n)})$, also referred to as its {joint type}, is defined for $(x,y)\in \X\times \Y$ as
     \begin{equation*}
         \pi(x,y|x^{(n)}, y^{(n)}) = \dfrac{|\{i\in [n]\;:\;(x_i,y_i) = (x,y)\}|}{n}.
     \end{equation*}
 \end{definition}
 
 \begin{remark}
-    The $X$-marginal of $X,Y$-joint empirical probability mass function is the $X$-empirical probability mass function.
+    The $X$-marginal of $X,Y$-joint empirical probability mass function is the $X$-empirical probability mass function and similarly for $Y$, i.e.,
+    \begin{equation*}
+        \sum_{y\in\Y} \pi(x,y|x^{(n)},y^{(n)}) = \pi(x|x^{(n)}),\qquad \sum_{x\in\X} \pi(x,y|x^{(n)},y^{(n)}) = \pi(y|y^{(n)}).
+    \end{equation*}
 \end{remark}
 
-\begin{definition}[Jointly Typical Set]
-    The \highlight{set of $\varepsilon$-jointly typical $n$-sequences} for a random variable $(X,Y)\sim (P_X,P_Y)$ and $\varepsilon \in (0,1)$ (simply jointly typical set) is defined as
+\begin{definition}[\highlight{Jointly Typical Set}]
+    The {set of $\varepsilon$-jointly typical $n$-sequences}, simply jointly typical set, for a random variable $(X,Y)\sim (P_X,P_Y)$ and $\varepsilon \in (0,1)$ is defined as
     \begin{equation*}
         \mathcal{T}^{(n)}_\varepsilon (X,Y) = \{(x^{(n)},y^{(n)})\;:\; |\pi(x,y|x^{(n)},y^{(n)}) - P_{X,Y}(x,y)| \le \varepsilon P_{X,Y}(x,y), \forall\ x\in\mathcal{X}, y\in\mathcal{Y}\}.
     \end{equation*}
 \end{definition}
 
-\begin{remark}
-    If $(x^{(n)},y^{(n)})\in \mathcal{T}_\varepsilon^{(n)}(X,Y)$, then $x^{(n)}\in \mathcal{T}_\varepsilon^{(n)}(X)$ and $y^{(n)}\in \mathcal{T}_\varepsilon^{(n)}(Y)$.
+\begin{theorem}[\highlight{Marginal Typicality}]
+    Let $(x^{(n)},y^{(n)})\in \mathcal{T}_\varepsilon^{(n)}(X,Y)$ and $P(x^{(n)}, y^{(n)}) = \prod_{i=1}^{n}P_{X,Y}(x_i,y_i)$. Then
+    \begin{enumerate}[(a)]
+        \item $x^{(n)}\in\T^{(n)}_\varepsilon(X)$ and $y^{(n)}\in \T^{(n)}_\varepsilon(Y)$,
+        \item $P(x^{(n)}) \overset{\circ}{=} 2^{-nH(X)}$ and $P(y^{(n)}) \overset{\circ}{=} 2^{-nH(Y)}$,
+        \item $P(x^{(n)}|y^{(n)}) \overset{\circ}{=} 2^{-nH(X|Y)}$ and $P(y^{(n)}|x^{(n)}) \overset{\circ}{=} 2^{-nH(Y|X)}$,
+        \item $P(x^{(n)},y^{(n)}) \overset{\circ}{=} 2^{-nH(X,Y)}$,
+        \item $2^{n(1-\varepsilon)H(X,Y)} \le |\T^{(n)}_\varepsilon(X,Y)| \le 2^{n(1+\varepsilon)H(X,Y)}$,
+    \end{enumerate}
+    where we define $P(\cdot) \overset{\circ}{=} 2^{-nH(\cdot)}$ to be $2^{-n(1+\varepsilon)H(\cdot)} \le P(\cdot) \le 2^{-n(1-\varepsilon)H(\cdot)}$.
+\end{theorem}
+
+\begin{proof}
+    \textbf{(a)} Observe that 
+    \begin{align*}
+        (1-\varepsilon) P_{X,Y}(x,y) \le \pi(x,y&|x^{(n)},y^{(n)}) \le (1+\varepsilon) P_{X,Y}(x,y) \\
+        \implies \sum_{y\in\Y}(1-\varepsilon)  P_{X,Y}(x,y) \le \sum_{y\in\Y} \pi(x,y&|x^{(n)},y^{(n)}) \le \sum_{y\in\Y} (1+\varepsilon) P_{X,Y}(x,y) \\ 
+        \implies (1-\varepsilon) P_{X}(x) \le \pi(x&|x^{(n)}) \le (1+\varepsilon) P_{X}(x),
+    \end{align*}
+    in other words, $x^{(n)}\in\T^{(n)}_\varepsilon(X)$. Similarly, $y^{(n)}\in \T^{(n)}_\varepsilon(Y)$.
+
+    % \noindent \textbf{(b)}
+
+    % \noindent \textbf{(c)}
+    
+    % \noindent \textbf{(d)}
+    
+    % \noindent \textbf{(e)}
+\end{proof}
+
+\begin{theorem}[\highlight{Conditional Typicality Lemma}]
+    Let $(X,Y)\sim P_{X,Y}$. Suppose $x^{(n)}\in\T^{(n)}_\varepsilon(X)$ and $Y^{(n)}\sim P_{Y^{(n)}|X^{(n)} =\,x^{(n)}} = \prod_{i=1}^{n} P_{Y|X =\, x_i}$. Then, for every $\varepsilon > \varepsilon^\prime$,
+    \begin{equation*}
+        \lim_{n\rightarrow\infty} \Prob[(x^{(n)},Y^{(n)})\in\T^{(n)}_\varepsilon(X,Y)] = 1.
+    \end{equation*}
+\end{theorem}
+
+\begin{remark}[\highlight{Need for both $\varepsilon$ and $\varepsilon^\prime$}]
+    Let $(X,Y)$ be a pair of independent Bern$(1/2)$ random variables. Let $k = \lfloor (n/2)(1+\varepsilon) \rfloor$ and $x^{(n)}$ be a binary sequence with $k$ ones followed by $(n-k)$ zeros. Then $x^{(n)}\in \T^{(n)}_\varepsilon(X)$. Let $Y^{(n)}$ be an i.i.d.~Bern$(1/2)$ sequence, independent of $x^{(n)}$. Then 
+    \begin{equation*}
+        \Prob[(x^{(n)},Y^{(n)})\in\T^{(n)}_\varepsilon(X,Y)] \le \Prob\left[ \sum_{i=1}^k Y_i < (k+1)/2 \right] \overset{n\rightarrow \infty}{\longrightarrow} \dfrac{1}{2}.
+    \end{equation*}
+    Thus, the fact that $x^{(n)}\in\T^{(n)}_\varepsilon(X)$ and $Y^{(n)}\sim P_{Y^{(n)}|X^{(n)}=\,x^{(n)}}$ does not necessarily imply that $\Prob[(x^{(n)},Y^{(n)})\in\T^{(n)}_\varepsilon(X,Y)]$.
 \end{remark}
 
+\begin{theorem}[\highlight{Conditionally Typical Set}]
+    Let $(X,Y)\sim P_{X,Y}$ and define 
+    \begin{equation*}
+        \T^{(n)}_\varepsilon(Y|x^{(n)}) = \{y^{(n)}\;:\; (x^{(n)},y^{(n)})\in\T^{(n)}_\varepsilon(X,Y)\}.
+    \end{equation*}
+    Then for every $x^{(n)}\in \X^n$,
+    \begin{equation*}
+        |\T^{(n)}_\varepsilon (Y|x^{(n)})| \le 2^{n(H(Y|X)+\delta(\varepsilon))}
+    \end{equation*}
+    for some $\delta(\varepsilon) \rightarrow 0$ and $\varepsilon \rightarrow 0$. Additionally, if $x^{(n)}\in \T^{(n)}_{\varepsilon^\prime}(X)$ with $\varepsilon^\prime < \varepsilon$, then 
+    \begin{equation*}
+        |\T^{(n)}_\varepsilon (Y|x^{(n)})| \ge [1-\mathcal{O}(1/n)] 2^{n(H(Y|X)-\delta(\varepsilon))}, \quad n\rightarrow \infty.
+    \end{equation*}
+\end{theorem}
+
+\begin{remark}
+    The upper bound on the conditionally typical set holds for every $x^{(n)}\in\X^n$ and not just for $x^{(n)}\in \T^{(n)}_{\varepsilon}(X)$.
+\end{remark}
+
+\begin{theorem}[\highlight{Joint Typicality Lemma}]
+    Let $(X,Y)\sim P_{X,Y}$. Suppose $x^{(n)}\in\T^{(n)}_{\varepsilon^\prime}(X)$ and $\bar{Y}^{(n)}\sim P_{\bar{Y}^{(n)}} = \prod_{i=1}^{n} P_{Y}$ (instead of $\prod_{i=1}^{n} P_{Y|X =\,x_i}$). Then, for every $\varepsilon > \varepsilon^\prime$,
+    \begin{equation*}
+        (1-\mathcal{O}(1/n))2^{-n(I(X;Y)+\delta(\varepsilon))} \le \Prob[(x^{(n)}, \bar{Y}^{(n)})\in\T^{(n)}_\varepsilon(X,Y)] \le 2^{-n(I(X;Y)-\delta(\varepsilon))},
+    \end{equation*}
+    where $\delta(\varepsilon) \rightarrow 0$ as $\varepsilon \rightarrow 0$. Furthermore, let $\bar{X}^{(n)} \sim P_{\bar{X}^{(n)}} = \prod_{i=1}^{n} P_{X}$ and $\bar{Y}^{(n)}\sim P_{\bar{Y}^{(n)}} = \prod_{i=1}^{n} P_{Y}$. Then 
+    \begin{equation*}
+        \Prob[(\bar{X}^{(n)}, \bar{Y}^{(n)})\in\T^{(n)}_\varepsilon(X,Y)] \le 2^{-n(I(X;Y)-\delta(\varepsilon))},
+    \end{equation*}
+    where $\delta(\varepsilon) \rightarrow 0$ as $\varepsilon \rightarrow 0$.
+\end{theorem}
+
 \section{Channel Coding}
+
+\begin{problem*}[Refer Fig. \ref{fig:Channel_Coding}]
+    The sender encodes the message $M$ into a codeword $X^{(n)}$ and transmits it over the channel in $n$ time instances. Upon receiving the
+    noisy sequence $Y^{(n)}$, the receiver decodes it to obtain the estimate $\hat{M}$ of the message. The channel coding problem is to find the channel capacity, which is the highest rate $R$ such that the probability of decoding error can be made to decay asymptotically to zero with
+    the code block length $n$.
+\end{problem*}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{images/Channel_Coding.png}
+    \caption{Point-to-point communication system.}
+    \label{fig:Channel_Coding}
+\end{figure}
+
+\begin{definition}
+    A \highlight{discrete memoryless channel (DMC)}, denoted by $(\X,P_{Y|X},\Y)$ and informally referred to as $P_{Y|X}$, consists of
+    \begin{itemize}
+        \item a finite input alphabet $\X$,
+        \item a finite output alphabet $\Y$ and
+        \item a collection of conditional probability mass functions $P_{Y|X = x}$ over $\Y$ for every $x\in\X$. 
+    \end{itemize}
+    The channel is \textit{stationary} (time-invariant) and \textit{memoryless} in the sense that when it is used $n$ times with message $M$ drawn from an arbitrary set and input $X^{(n)}\in\X^n$, the output $Y_i\in\Y$ at time $i\in[n]$ given $(M,X^{(i)},Y^{(i-1)})$ is distributed according to 
+    \begin{equation*}
+        P_{Y_i|X^{(i)},Y^{(i-1)},M}(y_i|x^{(i)},y^{(i-1)},m) = P_{Y|X}(y_i|x_i),\quad i\in[n].
+    \end{equation*}
+    Equivalently, memoryless property induces the following Markov chain:
+    \begin{equation*}
+        (X^{(i-1)},Y^{(i-1)},M) - X_i - Y_i.
+    \end{equation*}
+\end{definition}
+
+\begin{definition}
+    A $(2^{nR},n)$ \highlight{channel coding scheme} (simply code) for a DMC $(\X,P_{Y|X},\Y)$ consists of 
+    \begin{itemize}
+        \item a message set $[2^{nR}]$,
+        \item an encoder $\mapping{m}{[2^{nR}]}{\X^n}$ that assigns a codeword $x^{(n)}(m)$ to each $m\in[2^{nR}]$, and
+        \item a decoder $\mapping{\hat{m}}{\Y^n}{{[2^{nR}]}\cup \{e\}}$ that assigns an estimate $\hat{m}\in[2^{nR}]$ or an error message $e$ to each received sequence $y^{(n)}$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    We say that a DMC is used \highlight{without feedback} if 
+    \begin{equation*}
+        P_{X_i|X^{(i-1),Y^{(i-1)}},M}(x_i|x^{(i-1)},y^{(i-1)},m) = P_{X_i|X^{(i-1)}}(x_i|x^{(i-1)}),\quad i\in[n].
+    \end{equation*}
+\end{definition}
+
+\begin{lemma}
+    If a DMC is used without feedback, then 
+    \begin{equation*}
+        P_{Y^{(n)}|X^{(n)},M}(y^{(n)}|x^{(n)},m) = \prod_{i=1}^{n} P_{Y|X}(y_i|x_i),\quad \forall\ n\ge 1.
+    \end{equation*}
+    Equivalently, no feedback induces $Y_i - (M,X^{(i)}) - X^{(i+1:n)}$.
+\end{lemma}
+
+\begin{proof}
+    Consider the following joint distribution
+    \begin{align*}
+        &P_{X^{(n)},Y^{(n)},M}(x^{(n)},y^{(n)},m) \\
+        &\quad = P_M(m) \prod_{i=1}^{n} P_{X_i|X^{(i-1)},Y^{(i-1)},M}(x_i|x^{(i-1)},y^{(i-1)},m) P_{Y_i|X^{(i)},Y^{(i-1)},M}(y_i|x^{(i)},y^{(i-1)},m) \\
+        &\quad = P_M(m) \prod_{i=1}^{n} P_{X_i|X^{(i-1)},M}(x_i|x^{(i-1)},m) P_{Y|X}(y_i|x_i) = P_{X^{(n)},M}(x^{(n)},m) \prod_{i=1}^{n} P_{Y|X}(y_i|x_i).
+    \end{align*}
+    But, $P_{X^{(n)},Y^{(n)},M}(x^{(n)},y^{(n)},m) = P_{X^{(n)},M}(x^{(n)},m) P_{Y^{(n)}|X^{(n)},M}(y^{(n)}|x^{(n)},m)$.
+\end{proof}
+
+\begin{assume}\label{assume:channel_coding}
+    The message is uniformly distributed over the message set, i.e., $P_M(m) = \dfrac{1}{2^{nR}}$.
+\end{assume}
+
+\begin{definition}
+    The set $\C = \{x^{(n)}(1),x^{(n)}(2),\ldots,x^{(n)}(2^{nR})\}$, which is the set of all codewords, is referred to as the \highlight{codebook} associated with the $(2^{nR},n)$ code. Define $\lambda_m(\C)$ to be the conditional probability of error given that message $m$ is sent, i.e.,
+    \begin{equation*}
+        \lambda_m(\C) = \Prob[\hat{M}\neq m | M = m] = \sum_{y^{(n)}\in\Y^n} P_{Y^{(n)}|X^{(n)}}(y^{(n)}|x^{(n)}(m)) \mathbb{I}_{[\hat{m}(y^{(n)})\neq\, m]}.
+    \end{equation*}
+    Then the \highlight{average probability of error} for a $(2^{nR}, n)$ code is defined as 
+    \begin{equation*}
+        P^{(n)}_e(\C) = \Prob[\hat{M}\neq M] = \dfrac{1}{2^{nR}} \sum_{m=1}^{2^{nR}} \lambda_m(\C).   
+    \end{equation*}
+    A rate $R$ is said to be \highlight{achievable} if there exists a sequence of $(2^{nR}, n)$ codes such that $\lim_{n\rightarrow \infty} P_e^{(n)} = 0$. The \highlight{capacity} $C$ of a DMC is the supremum of all achievable rates.
+\end{definition}
+
+\begin{theorem}[\highlight{Channel Coding Theorem}]
+    Under Assumption \ref{assume:channel_coding}, the capacity of the DMC $(\X,P_{Y|X},\Y)$ without feedback is given by
+    \begin{equation*}
+        C = \max_{P_X}\,I(X;Y).
+    \end{equation*}
+\end{theorem}
+
+% \begin{proof}[Proof Sketch]\renewcommand{\qedsymbol}{}
+%     To prove this theorem, we need to verify the following two statements:
+%     \begin{itemize}
+%         \item \textbf{Achievability.} For every $R > R^* = H(X)$ there exists a sequence of $(2^{nR}, n)$ codes with $\lim_{n\rightarrow \infty} P_e^{(n)} = 0$.
+%         \item \textbf{Converse.} For every sequence of $(2^{nR}, n)$ codes with $\lim_{n\rightarrow \infty} P_e^{(n)} = 0$, the source coding rate $R \ge R^* = H(X)$.
+%     \end{itemize}
+% \end{proof}
+
+% \begin{proof}
+%     \textbf{(Achievability).} For $\varepsilon > 0$, let $R = (1+\varepsilon)H(X)$.  So for a given $n$ our coding scheme maps $n$ symbols into a $\M$ such that $|\M| = 2^{nR} = 2^{n(1+\varepsilon)H(X)}$. By the upper bound on the cardinality of the typical set in Thm. \ref{thm:typicality} \eqref{eqn:typical_set_cardinality}, we can uniquely map each typical sequence in $\T^{(n)}_\varepsilon$ to an index in $\M$. Therefore, we define the typicality coding scheme:
+%     \begin{itemize}
+%         \item {(Encoding).} Assign a unique index $m(x^{(n)})$ to each $x^{(n)}\in\T^{(n)}_\varepsilon$. Assign $m = 1$ to all $x^{(n)}\notin \T^{(n)}_\varepsilon$. 
+%         \item {(Decoding).} Upon receiving the index $m$, the decoder returns the typical sequence corresponding to $m$, i.e., return $\hat{x}^{(n)} = x^{(n)}(m)$ for the unique $x^{(n)}(m)\in\T^{(n)}_\varepsilon$.
+%     \end{itemize}
+
+%     \noindent All typical sequences are recovered error-free. Thus, $P^{(n)}_\varepsilon = \Prob[X^{(n)}\notin\T^{(n)}_\varepsilon]$ which vanishes to zero as $n\rightarrow \infty$ by Thm. \ref{thm:typicality} \eqref{eqn:not_in_typical_set}. This completes the achievability proof.
+
+%     \noindent \textbf{(Converse).} Given a sequence of $(2^{nR},n)$ codes with $\lim_{n\rightarrow \infty} P^{(n)}_\varepsilon = 0$, let $M$ be a random variable corresponding to the index generated by the encoder. Note that $X^{(n)} - M - \hat{X}^{(n)}$ forms a Markov chain, by Fano's Inequality, we have
+%     \begin{equation*}
+%         H(X^{(n)}|M) \le H(X^{(n)}|\hat{X}^{(n)}) \le 1 + P_e \log|\X^n|\le 1 + nP_e\log|\X|.
+%     \end{equation*}
+%     Now consider 
+%     \begin{align*}
+%         nR &\ge H(M) \\
+%         &= I(M;X^{(n)})\tag{since $H(X^{(n)}|M) = 0$} \\
+%         &= nH(X) - H(X^{(n)}|M) \\
+%         &\ge nH(X) - 1 - nP_e\log|\X|\\
+%         \implies R &\ge H(X) - \dfrac{1}{n} - P^{(n)}_\varepsilon\log|\X|.
+%     \end{align*}
+%     By taking $n\rightarrow \infty$, we conclude that $R\ge H(X)$.
+% \end{proof}
+
 
 \section{Differential Entropy}
 
@@ -864,6 +1111,9 @@
 
     \bibitem{cover2005elements}
     Thomas M. Cover and Joy A. Thomas. Elements of information theory, 2th edition. John Wiley \& Sons, 2005.
+
+    \bibitem{el2011network}
+    Abbas El Gamal and and Young-Han Kim. Network information theory. Cambridge university press, 2011.
 
     % \bibitem{Rockafellar} 
     %     Rockafellar, R.T. Convex Analysis. Princeton University Press, 1972.
